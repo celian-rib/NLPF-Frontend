@@ -16,9 +16,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ isSignup = false }) => {
 
     const roles = [
         { role: 'client', title: 'Client' },
-        { role: 'traffic_manager', title: 'Traffic Manager' },
-        { role: 'trader', title: 'Trader' },
-        { role: 'admin', title: 'Admin' },
+        { role: 'traffic-manager', title: 'Traffic Manager' },
+        { role: 'trader', title: 'Trader' }
     ];
 
     const handleSubmit = async (e: React.FormEvent) => {
