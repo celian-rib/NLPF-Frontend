@@ -3,7 +3,6 @@ import axios from 'axios';
 const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
 
 export const signupUser = async (username: string, password: string, role: string) => {
-    console.log(process.env.REACT_APP_AUTH_API_URL);
     return axios.post(`${API_BASE_URL}/signup`, { username, password, role });
 };
 
