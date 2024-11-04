@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { UserInfo } from '../types/UserInfo';
 
 const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
 
@@ -25,4 +26,11 @@ export const loginUser = async (username: string, password: string) => {
         console.error("Login error:", error);
         throw error;
     }
+};
+
+// GET /users/:userId
+export const getUserInfo = async (): Promise<UserInfo> => {
+    const userId = localStorage.getItem('user_id');
+    const response = await axios.get<UserInfo>(`${API_BASE_URL}/users/${userId}`);
+    return response.data;
 };

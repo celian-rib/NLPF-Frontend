@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserLayout from './UserLayout';
+import { getUserInfo } from '../../services/auth';
+import { UserInfo } from '../../types/UserInfo';
 
 // Types
 type UserRole = 'trafficManager' | 'trader' | 'client';
@@ -20,11 +22,25 @@ const formatDate = (date: string) => {
     return `${parsedDate.getDate().toString().padStart(2, '0')}/${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
 };
 
+// Function to map roles
+const normalizeUserRole = (role: string): UserRole => {
+    switch (role) {
+        case 'traffic-manager':
+            return 'trafficManager';
+        case 'trader':
+            return 'trader';
+        case 'client':
+            return 'client';
+        default:
+            throw new Error(`Role "${role}" is not recognized`);
+    }
+};
+
 const Navbar: React.FC = () => {
     const [simulationDate, setSimulationDate] = useState<string | null>(null);
     const [currentTab, setCurrentTab] = useState<string>('');
     const [userRole, setUserRole] = useState<UserRole>('client');
-    const [username, setUsername] = useState<string>('John Doe');
+    const [username, setUsername] = useState<string>('');
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -40,6 +56,22 @@ const Navbar: React.FC = () => {
         };
         setCurrentTab(pathMap[location.pathname] || '');
     }, [location.pathname]);
+
+    // Load user information
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const userInfo: UserInfo = await getUserInfo();
+                setUsername(userInfo.username);
+                setUserRole(normalizeUserRole(userInfo.role));
+            } catch (error) {
+                console.error("Failed to fetch user info", error);
+                logout();
+            }
+        };
+        
+        fetchUserInfo();
+    }, []);
 
     // Check access permissions
     const hasAccess = (tab: string) => rolePermissions[userRole]?.includes(tab);
