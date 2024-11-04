@@ -1,8 +1,11 @@
 import React from "react";
+import Navbar from "../components/navbar/Navbar";
 
 const Home: React.FC = () => {
     return (
         <>
+            <Navbar />
+            
             <main className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
                 <section className="text-center">
                     <h1 className="text-9xl md:text-7xl font-bold mb-2">Welcome</h1>

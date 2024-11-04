@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputField from './InputField';
 import RoleSelector from './RoleSelector';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import { loginUser, signupUser } from '../services/auth';
+import { loginUser, signupUser } from '../../services/auth';
 
 interface AuthFormProps {
     isSignup?: boolean;

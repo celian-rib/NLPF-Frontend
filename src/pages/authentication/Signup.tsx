@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from '../../components/AuthForm';
+import AuthForm from '../../components/authentication/AuthForm';
 
 const Signup: React.FC = () => (
     <main className="flex items-center justify-center h-screen bg-gray-200">

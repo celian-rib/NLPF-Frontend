@@ -1,0 +1,176 @@
+import { faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import UserLayout from './UserLayout';
+
+// Types
+type UserRole = 'trafficManager' | 'trader' | 'client';
+
+// Current user role
+const rolePermissions: Record<UserRole, string[]> = {
+    trafficManager: ['TrafficManager', 'Map'],
+    trader: ['Trader', 'StockExchange'],
+    client: ['Lots', 'Tractors', 'StockExchange', 'Map']
+};
+
+// Function to format a date as "DD/MM/YYYY"
+const formatDate = (date: string) => {
+    const parsedDate = new Date(date);
+    return `${parsedDate.getDate().toString().padStart(2, '0')}/${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
+};
+
+const Navbar: React.FC = () => {
+    const [simulationDate, setSimulationDate] = useState<string | null>(null);
+    const [currentTab, setCurrentTab] = useState<string>('');
+    const [userRole, setUserRole] = useState<UserRole>('client');
+    const [username, setUsername] = useState<string>('John Doe');
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Set the current tab based on the URL path
+    useEffect(() => {
+        const pathMap: Record<string, string> = {
+            '/traffic-manager': 'TrafficManager',
+            '/lots': 'Lots',
+            '/tractors': 'Tractors',
+            '/trader': 'Trader',
+            '/stock-exchange': 'StockExchange',
+            '/map': 'Map'
+        };
+        setCurrentTab(pathMap[location.pathname] || '');
+    }, [location.pathname]);
+
+    // Check access permissions
+    const hasAccess = (tab: string) => rolePermissions[userRole]?.includes(tab);
+
+    // Function to update the simulation date
+    const updateSimulationDate = () => {
+        setSimulationDate(new Date().toISOString());
+    };
+
+    // Function to log out
+    const logout = () => {
+        localStorage.clear();
+        navigate('/login');
+    };
+
+    return (
+        <>
+            <UserLayout userRole={userRole} username={username} />
+
+            <nav className="bg-gray-800 p-4 text-white shadow-md fixed top-0 left-0 w-full z-50 mt-10">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+
+                        <Link to="/" className="flex-shrink-0">
+                            <img src="/assets/logo.png" alt="Logo" className="h-12 w-auto transition-transform duration-300 hover:scale-105" />
+                        </Link>
+                        <Link to="/">
+                            <span className="ml-3 text-xl font-bold tracking-widest hover:text-blue-400 transition-colors duration-300">
+                                LIGNE<span className="text-blue-400">8</span>
+                            </span>
+                        </Link>
+
+                        <ul className="flex space-x-8 ml-16 text-base">
+                            {hasAccess('Lots') && (
+                                <li>
+                                    <Link
+                                        to="/lots"
+                                        onClick={() => setCurrentTab('Lots')}
+                                        className={currentTab === 'Lots' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Lots
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('Tractors') && (
+                                <li>
+                                    <Link
+                                        to="/tractors"
+                                        onClick={() => setCurrentTab('Tractors')}
+                                        className={currentTab === 'Tractors' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Tractors
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('TrafficManager') && (
+                                <li>
+                                    <Link
+                                        to="/traffic-manager"
+                                        onClick={() => setCurrentTab('TrafficManager')}
+                                        className={currentTab === 'TrafficManager' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Traffic Manager
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('Trader') && (
+                                <li>
+                                    <Link
+                                        to="/trader"
+                                        onClick={() => setCurrentTab('Trader')}
+                                        className={currentTab === 'Trader' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Trader
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('StockExchange') && (
+                                <li>
+                                    <Link
+                                        to="/stock-exchange"
+                                        onClick={() => setCurrentTab('StockExchange')}
+                                        className={currentTab === 'StockExchange' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Stock Exchange
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('Map') && (
+                                <li>
+                                    <Link
+                                        to="/map"
+                                        onClick={() => setCurrentTab('Map')}
+                                        className={currentTab === 'Map' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        Map
+                                    </Link>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                        {simulationDate ? (
+                            <div className="text-lg text-white">
+                                Simulation date : <span className="font-bold text-blue-400">{formatDate(simulationDate)}</span>
+                            </div>
+                        ) : (
+                            <div className="text-lg font-normal text-red-600">
+                                No date found
+                            </div>
+                        )}
+
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 w-10 h-10 flex items-center justify-center"
+                            onClick={updateSimulationDate}
+                        >
+                            <FontAwesomeIcon icon={faPlus} />
+                        </button>
+
+                        <button
+                            onClick={logout}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition-all duration-300 transform hover:scale-105"
+                        >
+                            <FontAwesomeIcon icon={faRightFromBracket} />
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </>
+    );
+};
+
+export default Navbar;
