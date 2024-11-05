@@ -1,3 +1,4 @@
+// Function to get status color and text
 export const getStatusInfo = (state: string): { color: string; text: string } => {
     switch (state) {
         case 'available':
@@ -17,4 +18,13 @@ export const getStatusInfo = (state: string): { color: string; text: string } =>
         default:
             return { color: 'bg-gray-200 text-gray-800', text: '🛇 Unknown' };
     }
+};
+
+// Function to validate input number
+export const validateInputNumber = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
+    let value = e.target.value;
+    value = value.replace(/[^0-9.]/g, '');
+    if ((value.match(/\./g) || []).length > 1)
+        value = value.replace(/\.+$/, '');
+    setValue(value);
 };

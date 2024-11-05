@@ -8,6 +8,7 @@ import { LotType } from '../types/LotType';
 import { UserInfo } from '../types/UserInfo';
 import { faPlus, faRightFromBracket, faRotateRight, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AddLotModal from '../components/modal/AddLotModal';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -15,6 +16,7 @@ const Lots: React.FC = () => {
     const [tableData, setTableData] = useState<Lot[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
+    const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
 
     const fakeCheckpoints: Checkpoint[] = [
         { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
@@ -151,7 +153,10 @@ const Lots: React.FC = () => {
                         setSortOption={setSortOption} 
                     />
                     <div className="flex justify-between items-center self-end">
-                        <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end">
+                        <button
+                            onClick={() => setIsAddLotModalOpen(true)}
+                            className="bg-blue-500 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end"
+                        >
                             <FontAwesomeIcon icon={faPlus} className="mr-2" />
                             Add a lot
                         </button>
@@ -228,6 +233,13 @@ const Lots: React.FC = () => {
                     </table>
                 </div>
             </main>
+            {isAddLotModalOpen && (
+                <AddLotModal
+                    closeModal={() => setIsAddLotModalOpen(false)}
+                    types={Object.values(LotType)}
+                    checkpoints={fakeCheckpoints}
+                />
+            )}
         </>
     );
 };
