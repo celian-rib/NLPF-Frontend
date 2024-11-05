@@ -41,6 +41,7 @@ const AddLotModal: React.FC<AddLotModalProps> = ({ closeModal, types, checkpoint
         // FIXME: Implement the logic to add a lot using Assets API
         // POST /lots
         console.log(data);
+        closeModal();
     };
 
     return (

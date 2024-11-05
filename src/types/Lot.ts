@@ -4,6 +4,7 @@ import { UserInfo } from "./UserInfo";
 
 export interface Lot {
     id: string;
+    name: string;
     status: string;
     volume: number;
     created_at: string;

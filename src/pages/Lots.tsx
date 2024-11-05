@@ -9,6 +9,7 @@ import { UserInfo } from '../types/UserInfo';
 import { faPlus, faRightFromBracket, faRotateRight, faTruck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddLotModal from '../components/modal/AddLotModal';
+import AddLotToStockExchangeModal from '../components/modal/AddLotToStockExchangeModal';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -16,7 +17,10 @@ const Lots: React.FC = () => {
     const [tableData, setTableData] = useState<Lot[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
+    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
+    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
+
 
     const fakeCheckpoints: Checkpoint[] = [
         { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
@@ -55,6 +59,7 @@ const Lots: React.FC = () => {
     const fakeLots: Lot[] = [
         {
             id: '1',
+            name: 'Lot 1',
             status: 'available',
             volume: 1500,
             created_at: '2024-11-01T10:00:00Z',
@@ -67,6 +72,7 @@ const Lots: React.FC = () => {
         },
         {
             id: '2',
+            name: 'Lot 2',
             status: 'pending',
             volume: 500,
             created_at: '2024-11-02T12:30:00Z',
@@ -79,6 +85,7 @@ const Lots: React.FC = () => {
         },
         {
             id: '3',
+            name: 'Lot 3',
             status: 'in_transit',
             volume: 1000,
             created_at: '2024-11-03T09:15:00Z',
@@ -91,6 +98,7 @@ const Lots: React.FC = () => {
         },
         {
             id: '4',
+            name: 'Lot 4',
             status: 'on_market',
             volume: 2000,
             created_at: '2024-11-04T14:45:00Z',
@@ -103,6 +111,7 @@ const Lots: React.FC = () => {
         },
         {
             id: '5',
+            name: 'Lot 5',
             status: 'archived',
             volume: 750,
             created_at: '2024-10-28T16:20:00Z',
@@ -214,7 +223,13 @@ const Lots: React.FC = () => {
                                                     <FontAwesomeIcon icon={faTruck} className="mr-2" />
                                                     Assign
                                                 </button>
-                                                <button className="self-center bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md">
+                                                <button
+                                                    className="self-center bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
+                                                    onClick={() => {
+                                                        setSelectedLot(lot);
+                                                        setIsStockExchangeModalOpen(true);
+                                                    }}
+                                                >
                                                     <FontAwesomeIcon icon={faPlus} className="mr-2" />
                                                     Stock exchange
                                                 </button>
@@ -233,11 +248,20 @@ const Lots: React.FC = () => {
                     </table>
                 </div>
             </main>
+
             {isAddLotModalOpen && (
                 <AddLotModal
                     closeModal={() => setIsAddLotModalOpen(false)}
                     types={Object.values(LotType)}
                     checkpoints={fakeCheckpoints}
+                />
+            )}
+
+            {isStockExchangeModalOpen && selectedLot && (
+                <AddLotToStockExchangeModal
+                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                    minDate={new Date().toISOString().split('T')[0]}
+                    lot={selectedLot}
                 />
             )}
         </>
