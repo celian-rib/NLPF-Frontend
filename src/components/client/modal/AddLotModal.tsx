@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Checkpoint } from '../../types/Checkpoint';
-import { validateInputNumber } from '../../utils/utils';
+import { Checkpoint } from '../../../types/Checkpoint';
+import { validateInputNumber } from '../../../utils/utils';
 
 interface AddLotModalProps {
     closeModal: () => void;

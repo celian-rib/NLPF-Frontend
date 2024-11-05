@@ -1,14 +1,17 @@
 import { Checkpoint } from "./Checkpoint";
-import { LotType } from "./LotType";
+import { Route } from "./Route";
+import { TractorType } from "./TractorType";
 import { UserInfo } from "./UserInfo";
 
-export interface Lot {
+export interface Tractor {
     id: string;
-    lot_name: string;
+    tractor_name: string;
     status: string;
     volume: number;
-    type: LotType;
-    max_price: number;
+    occupied_volume: number;
+    type: TractorType;
+    route: Route;
+    min_price: number;
     current_checkpoint: Checkpoint;
     start_checkpoint: Checkpoint;
     end_checkpoint: Checkpoint;

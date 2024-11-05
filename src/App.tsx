@@ -15,6 +15,7 @@ import TrafficManagerTractors from './pages/trafficManager/Tractors';
 import { normalizeUserRole, UserRole } from './configs/permissions';
 import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
 import Lots from './pages/Lots';
+import Tractors from './pages/Tractors';
 
 library.add(fas);
 
@@ -29,6 +30,11 @@ function App() {
                 <Route path="/lots" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Lots">
                         <Lots />
+                    </ProtectedRouteWrapper>
+                } />
+                <Route path="/tractors" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Tractors">
+                        <Tractors />
                     </ProtectedRouteWrapper>
                 } />
 

@@ -6,10 +6,13 @@ import { Checkpoint } from '../types/Checkpoint';
 import { Lot } from '../types/Lot';
 import { LotType } from '../types/LotType';
 import { UserInfo } from '../types/UserInfo';
-import { faPlus, faRightFromBracket, faRotateRight, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AddLotModal from '../components/modal/AddLotModal';
-import AddLotToStockExchangeModal from '../components/modal/AddLotToStockExchangeModal';
+import AddLotModal from '../components/client/modal/AddLotModal';
+import { sortAndFilterData } from '../utils/sortingUtils';
+import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
+import ActionButtons from '../components/client/ActionButtons';
+import AddToStockExchangeModal from '../components/client/modal/AddToStockExchangeModal';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -59,10 +62,9 @@ const Lots: React.FC = () => {
     const fakeLots: Lot[] = [
         {
             id: '1',
-            name: 'Lot 1',
+            lot_name: 'Lot 1',
             status: 'available',
             volume: 1500,
-            created_at: '2024-11-01T10:00:00Z',
             type: LotType.Bulk,
             max_price: 2500,
             current_checkpoint: fakeCheckpoints[0],
@@ -72,10 +74,9 @@ const Lots: React.FC = () => {
         },
         {
             id: '2',
-            name: 'Lot 2',
+            lot_name: 'Lot 2',
             status: 'pending',
             volume: 500,
-            created_at: '2024-11-02T12:30:00Z',
             type: LotType.Liquid,
             max_price: 1200,
             current_checkpoint: fakeCheckpoints[1],
@@ -85,10 +86,9 @@ const Lots: React.FC = () => {
         },
         {
             id: '3',
-            name: 'Lot 3',
+            lot_name: 'Lot 3',
             status: 'in_transit',
             volume: 1000,
-            created_at: '2024-11-03T09:15:00Z',
             type: LotType.Solid,
             max_price: 1800,
             current_checkpoint: fakeCheckpoints[2],
@@ -98,10 +98,9 @@ const Lots: React.FC = () => {
         },
         {
             id: '4',
-            name: 'Lot 4',
+            lot_name: 'Lot 4',
             status: 'on_market',
             volume: 2000,
-            created_at: '2024-11-04T14:45:00Z',
             type: LotType.Bulk,
             max_price: 3000,
             current_checkpoint: fakeCheckpoints[0],
@@ -111,10 +110,9 @@ const Lots: React.FC = () => {
         },
         {
             id: '5',
-            name: 'Lot 5',
+            lot_name: 'Lot 5',
             status: 'archived',
             volume: 750,
-            created_at: '2024-10-28T16:20:00Z',
             type: LotType.Liquid,
             max_price: 1500,
             current_checkpoint: fakeCheckpoints[1],
@@ -128,21 +126,8 @@ const Lots: React.FC = () => {
         setTableData(fakeLots);
     }, []);
 
-    const sortedData = (() => {
-        let data = selectedStatus === 'all' ? tableData : tableData.filter(lot => lot.status === selectedStatus);
-        switch (sortOption) {
-            case 'volume_asc':
-                return data.sort((a, b) => a.volume - b.volume);
-            case 'volume_desc':
-                return data.sort((a, b) => b.volume - a.volume);
-            case 'location_asc':
-                return data.sort((a, b) => a.current_checkpoint.checkpoint_name.localeCompare(b.current_checkpoint.checkpoint_name));
-            case 'location_desc':
-                return data.sort((a, b) => b.current_checkpoint.checkpoint_name.localeCompare(a.current_checkpoint.checkpoint_name));
-            default:
-                return data;
-        }
-    })();
+    // Sort and filter data
+    const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
     return (
         <>
@@ -200,48 +185,14 @@ const Lots: React.FC = () => {
 
                                     <td className="border text-center p-2">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
 
-                                    <td className="border text-center p-2">
-                                        {lot.traffic_managers.length === 0 ? (
-                                            <span className="text-gray-400">None</span>
-                                        ) : lot.traffic_managers.length === 1 ? (
-                                            <span className="text-black">{lot.traffic_managers[0].username}</span>
-                                        ) : (
-                                            <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5">
-                                                {lot.traffic_managers.map(traffic_manager => (
-                                                    <option key={traffic_manager.id} value={traffic_manager.id}>
-                                                        {traffic_manager.username}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        )}
-                                    </td>
+                                    <TrafficManagerSelect trafficManagers={lot.traffic_managers} />
 
-                                    <td className="border p-2 text-center">
-                                        {lot.status === 'available' ? (
-                                            <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
-                                                <button className="self-center bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md">
-                                                    <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                                                    Assign
-                                                </button>
-                                                <button
-                                                    className="self-center bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                                    onClick={() => {
-                                                        setSelectedLot(lot);
-                                                        setIsStockExchangeModalOpen(true);
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                                                    Stock exchange
-                                                </button>
-                                                <button className="self-center bg-gray-800 text-white px-4 py-2 flex items-center font-bold hover:bg-black transition-colors rounded-md">
-                                                    <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
-                                                    Retirer
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <span className="text-gray-400">-</span>
-                                        )}
-                                    </td>
+                                    <ActionButtons
+                                        item={lot}
+                                        itemType="lot"
+                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                    />
+
                                 </tr>
                             ))}
                         </tbody>
@@ -258,10 +209,11 @@ const Lots: React.FC = () => {
             )}
 
             {isStockExchangeModalOpen && selectedLot && (
-                <AddLotToStockExchangeModal
+                <AddToStockExchangeModal
+                    item={selectedLot}
+                    itemType="lot"
+                    minDate={new Date().toISOString().split("T")[0]}
                     closeModal={() => setIsStockExchangeModalOpen(false)}
-                    minDate={new Date().toISOString().split('T')[0]}
-                    lot={selectedLot}
                 />
             )}
         </>
