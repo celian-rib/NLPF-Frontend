@@ -151,13 +151,9 @@ const Lots: React.FC = () => {
                         setSortOption={setSortOption} 
                     />
                     <div className="flex justify-between items-center self-end">
-                        <button className="bg-blue-500 text-white mr-2 font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end">
+                        <button className="bg-blue-500 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end">
                             <FontAwesomeIcon icon={faPlus} className="mr-2" />
                             Add a lot
-                        </button>
-                        <button className="bg-gray-800 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-gray-900 transition-colors self-end">
-                            <FontAwesomeIcon icon={faRotateRight} className="mr-2" />
-                            Reload
                         </button>
                     </div>
                 </div>
