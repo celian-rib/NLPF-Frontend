@@ -1,10 +1,19 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import Login from './pages/authentication/Login';
 import Signup from './pages/authentication/Signup';
 import Home from './pages/Home';
+import StockExchangeLots from './pages/stockExchange/Lots';
+import StockExchangeTractors from './pages/stockExchange/Tractors';
+import TraderLots from './pages/trader/Lots';
+import TraderTractors from './pages/trader/Tractors';
+import TrafficManagerLots from './pages/trafficManager/Lots';
+import TrafficManagerRoutes from './pages/trafficManager/Routes';
+import TrafficManagerTractors from './pages/trafficManager/Tractors';
+import { normalizeUserRole, UserRole } from './configs/permissions';
+import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
 
 library.add(fas);
 
@@ -15,11 +24,45 @@ function App() {
                 <Route path="/" element={<HomeWithAuth />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+
+                <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/lots" replace />} />
+                <Route path="/trader" element={<Navigate to="/trader/lots" replace />} />
+                <Route path="/traffic-manager" element={<Navigate to="/traffic-manager/routes" replace />} />
+
+                <Route path="/stock-exchange/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="StockExchange">
+                        <Routes>
+                            <Route path="lots" element={<StockExchangeLots />} />
+                            <Route path="tractors" element={<StockExchangeTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
+                <Route path="/traffic-manager/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="TrafficManager">
+                        <Routes>
+                            <Route path="routes" element={<TrafficManagerRoutes />} />
+                            <Route path="lots" element={<TrafficManagerLots />} />
+                            <Route path="tractors" element={<TrafficManagerTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
+                <Route path="/trader/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Trader">
+                        <Routes>
+                            <Route path="lots" element={<TraderLots />} />
+                            <Route path="tractors" element={<TraderTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
             </Routes>
         </Router>
     );
 }
 
+// Home component with authentication
 const HomeWithAuth: React.FC = () => {
     const navigate = useNavigate();
 
@@ -32,5 +75,13 @@ const HomeWithAuth: React.FC = () => {
 
     return <Home />;
 };
+
+// Get the user role from local storage
+const getUserRole = (): UserRole => {
+    const role: string | null = localStorage.getItem('user_role');
+    if (!role)
+        return '' as UserRole;
+    return normalizeUserRole(role);
+}
 
 export default App;

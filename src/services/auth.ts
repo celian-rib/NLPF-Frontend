@@ -19,8 +19,9 @@ export const signupUser = async (username: string, password: string, role: strin
 export const loginUser = async (username: string, password: string) => {
     try {
         const response = await axios.post<LoginResponse>(`${API_BASE_URL}/login`, { username, password });
-        const { user_id } = response.data;
+        const { user_id, role } = response.data;
         localStorage.setItem('user_id', user_id);
+        localStorage.setItem('user_role', role);
         return response;
     } catch (error) {
         console.error("Login error:", error);

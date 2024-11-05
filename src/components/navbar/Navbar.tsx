@@ -5,35 +5,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserLayout from './UserLayout';
 import { getUserInfo } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
-
-// Types
-type UserRole = 'trafficManager' | 'trader' | 'client';
-
-// Current user role
-const rolePermissions: Record<UserRole, string[]> = {
-    trafficManager: ['TrafficManager', 'Map'],
-    trader: ['Trader', 'StockExchange'],
-    client: ['Lots', 'Tractors', 'StockExchange', 'Map']
-};
+import { normalizeUserRole, rolePermissions, UserRole } from '../../configs/permissions';
 
 // Function to format a date as "DD/MM/YYYY"
 const formatDate = (date: string) => {
     const parsedDate = new Date(date);
     return `${parsedDate.getDate().toString().padStart(2, '0')}/${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
-};
-
-// Function to map roles
-const normalizeUserRole = (role: string): UserRole => {
-    switch (role) {
-        case 'traffic-manager':
-            return 'trafficManager';
-        case 'trader':
-            return 'trader';
-        case 'client':
-            return 'client';
-        default:
-            throw new Error(`Role "${role}" is not recognized`);
-    }
 };
 
 const Navbar: React.FC = () => {
