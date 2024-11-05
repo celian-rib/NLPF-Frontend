@@ -10,6 +10,8 @@ import { sortAndFilterData } from '../utils/sortingUtils';
 import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/client/modal/AddToStockExchangeModal';
+import { Checkpoint } from '../types/Checkpoint';
+import AddItemModal from '../components/client/modal/AddItemModal';
 
 const Tractors: React.FC = () => {
     const [title] = useState<string>('Tractor management');
@@ -20,6 +22,13 @@ const Tractors: React.FC = () => {
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
     const [isAddTractorModalOpen, setIsAddTractorModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
+
+
+    const fakeCheckpoints: Checkpoint[] = [
+        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
+        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
+        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
+    ];
 
     const fakeTractors: Tractor[] = [
         {
@@ -118,7 +127,7 @@ const Tractors: React.FC = () => {
                     />
                     <div className="flex justify-between items-center self-end">
                         <button
-                            onClick={() => {}}
+                            onClick={() => setIsAddTractorModalOpen(true)}
                             className="bg-blue-500 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end"
                         >
                             <FontAwesomeIcon icon={faPlus} className="mr-2" />
@@ -163,6 +172,7 @@ const Tractors: React.FC = () => {
                                     <ActionButtons
                                         item={tractor}
                                         itemType="tractor"
+                                        setSelectedTractor={setSelectedTractor}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                     />
 
@@ -172,6 +182,15 @@ const Tractors: React.FC = () => {
                     </table>
                 </div>
             </main>
+
+            {isAddTractorModalOpen && (
+                <AddItemModal
+                    closeModal={() => setIsAddTractorModalOpen(false)}
+                    types={Object.values(TractorType)}
+                    checkpoints={fakeCheckpoints}
+                    itemType="tractor"
+                />
+            )}
 
             {isStockExchangeModalOpen && selectedTractor && (
                 <AddToStockExchangeModal

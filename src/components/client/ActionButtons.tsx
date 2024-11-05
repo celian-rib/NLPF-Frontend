@@ -6,17 +6,27 @@ import { Tractor } from '../../types/Tractor';
 interface ActionButtonsProps<T> {
     item: T;
     itemType: 'tractor' | 'lot';
+    setSelectedLot?: (lot: Lot) => void;
+    setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
     item,
     itemType,
+    setSelectedLot,
+    setSelectedTractor,
     setIsStockExchangeModalOpen,
 }: ActionButtonsProps<T>) => {
-
-    // Function to handle the stock exchange button click
     const handleStockExchangeClick = () => {
+        if (itemType === 'lot' && setSelectedLot)
+        {
+            setSelectedLot(item as Lot);
+        }
+        else if (itemType === 'tractor' && setSelectedTractor)
+        {
+            setSelectedTractor(item as Tractor);
+        }
         setIsStockExchangeModalOpen(true);
     };
 

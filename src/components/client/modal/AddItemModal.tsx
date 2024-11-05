@@ -2,45 +2,49 @@ import React, { useState } from 'react';
 import { Checkpoint } from '../../../types/Checkpoint';
 import { validateInputNumber } from '../../../utils/utils';
 
-interface AddLotModalProps {
+interface AddItemModalProps {
     closeModal: () => void;
     types: string[];
     checkpoints: Checkpoint[];
+    itemType: 'lot' | 'tractor';
 }
 
-const AddLotModal: React.FC<AddLotModalProps> = ({ closeModal, types, checkpoints }) => {
+const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoints, itemType }) => {
     const [name, setName] = useState<string>('');
     const [selectedType, setSelectedType] = useState<string>('');
     const [volume, setVolume] = useState<string>('');
-    const [maxPrice, setMaxPrice] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
     const [selectedDeparture, setSelectedDeparture] = useState<string | null>(null);
     const [selectedArrival, setSelectedArrival] = useState<string | null>(null);
 
-    // Validation function for volume
-    const validateVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-        validateInputNumber(e, setVolume);
-    };  
-
-    // Validation function for max price
-    const validateMaxPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-        validateInputNumber(e, setMaxPrice);
-    };    
+    // Validation function for volume and price
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => validateInputNumber(e, setVolume);
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => validateInputNumber(e, setPrice);
 
     // Handle form submission
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
             client_id: localStorage.getItem('user_id'),
-            lot_name: name,
-            volume: volume,
+            name,
+            volume,
             type: selectedType,
-            max_price: maxPrice,
+            ...(itemType === 'lot' ? { max_price: price } : { min_price: price }),
             start_checkpoint_id: selectedDeparture,
             end_checkpoint_id: selectedArrival,
+        };
+        if (itemType === 'lot')
+        {
+            // FIXME: Implement the logic to add a lot using Asset API
+            // POST /lots
+            console.log("Sending Lot data to API:", data);
         }
-        // FIXME: Implement the logic to add a lot using Assets API
-        // POST /lots
-        console.log(data);
+        else if (itemType === 'tractor')
+        {
+            // FIXME: Implement the logic to add a tractor using Asset API
+            // POST /tractors
+            console.log("Sending Tractor data to API:", data);
+        }
         closeModal();
     };
 
@@ -52,7 +56,7 @@ const AddLotModal: React.FC<AddLotModalProps> = ({ closeModal, types, checkpoint
                     &times;
                 </button>
 
-                <h2 className="text-2xl font-bold mb-4">Add a lot</h2>
+                <h2 className="text-2xl font-bold mb-4">Add a {itemType}</h2>
 
                 <form onSubmit={handleSubmit}>
 
@@ -89,20 +93,22 @@ const AddLotModal: React.FC<AddLotModalProps> = ({ closeModal, types, checkpoint
                             type="text"
                             className="w-full border border-gray-300 p-2 rounded"
                             placeholder="Enter volume (in m³)"
-                            onChange={validateVolume}
+                            onChange={handleVolumeChange}
                             value={volume}
                             required
                         />
                     </div>
 
                     <div className="mb-2">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Maximum price :</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            {itemType === 'lot' ? 'Maximum price :' : 'Minimum price :'}
+                        </label>
                         <input
                             type="text"
                             className="w-full border border-gray-300 p-2 rounded"
-                            placeholder="Enter maximum price (per km)"
-                            onChange={validateMaxPrice}
-                            value={maxPrice}
+                            placeholder={`Enter ${itemType === 'lot' ? 'maximum' : 'minimum'} price (per km)`}
+                            onChange={handlePriceChange}
+                            value={price}
                             required
                         />
                     </div>
@@ -157,4 +163,4 @@ const AddLotModal: React.FC<AddLotModalProps> = ({ closeModal, types, checkpoint
     );
 };
 
-export default AddLotModal;
+export default AddItemModal;

@@ -8,11 +8,11 @@ import { LotType } from '../types/LotType';
 import { UserInfo } from '../types/UserInfo';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AddLotModal from '../components/client/modal/AddLotModal';
 import { sortAndFilterData } from '../utils/sortingUtils';
 import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/client/modal/AddToStockExchangeModal';
+import AddItemModal from '../components/client/modal/AddItemModal';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -190,6 +190,7 @@ const Lots: React.FC = () => {
                                     <ActionButtons
                                         item={lot}
                                         itemType="lot"
+                                        setSelectedLot={setSelectedLot}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                     />
 
@@ -201,10 +202,11 @@ const Lots: React.FC = () => {
             </main>
 
             {isAddLotModalOpen && (
-                <AddLotModal
+                <AddItemModal
                     closeModal={() => setIsAddLotModalOpen(false)}
                     types={Object.values(LotType)}
                     checkpoints={fakeCheckpoints}
+                    itemType="lot"
                 />
             )}
 
