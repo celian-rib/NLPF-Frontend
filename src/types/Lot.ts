@@ -12,5 +12,5 @@ export interface Lot {
     current_checkpoint: Checkpoint;
     start_checkpoint: Checkpoint;
     end_checkpoint: Checkpoint;
-    traffic_managers: UserInfo[];
+    traffic_managers?: UserInfo[];
 }

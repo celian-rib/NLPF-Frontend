@@ -8,12 +8,12 @@ export interface Tractor {
     tractor_name: string;
     status: string;
     volume: number;
-    occupied_volume: number;
+    occupied_volume?: number;
     type: TractorType;
-    route: Route;
+    route?: Route;
     min_price: number;
     current_checkpoint: Checkpoint;
     start_checkpoint: Checkpoint;
     end_checkpoint: Checkpoint;
-    traffic_managers: UserInfo[];
+    traffic_managers?: UserInfo[];
 }
