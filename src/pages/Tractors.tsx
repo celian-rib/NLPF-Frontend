@@ -123,7 +123,10 @@ const Tractors: React.FC = () => {
                         selectedStatus={selectedStatus} 
                         setSelectedStatus={setSelectedStatus} 
                         sortOption={sortOption} 
-                        setSortOption={setSortOption} 
+                        setSortOption={setSortOption}
+                        sortByName={true}
+                        sortByVolume={true}
+                        sortByLocation={true}
                     />
                     <div className="flex justify-between items-center self-end">
                         <button
