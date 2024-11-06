@@ -26,7 +26,7 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
         e.preventDefault();
         const data = {
             client_id: localStorage.getItem('user_id'),
-            name,
+            ...(itemType === 'lot' ? { lot_name: name } : { tractor_name: name }),
             volume,
             type: selectedType,
             ...(itemType === 'lot' ? { max_price: price } : { min_price: price }),
@@ -123,11 +123,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
                         >
                             <option disabled key="" value="">Select a checkpoint</option>
                             {checkpoints.map((checkpoint) => (
-                                checkpoint.id !== selectedArrival && (
-                                    <option key={checkpoint.id} value={checkpoint.id}>
-                                        {checkpoint.checkpoint_name}
-                                    </option>
-                                )
+                                <option key={checkpoint.id} value={checkpoint.id}>
+                                    {checkpoint.checkpoint_name}
+                                </option>
                             ))}
                         </select>
                     </div>
@@ -142,11 +140,9 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
                         >
                             <option disabled key="" value="">Select a checkpoint</option>
                             {checkpoints.map((checkpoint) => (
-                                checkpoint.id !== selectedDeparture && (
-                                    <option key={checkpoint.id} value={checkpoint.id}>
-                                        {checkpoint.checkpoint_name}
-                                    </option>
-                                )
+                                <option key={checkpoint.id} value={checkpoint.id}>
+                                    {checkpoint.checkpoint_name}
+                                </option>
                             ))}
                         </select>
                     </div>
