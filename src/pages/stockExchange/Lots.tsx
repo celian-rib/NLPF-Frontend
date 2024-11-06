@@ -14,6 +14,7 @@ import FilterAndSort from '../../components/utils/FilterAndSort';
 const StockExchangeLots: React.FC = () => {
     const [title] = useState('Lot market');
     const [subtitle] = useState('Explore a wide selection of lots with dynamic volumes and prices.');
+    const [userRole, setUserRole] = useState<string>('');
     const [currentTab, setCurrentTab] = useState<string>('');
     const [tableData, setTableData] = useState<LotOffer[]>([]);
     const [selectedStatus, setSelectedStatus] = useState('all');
@@ -105,6 +106,11 @@ const StockExchangeLots: React.FC = () => {
     ];
 
     useEffect(() => {
+
+        // Get client role
+        const role: string = localStorage.getItem('user_role') || '';
+        setUserRole(role);
+    
         setTableData(fakeLotOffers);
     }, []);
 
@@ -142,7 +148,9 @@ const StockExchangeLots: React.FC = () => {
                             <th className="border p-2 text-center">Volume<br /><span className="font-normal">(in m³)</span></th>
                             <th className="border p-2 text-center">Maximum price<br /><span className="font-normal">(in €/km)</span></th>
                             <th className="border p-2 text-center">Minimum Bid<br /><span className="font-normal">(in €/km)</span></th>
-                            <th className="border p-2 text-center">Actions</th>
+                            {userRole === 'client' && (
+                                <th className="border p-2 text-center">Actions</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody>
@@ -159,17 +167,19 @@ const StockExchangeLots: React.FC = () => {
 
                                 <td className="border p-2 text-center">{row.current_price.toFixed(2)}</td>
 
-                                <td className="border p-2 text-center">
-                                    <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
-                                        <button
-                                            className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                            onClick={() => {}}
-                                        >
-                                            <FontAwesomeIcon icon={faCoins} className="mr-2" />
-                                            Bid
-                                        </button>
-                                    </div>
-                                </td>
+                                {userRole === 'client' && (
+                                    <td className="border p-2 text-center">
+                                        <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
+                                            <button
+                                                className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
+                                                onClick={() => {}}
+                                            >
+                                                <FontAwesomeIcon icon={faCoins} className="mr-2" />
+                                                Bid
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
 
                             </tr>
                         ))}
