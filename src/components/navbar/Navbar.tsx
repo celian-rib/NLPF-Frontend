@@ -6,12 +6,7 @@ import UserLayout from './UserLayout';
 import { getUserInfo } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import { normalizeUserRole, rolePermissions, UserRole } from '../../configs/permissions';
-
-// Function to format a date as "DD/MM/YYYY"
-const formatDate = (date: string) => {
-    const parsedDate = new Date(date);
-    return `${parsedDate.getDate().toString().padStart(2, '0')}/${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
-};
+import { formatDate } from '../../utils/utils';
 
 const Navbar: React.FC = () => {
     const [simulationDate, setSimulationDate] = useState<string | null>(null);

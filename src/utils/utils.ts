@@ -28,3 +28,9 @@ export const validateInputNumber = (e: React.ChangeEvent<HTMLInputElement>, setV
         value = value.replace(/\.+$/, '');
     setValue(value);
 };
+
+// Function to format a date as "MM/DD/YYYY"
+export const formatDate = (date: string) => {
+    const parsedDate = new Date(date);
+    return `${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getDate().toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
+};
