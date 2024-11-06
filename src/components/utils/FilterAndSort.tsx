@@ -36,6 +36,8 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
                     className="border border-gray-300 rounded px-2 py-1"
                 >
                     <option value="none" disabled>Sort by</option>
+                    <option value="name_asc">Name (A-Z)</option>
+                    <option value="name_desc">Name (Z-A)</option>
                     <option value="volume_asc">Volume (Ascending)</option>
                     <option value="volume_desc">Volume (Descending)</option>
                     <option value="location_asc">Location (A-Z)</option>
