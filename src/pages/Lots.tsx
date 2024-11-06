@@ -161,6 +161,7 @@ const Lots: React.FC = () => {
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
                             <tr className="bg-gray-100">
+                                <th className="border p-2 text-center">Name</th>
                                 <th className="border p-2 text-center">Status</th>
                                 <th className="border p-2 text-center">Volume <span className="font-normal">(in m³)</span></th>
                                 <th className="border p-2 text-center">Location</th>
@@ -172,6 +173,8 @@ const Lots: React.FC = () => {
                         <tbody>
                             {sortedData.map(lot => (
                                 <tr key={lot.id} className="hover:bg-gray-100">
+
+                                    <td className="border text-center p-2">{lot.lot_name}</td>
 
                                     <td className={`border text-center p-2`}>
                                         <span className={`px-2 py-1 rounded ${getStatusInfo(lot.status).color}`}>
