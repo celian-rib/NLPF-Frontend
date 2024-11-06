@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import SubNavbar from '../../components/navbar/SubNavbar';
 import { stockExchangeTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
-import { Lot } from '../../types/Lot';
 import { formatDate } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import { LotOffer } from '../../types/LotOffer';
@@ -10,6 +9,7 @@ import { LotType } from '../../types/LotType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import FilterAndSort from '../../components/utils/FilterAndSort';
+import BidModal from '../../components/stockExchange/modal/BidModal';
 
 const StockExchangeLots: React.FC = () => {
     const [title] = useState('Lot market');
@@ -17,13 +17,14 @@ const StockExchangeLots: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
     const [currentTab, setCurrentTab] = useState<string>('');
     const [tableData, setTableData] = useState<LotOffer[]>([]);
-    const [selectedStatus, setSelectedStatus] = useState('all');
+    const [selectedStatus] = useState('all');
     const [sortOption, setSortOption] = useState('none');
-
+    const [selectedOffer, setSelectedOffer] = useState<LotOffer>();
+    const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
     const fakeLotOffers: LotOffer[] = [
         {
-            id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            offer_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
             status: 'on_market',
             volume: 100,
             type: LotType.Solid,
@@ -50,7 +51,7 @@ const StockExchangeLots: React.FC = () => {
             limit_date: '2021-03-01T00:00:00.000Z'
         },
         {
-            id: '4fa85f64-5717-4562-b3fc-2c963f66afa7',
+            offer_id: '4fa85f64-5717-4562-b3fc-2c963f66afa7',
             status: 'available',
             volume: 50,
             type: LotType.Liquid,
@@ -77,7 +78,7 @@ const StockExchangeLots: React.FC = () => {
             limit_date: '2021-06-01T00:00:00.000Z'
         },
         {
-            id: '5fa85f64-5717-4562-b3fc-2c963f66afa8',
+            offer_id: '5fa85f64-5717-4562-b3fc-2c963f66afa8',
             status: 'pending',
             volume: 200,
             type: LotType.Bulk,
@@ -104,6 +105,11 @@ const StockExchangeLots: React.FC = () => {
             limit_date: '2021-09-01T00:00:00.000Z'
         }
     ];
+
+    const openBidModal = (offer: LotOffer) => {
+        setSelectedOffer(offer);
+        setIsBidModalOpen(true);
+    }
 
     useEffect(() => {
 
@@ -154,25 +160,25 @@ const StockExchangeLots: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((row, index) => (
-                            <tr key={row.offer_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                        {sortedData.map((offer, index) => (
+                            <tr key={offer.offer_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
 
-                                <td className="border p-2 text-center">{formatDate(row.limit_date)}</td>
+                                <td className="border p-2 text-center">{formatDate(offer.limit_date)}</td>
 
-                                <td className="border p-2 text-center">{row.type}</td>
+                                <td className="border p-2 text-center">{offer.type}</td>
 
-                                <td className="border p-2 text-center">{row.volume}</td>
+                                <td className="border p-2 text-center">{offer.volume}</td>
 
-                                <td className="border p-2 text-center">{row.max_price.toFixed(2)}</td>
+                                <td className="border p-2 text-center">{offer.max_price.toFixed(2)}</td>
 
-                                <td className="border p-2 text-center">{row.current_price.toFixed(2)}</td>
+                                <td className="border p-2 text-center">{offer.current_price.toFixed(2)}</td>
 
                                 {userRole === 'client' && (
                                     <td className="border p-2 text-center">
                                         <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
                                             <button
                                                 className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                                onClick={() => {}}
+                                                onClick={() => openBidModal(offer)}
                                             >
                                                 <FontAwesomeIcon icon={faCoins} className="mr-2" />
                                                 Bid
@@ -186,6 +192,13 @@ const StockExchangeLots: React.FC = () => {
                     </tbody>
                 </table>
             </main>
+            {isBidModalOpen && selectedOffer && (
+                <BidModal
+                    offer={selectedOffer}
+                    offerType="lot"
+                    closeModal={() => setIsBidModalOpen(false)}
+                />
+            )}
         </>
     );
 };

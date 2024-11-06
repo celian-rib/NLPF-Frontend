@@ -16,6 +16,7 @@ import { normalizeUserRole, UserRole } from './configs/permissions';
 import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
 import Lots from './pages/Lots';
 import Tractors from './pages/Tractors';
+import './App.css';
 
 library.add(fas);
 
