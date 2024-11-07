@@ -10,6 +10,8 @@ import { TractorType } from '../../types/TractorType';
 import RouteAssign from '../../components/trafficManager/RouteAssign';
 import { Route } from '../../types/Route';
 import { Checkpoint } from '../../types/Checkpoint';
+import ActionButtons from '../../components/trafficManager/ActionButtons';
+import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -18,6 +20,8 @@ const TrafficManagerTractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Tractor[]>([]);
+    const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
+    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     const fakeCheckpoints: Checkpoint[] = [
         { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
@@ -190,12 +194,28 @@ const TrafficManagerTractors: React.FC = () => {
                                         compatibleRoutes={getCompatibleRoutes(tractor)}
                                     />
 
+                                    <ActionButtons
+                                        item={tractor}
+                                        itemType="tractor"
+                                        setSelectedTractor={setSelectedTractor}
+                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                    />
+
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </main>
+
+            {isStockExchangeModalOpen && selectedTractor && (
+                <AddToStockExchangeModal
+                    item={selectedTractor}
+                    itemType="tractor"
+                    minDate={new Date().toISOString().split("T")[0]}
+                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                />
+            )}
         </>
     );
 };
