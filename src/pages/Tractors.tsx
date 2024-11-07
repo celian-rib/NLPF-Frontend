@@ -9,7 +9,7 @@ import { Tractor } from '../types/Tractor';
 import { sortAndFilterData } from '../utils/sortingUtils';
 import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
-import AddToStockExchangeModal from '../components/client/modal/AddToStockExchangeModal';
+import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import { Checkpoint } from '../types/Checkpoint';
 import AddItemModal from '../components/client/modal/AddItemModal';
 
