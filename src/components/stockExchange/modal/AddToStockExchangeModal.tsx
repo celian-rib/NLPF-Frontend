@@ -42,7 +42,7 @@ const AddToStockExchangeModal = <T extends { id: string }>({
                 <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-800" onClick={closeModal}>
                     &times;
                 </button>
-                <h2 className="text-2xl font-bold mb-6">{`Stock Exchange for ${itemType}`}</h2>
+                <h2 className="text-2xl font-bold mb-6">{`Stock exchange`}</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Limit Date :</label>

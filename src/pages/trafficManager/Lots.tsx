@@ -3,14 +3,15 @@ import SubNavbar from '../../components/navbar/SubNavbar';
 import { trafficManagerTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
-import { faTruck, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Lot } from '../../types/Lot';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import { Checkpoint } from '../../types/Checkpoint';
 import { UserInfo } from '../../types/UserInfo';
 import { LotType } from '../../types/LotType';
+import TractorAssign from '../../components/trafficManager/TractorAssign';
+import ActionButtons from '../../components/trafficManager/ActionButtons';
+import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -19,6 +20,8 @@ const TrafficManagerLots: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Lot[]>([]);
+    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
+    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     const fakeCheckpoints: Checkpoint[] = [
         { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
@@ -184,39 +187,14 @@ const TrafficManagerLots: React.FC = () => {
                                         {lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}
                                     </td>
 
-                                    <td className="border p-2 text-center">
-                                        {lot.tractor ? (
-                                            <span className="px-2 py-1 mx-auto w-4/5 block">
-                                                {lot.tractor.tractor_name}
-                                            </span>
-                                        ) : (
-                                            lot.status === 'pending' ? (
-                                                <button
-                                                    onClick={() => {}}
-                                                    className="bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md"
-                                                >
-                                                    <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                                                    Assign
-                                                </button>
-                                            ) : (
-                                                <span className="text-gray-500">None</span>
-                                            )
-                                        )}
-                                    </td>
+                                    <TractorAssign lot={lot} />
 
-                                    <td className="border p-2 text-center">
-                                        {lot.status === 'pending' ? (
-                                            <button
-                                                onClick={() => {}}
-                                                className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                            >
-                                                <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                                                Stock exchange
-                                            </button>
-                                        ) : (
-                                            <span className="text-gray-500">-</span>
-                                        )}
-                                    </td>
+                                    <ActionButtons
+                                        item={lot}
+                                        itemType="lot"
+                                        setSelectedLot={setSelectedLot}
+                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                    />
 
                                 </tr>
                             ))}
@@ -224,6 +202,15 @@ const TrafficManagerLots: React.FC = () => {
                     </table>
                 </div>
             </main>
+
+            {isStockExchangeModalOpen && selectedLot && (
+                <AddToStockExchangeModal
+                    item={selectedLot}
+                    itemType="lot"
+                    minDate={new Date().toISOString().split("T")[0]}
+                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                />
+            )}
         </>
     );
 };
