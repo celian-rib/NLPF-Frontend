@@ -7,6 +7,9 @@ import { Tractor } from '../../types/Tractor';
 import { getStatusInfo } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import { TractorType } from '../../types/TractorType';
+import RouteAssign from '../../components/trafficManager/RouteAssign';
+import { Route } from '../../types/Route';
+import { Checkpoint } from '../../types/Checkpoint';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -15,7 +18,12 @@ const TrafficManagerTractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Tractor[]>([]);
-    const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
+
+    const fakeCheckpoints: Checkpoint[] = [
+        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
+        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
+        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
+    ];
 
     const fakeTractors: Tractor[] = [
         {
@@ -26,6 +34,7 @@ const TrafficManagerTractors: React.FC = () => {
             occupied_volume: 50,
             type: TractorType.Bulk,
             route: {
+                route_id: '3',
                 traffic_manager_id: '1',
                 route_name: 'Route 1',
                 checkpoint_routes: [
@@ -46,14 +55,7 @@ const TrafficManagerTractors: React.FC = () => {
             volume: 120,
             occupied_volume: 80,
             type: TractorType.Liquid,
-            route: {
-                traffic_manager_id: '2',
-                route_name: 'Route 2',
-                checkpoint_routes: [
-                    { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-                    { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 40.7128, checkpoint_longitude: -74.0060 }
-                ],
-            },
+            route: null,
             min_price: 250,
             current_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
             start_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
@@ -71,6 +73,7 @@ const TrafficManagerTractors: React.FC = () => {
             occupied_volume: 100,
             type: TractorType.Solid,
             route: {
+                route_id: '2',
                 traffic_manager_id: '3',
                 route_name: 'Route 3',
                 checkpoint_routes: [
@@ -86,7 +89,32 @@ const TrafficManagerTractors: React.FC = () => {
                 { id: '3', username: 'traffic_manager_3', role: 'traffic-manager' }
             ],
         },
-    ];    
+    ];
+    
+    // Function to get compatible routes
+    const getCompatibleRoutes = (Tractor: Tractor): Route[] => {
+        const fakeRoutes: Route[] = [
+            {
+                route_id: '1',
+                route_name: 'Route 1',
+                checkpoint_routes: [fakeCheckpoints[0], fakeCheckpoints[1], fakeCheckpoints[2]],
+                traffic_manager_id: 'tm_01',
+            },
+            {
+                route_id: '2',
+                route_name: 'Route 2',
+                checkpoint_routes: [fakeCheckpoints[2], fakeCheckpoints[1]],
+                traffic_manager_id: 'tm_02',
+            },
+            {
+                route_id: '3',
+                route_name: 'Route 3',
+                checkpoint_routes: [fakeCheckpoints[0], fakeCheckpoints[2], fakeCheckpoints[1], fakeCheckpoints[0]],
+                traffic_manager_id: 'tm_03',
+            },
+        ];
+        return fakeRoutes;
+    }
 
     useEffect(() => {
         setTableData(fakeTractors);
@@ -156,6 +184,11 @@ const TrafficManagerTractors: React.FC = () => {
                                     <td className="border p-2 text-center">
                                         {tractor.start_checkpoint.checkpoint_name} / {tractor.end_checkpoint.checkpoint_name}
                                     </td>
+
+                                    <RouteAssign 
+                                        tractor={tractor}
+                                        compatibleRoutes={getCompatibleRoutes(tractor)}
+                                    />
 
                                 </tr>
                             ))}

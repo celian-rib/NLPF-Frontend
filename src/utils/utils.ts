@@ -1,3 +1,6 @@
+import { Checkpoint } from "../types/Checkpoint";
+import { Route } from "../types/Route";
+
 // Function to get status color and text
 export const getStatusInfo = (state: string): { color: string; text: string } => {
     switch (state) {
@@ -34,3 +37,11 @@ export const formatDate = (date: string) => {
     const parsedDate = new Date(date);
     return `${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getDate().toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
 };
+
+// Function to format route as string
+export const formatRouteAsString = (route: Route): string => {
+    const str = route.checkpoint_routes
+        .map((checkpoint: Checkpoint) => checkpoint.checkpoint_name)
+        .join(', ');
+    return `${route.route_name}: ${str}`;
+}
