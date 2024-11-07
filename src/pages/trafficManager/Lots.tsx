@@ -19,7 +19,7 @@ import { Tractor } from '../../types/Tractor';
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
     const [title] = useState('Lot Management');
-    const [subtitle] = useState('Manage lots and assign tractors');
+    const [subtitle] = useState('Manage lots and assign tractors.');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Lot[]>([]);
