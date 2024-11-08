@@ -39,9 +39,11 @@ export const formatDate = (date: string) => {
 };
 
 // Function to format route as string
-export const formatRouteAsString = (route: Route): string => {
+export const formatRouteAsString = (route: Route, displayName: boolean): string => {
     const str = route.checkpoint_routes
         .map((checkpoint: Checkpoint) => checkpoint.checkpoint_name)
-        .join(', ');
+        .join(' - ');
+    if (!displayName)
+        return str;
     return `${route.route_name}: ${str}`;
 }

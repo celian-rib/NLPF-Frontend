@@ -28,7 +28,7 @@ const RouteAssign: React.FC<RouteAssignProps> = ({
                         <option value="" disabled>Select a route</option>
                         {compatibleRoutes.map((route) => (
                             <option key={route.route_id} value={route.route_id}>
-                                {formatRouteAsString(route)}
+                                {formatRouteAsString(route, true)}
                             </option>
                         ))}
                     </select>
