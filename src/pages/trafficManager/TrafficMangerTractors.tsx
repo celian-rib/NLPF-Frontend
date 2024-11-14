@@ -12,6 +12,8 @@ import { Route } from '../../types/Route';
 import { Checkpoint } from '../../types/Checkpoint';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
+import EmptyTable from '../../components/utils/EmptyTable';
+import { getTractorsByTrafficManagerId } from '../../services/trafficManger';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -27,72 +29,6 @@ const TrafficManagerTractors: React.FC = () => {
         { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
         { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
         { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
-
-    const fakeTractors: Tractor[] = [
-        {
-            id: '1',
-            tractor_name: 'Tractor A',
-            status: 'available',
-            volume: 100,
-            occupied_volume: 50,
-            type: TractorType.Bulk,
-            route: {
-                route_id: '3',
-                traffic_manager_id: '1',
-                route_name: 'Route 1',
-                checkpoint_routes: [
-                    { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-                    { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 }
-                ],
-            },
-            min_price: 200,
-            current_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-            start_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-            end_checkpoint: { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-            traffic_managers: [],
-        },
-        {
-            id: '2',
-            tractor_name: 'Tractor B',
-            status: 'pending',
-            volume: 120,
-            occupied_volume: 80,
-            type: TractorType.Liquid,
-            route: null,
-            min_price: 250,
-            current_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-            start_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-            end_checkpoint: { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 40.7128, checkpoint_longitude: -74.0060 },
-            traffic_managers: [
-                { id: '2', username: 'traffic_manager_2', role: 'traffic-manager' },
-                { id: '3', username: 'traffic_manager_3', role: 'traffic-manager' }
-            ],
-        },
-        {
-            id: '3',
-            tractor_name: 'Tractor C',
-            status: 'in_transit',
-            volume: 150,
-            occupied_volume: 100,
-            type: TractorType.Solid,
-            route: {
-                route_id: '2',
-                traffic_manager_id: '3',
-                route_name: 'Route 3',
-                checkpoint_routes: [
-                    { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-                    { id: '6', checkpoint_name: 'Checkpoint 6', checkpoint_latitude: 35.6895, checkpoint_longitude: 139.6917 }
-                ],
-            },
-            min_price: 300,
-            current_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-            start_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-            end_checkpoint: { id: '6', checkpoint_name: 'Checkpoint 6', checkpoint_latitude: 35.6895, checkpoint_longitude: 139.6917 },
-            traffic_managers: [
-                { id: '3', username: 'traffic_manager_3', role: 'traffic-manager' }
-            ],
-        },
     ];
     
     // Function to get compatible routes
@@ -120,8 +56,16 @@ const TrafficManagerTractors: React.FC = () => {
         return fakeRoutes;
     }
 
+    // Fetch tractors
+    const fetchTractors = async () => {
+        const data = await getTractorsByTrafficManagerId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
+
     useEffect(() => {
-        setTableData(fakeTractors);
+        fetchTractors();
     }, []);
 
     // Sort and filter data
@@ -139,6 +83,8 @@ const TrafficManagerTractors: React.FC = () => {
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </div>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 ? (
+                <>
                 <div className="flex justify-between items-center self-end mb-2">
                     <FilterAndSort 
                         selectedStatus={selectedStatus} 
@@ -206,6 +152,10 @@ const TrafficManagerTractors: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                </>
+                ) : (
+                    <EmptyTable />
+                )}
             </main>
 
             {isStockExchangeModalOpen && selectedTractor && (

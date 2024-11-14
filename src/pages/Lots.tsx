@@ -15,6 +15,7 @@ import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStoc
 import AddItemModal from '../components/client/modal/AddItemModal';
 import { getAllCheckpoints } from '../services/trafficManger';
 import { getLotsByClientId } from '../services/assets';
+import EmptyTable from '../components/utils/EmptyTable';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -60,15 +61,17 @@ const Lots: React.FC = () => {
                 </div>
 
                 <div className="flex justify-between items-center self-end mb-2">
-                    <FilterAndSort 
-                        selectedStatus={selectedStatus} 
-                        setSelectedStatus={setSelectedStatus} 
-                        sortOption={sortOption} 
-                        setSortOption={setSortOption}
-                        sortByName={true}
-                        sortByVolume={true}
-                        sortByLocation={true}
-                    />
+                    {Array.isArray(sortedData) && sortedData.length > 0 && (
+                        <FilterAndSort 
+                            selectedStatus={selectedStatus} 
+                            setSelectedStatus={setSelectedStatus} 
+                            sortOption={sortOption} 
+                            setSortOption={setSortOption}
+                            sortByName={true}
+                            sortByVolume={true}
+                            sortByLocation={true}
+                        />
+                    )}
                     <div className="flex justify-between items-center self-end">
                         <button
                             onClick={() => setIsAddLotModalOpen(true)}
@@ -80,6 +83,8 @@ const Lots: React.FC = () => {
                     </div>
                 </div>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 && (
+                <>
                 <div>
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
@@ -125,6 +130,8 @@ const Lots: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                </>
+                )}
             </main>
 
             {isAddLotModalOpen && (

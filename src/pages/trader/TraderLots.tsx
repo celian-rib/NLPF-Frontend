@@ -10,6 +10,7 @@ import { LotType } from '../../types/LotType';
 import { Checkpoint } from '../../types/Checkpoint';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
+import EmptyTable from '../../components/utils/EmptyTable';
 
 const TraderLots: React.FC = () => {
     const [title] = useState('Lot offers');
@@ -113,6 +114,8 @@ const TraderLots: React.FC = () => {
                     />
                 </div>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 ? (
+                <>
                 <div>
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
@@ -167,6 +170,10 @@ const TraderLots: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                </>
+                ) : (
+                    <EmptyTable />
+                )}
             </main>
         </>
     );

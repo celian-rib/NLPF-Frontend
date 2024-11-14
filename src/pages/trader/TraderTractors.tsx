@@ -10,6 +10,7 @@ import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Tractor } from '../../types/Tractor';
 import { TractorType } from '../../types/TractorType';
+import EmptyTable from '../../components/utils/EmptyTable';
 
 const TraderTractors: React.FC = () => {
     const [title] = useState('Tractor offers');
@@ -102,6 +103,8 @@ const TraderTractors: React.FC = () => {
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </section>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 ? (
+                <>
                 <div className="flex justify-between items-center self-end mb-2">
                     <FilterAndSort 
                         selectedStatus={selectedStatus} 
@@ -167,6 +170,10 @@ const TraderTractors: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                </>
+                ) : (
+                    <EmptyTable />
+                )}
             </main>
         </>
     );

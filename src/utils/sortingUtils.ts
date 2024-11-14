@@ -6,7 +6,7 @@ export const sortAndFilterData = (
     let filteredData = selectedStatus === 'all' ? data : data.filter(item => item.status === selectedStatus);
 
     // Determine if data is for tractors or lots
-    const isTractor = filteredData.length > 0 && 'tractor_name' in filteredData[0];
+    const isTractor = filteredData.length > 0 && (filteredData[0] as object).hasOwnProperty('tractor_name');
     const nameField = isTractor ? 'tractor_name' : 'lot_name';
 
     // Sort data

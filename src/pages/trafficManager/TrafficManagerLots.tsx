@@ -15,6 +15,8 @@ import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToS
 import AssignTractorModal from '../../components/trafficManager/modal/AssignTractorModal';
 import { TractorType } from '../../types/TractorType';
 import { Tractor } from '../../types/Tractor';
+import { getLotsByTrafficManagerId } from '../../services/trafficManger';
+import EmptyTable from '../../components/utils/EmptyTable';
 
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -27,105 +29,16 @@ const TrafficManagerLots: React.FC = () => {
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
-
-    const fakeTrafficManagers: UserInfo[] = [
-        {
-            id: '1',
-            username: 'traffic_manager_1',
-            role: 'traffic-manager',
-        },
-        {
-            id: '2',
-            username: 'traffic_manager_2',
-            role: 'traffic-manager',
-        },
-        {
-            id: '3',
-            username: 'traffic_manager_3',
-            role: 'traffic-manager',
-        },
-        {
-            id: '4',
-            username: 'traffic_manager_4',
-            role: 'traffic-manager',
-        },
-        {
-            id: '5',
-            username: 'traffic_manager_5',
-            role: 'traffic-manager',
-        },
-    ];
-
-    const fakeLots: Lot[] = [
-        {
-            id: '1',
-            lot_name: 'Lot 1',
-            status: 'available',
-            volume: 1500,
-            type: LotType.Bulk,
-            max_price: 2500,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[1],
-            traffic_managers: [fakeTrafficManagers[0], fakeTrafficManagers[2]],
-        },
-        {
-            id: '2',
-            lot_name: 'Lot 2',
-            status: 'pending',
-            volume: 500,
-            type: LotType.Liquid,
-            max_price: 1200,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[2],
-            traffic_managers: [],
-        },
-        {
-            id: '3',
-            lot_name: 'Lot 3',
-            status: 'in_transit',
-            volume: 1000,
-            type: LotType.Solid,
-            max_price: 1800,
-            current_checkpoint: fakeCheckpoints[2],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[0],
-            traffic_managers: [fakeTrafficManagers[1], fakeTrafficManagers[2], fakeTrafficManagers[3]],
-        },
-        {
-            id: '4',
-            lot_name: 'Lot 4',
-            status: 'on_market',
-            volume: 2000,
-            type: LotType.Bulk,
-            max_price: 3000,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[2],
-            traffic_managers: [fakeTrafficManagers[3]],
-        },
-        {
-            id: '5',
-            lot_name: 'Lot 5',
-            status: 'archived',
-            volume: 750,
-            type: LotType.Liquid,
-            max_price: 1500,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[2],
-            end_checkpoint: fakeCheckpoints[0],
-            traffic_managers: [],
-        },
-    ];
+    // Fetch lots
+    const fetchLots = async () => {
+        const data = await getLotsByTrafficManagerId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
     useEffect(() => {
-        setTableData(fakeLots);
+        fetchLots();
     }, []);
 
     // Function to get compatible tractors
@@ -221,6 +134,8 @@ const TrafficManagerLots: React.FC = () => {
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </div>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 ? (
+                <>
                 <div className="flex justify-between items-center self-end mb-2">
                     <FilterAndSort 
                         selectedStatus={selectedStatus} 
@@ -287,6 +202,10 @@ const TrafficManagerLots: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                </>
+                ) : (
+                    <EmptyTable />
+                )}
             </main>
 
             {isAssignTractorModalOpen && selectedLot && (
