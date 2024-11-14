@@ -25,9 +25,9 @@ const Tractors: React.FC = () => {
 
 
     const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
+        { id: 'd3c4d82f-df9c-48c3-a94c-9e62015cb163', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
+        { id: '219fec70-89a2-408e-9c21-6aef87631c02', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
+        { id: 'ea1e11c6-19f3-4ebb-a9fe-15b813c6414e', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
     ];
 
     const fakeTractors: Tractor[] = [

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Checkpoint } from '../../../types/Checkpoint';
 import { validateInputNumber } from '../../../utils/utils';
+import { createLot, createTractor } from '../../../services/assets';
 
 interface AddItemModalProps {
     closeModal: () => void;
@@ -27,23 +28,21 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
         const data = {
             client_id: localStorage.getItem('user_id'),
             ...(itemType === 'lot' ? { lot_name: name } : { tractor_name: name }),
-            volume,
-            type: selectedType,
-            ...(itemType === 'lot' ? { max_price: price } : { min_price: price }),
+            volume: parseFloat(volume),
+            type: selectedType.toLowerCase(),
+            ...(itemType === 'lot' ? { max_price: parseFloat(price) } : { min_price: parseFloat(price) }),
             start_checkpoint_id: selectedDeparture,
             end_checkpoint_id: selectedArrival,
         };
         if (itemType === 'lot')
         {
-            // FIXME: Implement the logic to add a lot using Asset API
-            // POST /lots
-            console.log("Sending Lot data to API:", data);
+            // Create a lot using assets API
+            createLot(data);
         }
         else if (itemType === 'tractor')
         {
-            // FIXME: Implement the logic to add a tractor using Asset API
-            // POST /tractors
-            console.log("Sending Tractor data to API:", data);
+            // Create a tractor using assets API
+            createTractor(data);
         }
         closeModal();
     };

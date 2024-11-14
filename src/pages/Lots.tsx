@@ -26,9 +26,9 @@ const Lots: React.FC = () => {
 
 
     const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
+        { id: '9cdb4d65-493f-411b-9089-ec43722e9563', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
+        { id: '5c826285-b5df-41ee-b8b6-7510ca0533d4', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
+        { id: 'abe5412a-26bc-402d-9560-33583e7300a9', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
     ];
 
     const fakeTrafficManagers: UserInfo[] = [
