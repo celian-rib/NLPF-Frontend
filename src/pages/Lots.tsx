@@ -13,6 +13,8 @@ import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import AddItemModal from '../components/client/modal/AddItemModal';
+import { getAllCheckpoints } from '../services/trafficManger';
+import { getLotsByClientId } from '../services/assets';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -23,107 +25,25 @@ const Lots: React.FC = () => {
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
+    const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
 
+    // Fetch lots
+    const fetchLots = async () => {
+        const data = await getLotsByClientId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '9cdb4d65-493f-411b-9089-ec43722e9563', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '5c826285-b5df-41ee-b8b6-7510ca0533d4', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: 'abe5412a-26bc-402d-9560-33583e7300a9', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
-
-    const fakeTrafficManagers: UserInfo[] = [
-        {
-            id: '1',
-            username: 'traffic_manager_1',
-            role: 'traffic-manager',
-        },
-        {
-            id: '2',
-            username: 'traffic_manager_2',
-            role: 'traffic-manager',
-        },
-        {
-            id: '3',
-            username: 'traffic_manager_3',
-            role: 'traffic-manager',
-        },
-        {
-            id: '4',
-            username: 'traffic_manager_4',
-            role: 'traffic-manager',
-        },
-        {
-            id: '5',
-            username: 'traffic_manager_5',
-            role: 'traffic-manager',
-        },
-    ];
-
-    const fakeLots: Lot[] = [
-        {
-            id: '1',
-            lot_name: 'Lot 1',
-            status: 'available',
-            volume: 1500,
-            type: LotType.Bulk,
-            max_price: 2500,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[1],
-            traffic_managers: [fakeTrafficManagers[0], fakeTrafficManagers[2]],
-        },
-        {
-            id: '2',
-            lot_name: 'Lot 2',
-            status: 'pending',
-            volume: 500,
-            type: LotType.Liquid,
-            max_price: 1200,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[2],
-            traffic_managers: [],
-        },
-        {
-            id: '3',
-            lot_name: 'Lot 3',
-            status: 'in_transit',
-            volume: 1000,
-            type: LotType.Solid,
-            max_price: 1800,
-            current_checkpoint: fakeCheckpoints[2],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[0],
-            traffic_managers: [fakeTrafficManagers[1], fakeTrafficManagers[2], fakeTrafficManagers[3]],
-        },
-        {
-            id: '4',
-            lot_name: 'Lot 4',
-            status: 'on_market',
-            volume: 2000,
-            type: LotType.Bulk,
-            max_price: 3000,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[2],
-            traffic_managers: [fakeTrafficManagers[3]],
-        },
-        {
-            id: '5',
-            lot_name: 'Lot 5',
-            status: 'archived',
-            volume: 750,
-            type: LotType.Liquid,
-            max_price: 1500,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[2],
-            end_checkpoint: fakeCheckpoints[0],
-            traffic_managers: [],
-        },
-    ];
+    // Fetch checkpoints
+    const fetchCheckpoints = async () => {
+        const data = await getAllCheckpoints();
+        setCheckpoints(data);
+    };
 
     useEffect(() => {
-        setTableData(fakeLots);
+        fetchLots();
+        fetchCheckpoints();
     }, []);
 
     // Sort and filter data
@@ -191,7 +111,7 @@ const Lots: React.FC = () => {
 
                                     <td className="border text-center p-2">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
 
-                                    <TrafficManagerSelect trafficManagers={lot.traffic_managers} />
+                                    <TrafficManagerSelect trafficManagers={lot.traffic_managers ? lot.traffic_managers : []} />
 
                                     <ActionButtons
                                         item={lot}
@@ -211,7 +131,7 @@ const Lots: React.FC = () => {
                 <AddItemModal
                     closeModal={() => setIsAddLotModalOpen(false)}
                     types={Object.values(LotType)}
-                    checkpoints={fakeCheckpoints}
+                    checkpoints={checkpoints}
                     itemType="lot"
                 />
             )}
