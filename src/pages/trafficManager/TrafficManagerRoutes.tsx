@@ -41,30 +41,33 @@ const TrafficManagerRoutes: React.FC = () => {
                 </section>
 
                 <div className="flex">
-                    <div className="w-2/3 pr-8 border-r border-gray-300">
-                        <h2 className="text-2xl text-gray-800 font-bold mb-4">
-                            <FontAwesomeIcon icon={faList} className="mr-2" />
-                            List of routes
-                        </h2>
-                        <table className="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr className="bg-gray-100">
-                            <th className="border p-2 text-center">Name</th>
-                            <th className="border p-2 text-center">Steps</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tableData.map((route, index) => (
-                            <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                                <td className="border p-2 text-center">{route.route_name}</td>
-                                <td className="border p-2 text-center">{formatRouteAsString(route, false)}</td>
-                            </tr>
-                            ))}
-                        </tbody>
-                        </table>
-                    </div>
 
-                    <div className="w-1/3 pl-8">
+                    {Array.isArray(tableData) && tableData.length > 0 && (
+                        <div className="w-2/3 border-r border-gray-300 pr-8 mr-8">
+                            <h2 className="text-2xl text-gray-800 font-bold mb-4">
+                                <FontAwesomeIcon icon={faList} className="mr-2" />
+                                List of routes
+                            </h2>
+                            <table className="w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                <th className="border p-2 text-center">Name</th>
+                                <th className="border p-2 text-center">Steps</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tableData.map((route, index) => (
+                                <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                                    <td className="border p-2 text-center">{route.route_name}</td>
+                                    <td className="border p-2 text-center">{formatRouteAsString(route, false)}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    <div className="w-1/3">
                         <RouteCreate
                             checkpoints={checkpoints}
                             tableData={tableData}
