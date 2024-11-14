@@ -26,7 +26,8 @@ const Navbar: React.FC = () => {
             '/stock-exchange': 'StockExchange',
             '/map': 'Map'
         };
-        setCurrentTab(pathMap[location.pathname] || '');
+        const currentPath = Object.keys(pathMap).find(path => location.pathname.startsWith(path));
+        setCurrentTab(currentPath ? pathMap[currentPath] : '');
     }, [location.pathname]);
 
     // Load user information
