@@ -98,7 +98,7 @@ const TraderTractors: React.FC = () => {
 
             <main className="p-10 mt-40">
 
-                <section className="mb-2">
+                <section className="mb-8">
                     <h1 className="text-4xl font-bold mb-2">{title}</h1>
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </section>

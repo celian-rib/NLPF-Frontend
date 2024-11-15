@@ -55,7 +55,7 @@ const Lots: React.FC = () => {
             <Navbar />
 
             <main className="p-10 pt-40">
-                <div className="mb-2">
+                <div className="mb-8">
                     <h1 className="text-4xl font-bold mb-2">{title}</h1>
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </div>

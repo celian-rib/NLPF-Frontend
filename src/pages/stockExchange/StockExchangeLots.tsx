@@ -129,7 +129,7 @@ const StockExchangeLots: React.FC = () => {
             <SubNavbar tabs={stockExchangeTabs} currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
             <main className="p-10 mt-40">
-                <div className="mb-2">
+                <div className="mb-8">
                     <h1 className="text-4xl font-bold mb-2">{title}</h1>
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </div>
