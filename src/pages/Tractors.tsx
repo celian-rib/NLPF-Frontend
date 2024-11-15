@@ -46,6 +46,13 @@ const Tractors: React.FC = () => {
         fetchCheckpoints();
     }, []);
 
+    // Function to close modals
+    const closeModal = () => {
+        setIsAddTractorModalOpen(false);
+        setIsStockExchangeModalOpen(false);
+        fetchTractors();
+    };
+
     // Use the sorting utility function
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -135,7 +142,7 @@ const Tractors: React.FC = () => {
 
             {isAddTractorModalOpen && (
                 <AddItemModal
-                    closeModal={() => setIsAddTractorModalOpen(false)}
+                    closeModal={closeModal}
                     types={Object.values(TractorType)}
                     checkpoints={checkpoints}
                     itemType="tractor"
@@ -147,7 +154,7 @@ const Tractors: React.FC = () => {
                     item={selectedTractor}
                     itemType="tractor"
                     minDate={new Date().toISOString().split("T")[0]}
-                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                    closeModal={closeModal}
                 />
             )}
         </>

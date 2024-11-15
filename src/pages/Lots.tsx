@@ -47,6 +47,13 @@ const Lots: React.FC = () => {
         fetchCheckpoints();
     }, []);
 
+    // Function to close modals
+    const closeModal = () => {
+        setIsAddLotModalOpen(false);
+        setIsStockExchangeModalOpen(false);
+        fetchLots();
+    };
+
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -136,7 +143,7 @@ const Lots: React.FC = () => {
 
             {isAddLotModalOpen && (
                 <AddItemModal
-                    closeModal={() => setIsAddLotModalOpen(false)}
+                    closeModal={closeModal}
                     types={Object.values(LotType)}
                     checkpoints={checkpoints}
                     itemType="lot"
@@ -148,7 +155,7 @@ const Lots: React.FC = () => {
                     item={selectedLot}
                     itemType="lot"
                     minDate={new Date().toISOString().split("T")[0]}
-                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                    closeModal={closeModal}
                 />
             )}
         </>
