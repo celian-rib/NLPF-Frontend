@@ -16,6 +16,7 @@ import { normalizeUserRole, UserRole } from './configs/permissions';
 import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
 import Lots from './pages/Lots';
 import Tractors from './pages/Tractors';
+import Map from './pages/Map';
 import './App.css';
 
 library.add(fas);
@@ -70,6 +71,8 @@ function App() {
                         </Routes>
                     </ProtectedRouteWrapper>
                 } />
+
+                <Route path="/map" element={<Map />} />
 
             </Routes>
         </Router>
