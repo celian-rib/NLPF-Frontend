@@ -45,7 +45,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
                         Stock exchange
                     </button>
-                    <button className="self-center bg-gray-800 text-white px-4 py-2 flex items-center font-bold hover:bg-black transition-colors rounded-md">
+                    <button className="self-center bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md">
                         <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
                         Remove
                     </button>
