@@ -22,6 +22,7 @@ const Lots: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
+    const [selectedTrafficManagerId, setSelectedTrafficManagerId] = useState<string>('');
     const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
@@ -121,11 +122,15 @@ const Lots: React.FC = () => {
 
                                     <td className="border text-center p-2">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
 
-                                    <TrafficManagerSelect trafficManagers={lot.traffic_managers ? lot.traffic_managers : []} />
+                                    <TrafficManagerSelect
+                                        trafficManagers={lot.traffic_managers ? lot.traffic_managers : []}
+                                        setSelectedTrafficManagerId={setSelectedTrafficManagerId}
+                                    />
 
                                     <ActionButtons
                                         item={lot}
                                         itemType="lot"
+                                        trafficManagerId={selectedTrafficManagerId}
                                         setSelectedLot={setSelectedLot}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                     />

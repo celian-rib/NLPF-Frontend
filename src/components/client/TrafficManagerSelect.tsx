@@ -3,9 +3,13 @@ import { UserInfo } from '../../types/UserInfo';
 
 interface TrafficManagerSelectProps {
     trafficManagers: UserInfo[];
+    setSelectedTrafficManagerId: (trafficManagerId: string) => void;
 }
 
-const TrafficManagerSelect: React.FC<TrafficManagerSelectProps> = ({ trafficManagers }) => {
+const TrafficManagerSelect: React.FC<TrafficManagerSelectProps> = ({
+    trafficManagers,
+    setSelectedTrafficManagerId,
+}: TrafficManagerSelectProps) => {
     return (
         <td className="border text-center p-2">
             {trafficManagers.length === 0 ? (
@@ -13,7 +17,10 @@ const TrafficManagerSelect: React.FC<TrafficManagerSelectProps> = ({ trafficMana
             ) : trafficManagers.length === 1 ? (
                 <span className="text-black">{trafficManagers[0].username}</span>
             ) : (
-                <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5">
+                <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5"
+                    onChange={(e) => setSelectedTrafficManagerId(e.target.value)}
+                    defaultValue=""
+                >
                     {trafficManagers.map((traffic_manager: UserInfo) => (
                         <option key={traffic_manager.id} value={traffic_manager.id}>
                             {traffic_manager.username}

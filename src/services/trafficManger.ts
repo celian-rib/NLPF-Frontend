@@ -23,3 +23,13 @@ export const getAllCheckpoints = async (): Promise<Checkpoint[]> => {
     const response = await axios.get<Checkpoint[]>(`${API_BASE_URL}/checkpoints`);
     return response.data;
 };
+
+// PUT /lots/{lot_id}/trafic-managers/{traffic_manager_id}
+export const assignLotToTrafficManager = async (lotId: string, trafficManagerId: string) => {
+    return axios.put(`${API_BASE_URL}/lots/${lotId}/trafic-managers/${trafficManagerId}`);
+};
+
+// PUT /tractors/{tractor_id}/trafic-managers/{traffic_manager_id}
+export const assignTractorToTrafficManager = async (tractorId: string, trafficManagerId: string) => {
+    return axios.put(`${API_BASE_URL}/tractors/${tractorId}/trafic-managers/${trafficManagerId}`);
+};

@@ -22,6 +22,7 @@ const Tractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
+    const [selectedTrafficManagerId, setSelectedTrafficManagerId] = useState<string>('');
     const [isAddTractorModalOpen, setIsAddTractorModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
@@ -121,11 +122,15 @@ const Tractors: React.FC = () => {
 
                                     <td className="border text-center p-2">{tractor.start_checkpoint.checkpoint_name} / {tractor.end_checkpoint.checkpoint_name}</td>
 
-                                    <TrafficManagerSelect trafficManagers={tractor.traffic_managers ? tractor.traffic_managers : []} />
+                                    <TrafficManagerSelect
+                                        trafficManagers={tractor.traffic_managers ? tractor.traffic_managers : []}
+                                        setSelectedTrafficManagerId={setSelectedTrafficManagerId}
+                                    />
 
                                     <ActionButtons
                                         item={tractor}
                                         itemType="tractor"
+                                        trafficManagerId={selectedTrafficManagerId}
                                         setSelectedTractor={setSelectedTractor}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                     />

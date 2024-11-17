@@ -2,10 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
+import { assignLotToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManger';
 
 interface ActionButtonsProps<T> {
     item: T;
     itemType: 'tractor' | 'lot';
+    trafficManagerId: string;
     setSelectedLot?: (lot: Lot) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
@@ -14,10 +16,13 @@ interface ActionButtonsProps<T> {
 const ActionButtons = <T extends Lot | Tractor>({
     item,
     itemType,
+    trafficManagerId,
     setSelectedLot,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
 }: ActionButtonsProps<T>) => {
+
+    // Function to add item to stock exchange
     const handleStockExchangeClick = () => {
         if (itemType === 'lot' && setSelectedLot)
         {
@@ -30,11 +35,28 @@ const ActionButtons = <T extends Lot | Tractor>({
         setIsStockExchangeModalOpen(true);
     };
 
+    // Function to assign item to traffic manager
+    const handleAssignClick = async () => {
+        if (itemType === 'lot')
+        {
+            // Assign lot to traffic manager Traffic Manager API
+            await assignLotToTrafficManager(item.id, trafficManagerId);
+        }
+        else if (itemType === 'tractor')
+        {
+            // Assign tractor to traffic manager Traffic Manager API
+            await assignTractorToTrafficManager(item.id, trafficManagerId);
+        }
+    }
+
     return (
         <td className="border p-2 text-center">
             {item.status === 'available' ? (
                 <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
-                    <button className="self-center bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md">
+                    <button
+                        className="self-center bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md"
+                        onClick={handleAssignClick}
+                    >
                         <FontAwesomeIcon icon={faTruck} className="mr-2" />
                         Assign
                     </button>
