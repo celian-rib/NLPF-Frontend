@@ -21,7 +21,7 @@ const Map: React.FC = () => {
         <>
             <Navbar />
 
-            <div className="h-screen w-full mt-32 relative">
+            <div className="h-screen w-full mt-28 relative">
                 <div className="absolute inset-0 z-0">
                     <MapContainer
                         center={center}
