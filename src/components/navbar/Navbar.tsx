@@ -6,15 +6,15 @@ import UserLayout from './UserLayout';
 import { getUserInfo } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import { normalizeUserRole, rolePermissions, UserRole } from '../../configs/permissions';
-import { formatDate } from '../../utils/utils';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const Navbar: React.FC = () => {
-    const [simulationDate, setSimulationDate] = useState<string | null>(null);
     const [currentTab, setCurrentTab] = useState<string>('');
     const [userRole, setUserRole] = useState<UserRole>('client');
     const [username, setUsername] = useState<string>('');
     const navigate = useNavigate();
     const location = useLocation();
+    const { simulationDate, requestNextDate } = useWebSocket();
 
     // Set the current tab based on the URL path
     useEffect(() => {
@@ -44,22 +44,16 @@ const Navbar: React.FC = () => {
 
     useEffect(() => {
         fetchUserInfo();
-    });
+    }, []);
 
     // Check access permissions
     const hasAccess = (tab: string) => rolePermissions[userRole]?.includes(tab);
-
-    // Function to update the simulation date
-    const updateSimulationDate = () => {
-        setSimulationDate(new Date().toISOString());
-    };
 
     // Function to log out
     const logout = () => {
         localStorage.clear();
         navigate('/login');
     };
-
     return (
         <>
             <UserLayout userRole={userRole} username={username} />
@@ -69,10 +63,12 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center">
 
                         <Link to="/" className="flex-shrink-0">
-                            <img src="/assets/logo.png" alt="Logo" className="h-12 w-auto transition-transform duration-300 hover:scale-105" />
+                            <img src="/assets/logo.png" alt="Logo"
+                                 className="h-12 w-auto transition-transform duration-300 hover:scale-105"/>
                         </Link>
                         <Link to="/">
-                            <span className="ml-3 text-xl font-bold tracking-widest hover:text-blue-400 transition-colors duration-300">
+                            <span
+                                className="ml-3 text-xl font-bold tracking-widest hover:text-blue-400 transition-colors duration-300">
                                 LIGNE<span className="text-blue-400">8</span>
                             </span>
                         </Link>
@@ -150,7 +146,7 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center space-x-4">
                         {simulationDate ? (
                             <div className="text-lg text-white">
-                                Simulation date : <span className="font-bold text-blue-400">{formatDate(simulationDate)}</span>
+                                Simulation date : <span className="font-bold text-blue-400">{simulationDate}</span>
                             </div>
                         ) : (
                             <div className="text-lg font-normal text-red-600">
@@ -160,16 +156,19 @@ const Navbar: React.FC = () => {
 
                         <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 w-10 h-10 flex items-center justify-center"
-                            onClick={updateSimulationDate}
+                            onClick={requestNextDate}
                         >
-                            <FontAwesomeIcon icon={faPlus} />
+                            <FontAwesomeIcon icon={faPlus}/>
                         </button>
 
                         <button
-                            onClick={logout}
+                            onClick={() => {
+                                localStorage.clear();
+                                navigate('/login');
+                            }}
                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition-all duration-300 transform hover:scale-105"
                         >
-                            <FontAwesomeIcon icon={faRightFromBracket} />
+                            <FontAwesomeIcon icon={faRightFromBracket}/>
                         </button>
                     </div>
                 </div>

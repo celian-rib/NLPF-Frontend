@@ -18,11 +18,13 @@ import Lots from './pages/Lots';
 import Tractors from './pages/Tractors';
 import Map from './pages/Map';
 import './App.css';
+import {WebSocketProvider} from "./socket/WebSocketContext";
 
 library.add(fas);
 
 function App() {
     return (
+        <WebSocketProvider>
         <Router>
             <Routes>
                 <Route path="/" element={<HomeWithAuth />} />
@@ -76,6 +78,7 @@ function App() {
 
             </Routes>
         </Router>
+        </WebSocketProvider>
     );
 }
 
