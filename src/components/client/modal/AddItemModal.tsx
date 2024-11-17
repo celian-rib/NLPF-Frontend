@@ -23,7 +23,7 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
     const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => validateInputNumber(e, setPrice);
 
     // Handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
             client_id: localStorage.getItem('user_id'),
@@ -37,12 +37,12 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
         if (itemType === 'lot')
         {
             // Create a lot using assets API
-            createLot(data);
+            await createLot(data);
         }
         else if (itemType === 'tractor')
         {
             // Create a tractor using assets API
-            createTractor(data);
+            await createTractor(data);
         }
         closeModal();
     };

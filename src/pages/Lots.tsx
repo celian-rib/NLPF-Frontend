@@ -5,7 +5,6 @@ import FilterAndSort from '../components/utils/FilterAndSort';
 import { Checkpoint } from '../types/Checkpoint';
 import { Lot } from '../types/Lot';
 import { LotType } from '../types/LotType';
-import { UserInfo } from '../types/UserInfo';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sortAndFilterData } from '../utils/sortingUtils';
@@ -15,7 +14,6 @@ import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStoc
 import AddItemModal from '../components/client/modal/AddItemModal';
 import { getAllCheckpoints } from '../services/trafficManger';
 import { getLotsByClientId } from '../services/assets';
-import EmptyTable from '../components/utils/EmptyTable';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -48,10 +46,10 @@ const Lots: React.FC = () => {
     }, []);
 
     // Function to close modals
-    const closeModal = () => {
+    const closeModal = async () => {
+        await fetchLots();
         setIsAddLotModalOpen(false);
         setIsStockExchangeModalOpen(false);
-        fetchLots();
     };
 
     // Sort and filter data

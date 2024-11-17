@@ -14,7 +14,6 @@ import { Checkpoint } from '../types/Checkpoint';
 import AddItemModal from '../components/client/modal/AddItemModal';
 import { getAllCheckpoints } from '../services/trafficManger';
 import { getTractorsByClientId } from '../services/assets';
-import EmptyTable from '../components/utils/EmptyTable';
 
 const Tractors: React.FC = () => {
     const [title] = useState<string>('Tractor management');
@@ -47,10 +46,10 @@ const Tractors: React.FC = () => {
     }, []);
 
     // Function to close modals
-    const closeModal = () => {
+    const closeModal = async () => {
+        await fetchTractors();
         setIsAddTractorModalOpen(false);
         setIsStockExchangeModalOpen(false);
-        fetchTractors();
     };
 
     // Use the sorting utility function
