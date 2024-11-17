@@ -12,7 +12,7 @@ import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import { Checkpoint } from '../types/Checkpoint';
 import AddItemModal from '../components/client/modal/AddItemModal';
-import { getAllCheckpoints } from '../services/trafficManger';
+import { getAllCheckpoints } from '../services/trafficManager';
 import { getTractorsByClientId } from '../services/assets';
 
 const Tractors: React.FC = () => {

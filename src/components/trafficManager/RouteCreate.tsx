@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import { Checkpoint } from '../../types/Checkpoint';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Route } from '../../types/Route';
+import { createRoute } from '../../services/trafficManager';
 
 interface RouteCreateProps {
     checkpoints: Checkpoint[];
-    tableData: Route[],
-    setTableData: (checkpoints: Route[]) => void;
 }
 
 const RouteCreate: React.FC<RouteCreateProps> = ({
     checkpoints,
-    tableData,
-    setTableData,
 }) => {
     const [selectedCheckpoints, setSelectedCheckpoints] = useState<Checkpoint[]>([]);
     const [newRouteName, setNewRouteName] = useState<string>('');
@@ -48,15 +44,19 @@ const RouteCreate: React.FC<RouteCreateProps> = ({
     };
 
     // Add created route to table
-    const addRoute = () => {
-        // FIXME: Implement the logic to add the route using Traffic Manager API
-        // POST /routes/{traffic_manager_id}
-        const newRoute: Route = {
-            route_id: '0',
+    const addRoute = async () => {
+
+        // Add position to checkpoint list
+        let checkpoints: Checkpoint[] = selectedCheckpoints;
+        for (let i = 0; i < selectedCheckpoints.length; i++)
+            checkpoints[i].position = i + 1;
+
+        // Create route
+        const data = {
             route_name: newRouteName,
             checkpoint_routes: selectedCheckpoints
         };
-        setTableData([...tableData, newRoute]);
+        await createRoute(data);
     };
 
     // Validate route

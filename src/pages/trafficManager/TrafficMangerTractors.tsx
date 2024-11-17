@@ -12,7 +12,7 @@ import { Checkpoint } from '../../types/Checkpoint';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import EmptyTable from '../../components/utils/EmptyTable';
-import { getTractorsByTrafficManagerId } from '../../services/trafficManger';
+import { getTractorsByTrafficManagerId } from '../../services/trafficManager';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');

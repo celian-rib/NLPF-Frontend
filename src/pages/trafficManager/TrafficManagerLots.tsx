@@ -12,7 +12,7 @@ import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToS
 import AssignTractorModal from '../../components/trafficManager/modal/AssignTractorModal';
 import { TractorType } from '../../types/TractorType';
 import { Tractor } from '../../types/Tractor';
-import { getLotsByTrafficManagerId } from '../../services/trafficManger';
+import { getLotsByTrafficManagerId } from '../../services/trafficManager';
 import EmptyTable from '../../components/utils/EmptyTable';
 
 const TrafficManagerLots: React.FC = () => {

@@ -12,7 +12,7 @@ import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import AddItemModal from '../components/client/modal/AddItemModal';
-import { getAllCheckpoints } from '../services/trafficManger';
+import { getAllCheckpoints } from '../services/trafficManager';
 import { getLotsByClientId } from '../services/assets';
 
 const Lots: React.FC = () => {

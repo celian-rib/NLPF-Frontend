@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
-import { assignLotToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManger';
+import { assignLotToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManager';
 
 interface ActionButtonsProps<T> {
     item: T;

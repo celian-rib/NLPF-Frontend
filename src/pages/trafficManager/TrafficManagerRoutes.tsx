@@ -8,6 +8,7 @@ import { formatRouteAsString } from '../../utils/utils';
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RouteCreate from '../../components/trafficManager/RouteCreate';
+import { getAllCheckpoints, getRoutesByTrafficManagerId } from '../../services/trafficManager';
 
 const TrafficManagerRoutes: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -16,17 +17,23 @@ const TrafficManagerRoutes: React.FC = () => {
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [tableData, setTableData] = useState<Route[]>([]);
 
+    // Fetch routes
+    const fetchRoutes = async () => {
+        const data = await getRoutesByTrafficManagerId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-        { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 48.5845, checkpoint_longitude: -35.1278 },
-        { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 44.9612, checkpoint_longitude: 18.1524 },
-    ];
+    // Fetch checkpoints
+    const fetchCheckpoints = async () => {
+        const data = await getAllCheckpoints();
+        setCheckpoints(data);
+    };
 
     useEffect(() => {
-        setCheckpoints(fakeCheckpoints);
+        fetchRoutes();
+        fetchCheckpoints();
     }, []);
 
     return (
@@ -70,8 +77,6 @@ const TrafficManagerRoutes: React.FC = () => {
                     <div className="w-1/3">
                         <RouteCreate
                             checkpoints={checkpoints}
-                            tableData={tableData}
-                            setTableData={setTableData}
                         />
                     </div>
                 </div>
