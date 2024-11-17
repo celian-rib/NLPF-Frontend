@@ -31,6 +31,7 @@ const Map: React.FC = () => {
                         preferCanvas={true}
                         zoomControl={false}
                         worldCopyJump={true}
+                        minZoom={3}
                     >
                         <TileLayer
                             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
