@@ -1,7 +1,4 @@
 import React from 'react';
-import { Lot } from '../../types/Lot';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck } from '@fortawesome/free-solid-svg-icons';
 import { Tractor } from '../../types/Tractor';
 import { Route } from '../../types/Route';
 import { formatRouteAsString } from '../../utils/utils';

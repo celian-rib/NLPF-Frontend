@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faPlus, faRightFromBracket, faHand, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faPlus, faHand, faEraser } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
 

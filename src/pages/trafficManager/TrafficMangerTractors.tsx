@@ -6,7 +6,6 @@ import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Tractor } from '../../types/Tractor';
 import { getStatusInfo } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
-import { TractorType } from '../../types/TractorType';
 import RouteAssign from '../../components/trafficManager/RouteAssign';
 import { Route } from '../../types/Route';
 import { Checkpoint } from '../../types/Checkpoint';

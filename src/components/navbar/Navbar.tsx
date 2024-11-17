@@ -31,20 +31,20 @@ const Navbar: React.FC = () => {
     }, [location.pathname]);
 
     // Load user information
+    const fetchUserInfo = async () => {
+        try {
+            const userInfo: UserInfo = await getUserInfo();
+            setUsername(userInfo.username);
+            setUserRole(normalizeUserRole(userInfo.role));
+        } catch (error) {
+            console.error("Failed to fetch user info", error);
+            logout();
+        }
+    };
+
     useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const userInfo: UserInfo = await getUserInfo();
-                setUsername(userInfo.username);
-                setUserRole(normalizeUserRole(userInfo.role));
-            } catch (error) {
-                console.error("Failed to fetch user info", error);
-                logout();
-            }
-        };
-        
         fetchUserInfo();
-    }, []);
+    });
 
     // Check access permissions
     const hasAccess = (tab: string) => rolePermissions[userRole]?.includes(tab);
