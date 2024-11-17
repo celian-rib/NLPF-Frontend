@@ -6,10 +6,12 @@ import { createRoute } from '../../services/trafficManager';
 
 interface RouteCreateProps {
     checkpoints: Checkpoint[];
+    onRouteCreated: () => void;
 }
 
 const RouteCreate: React.FC<RouteCreateProps> = ({
     checkpoints,
+    onRouteCreated,
 }) => {
     const [selectedCheckpoints, setSelectedCheckpoints] = useState<Checkpoint[]>([]);
     const [newRouteName, setNewRouteName] = useState<string>('');
@@ -47,16 +49,22 @@ const RouteCreate: React.FC<RouteCreateProps> = ({
     const addRoute = async () => {
 
         // Add position to checkpoint list
-        let checkpoints: Checkpoint[] = selectedCheckpoints;
-        for (let i = 0; i < selectedCheckpoints.length; i++)
-            checkpoints[i].position = i + 1;
+        let checkpoints = [];
+        for (let i = 0; i < selectedCheckpoints.length; i++) {
+            let checkpoint = {
+                checkpoint_id: selectedCheckpoints[i].id,
+                position: i + 1,
+            };
+            checkpoints.push(checkpoint);
+        }
 
         // Create route
         const data = {
             route_name: newRouteName,
-            checkpoint_routes: selectedCheckpoints
+            checkpoint_routes: checkpoints
         };
         await createRoute(data);
+        onRouteCreated();
     };
 
     // Validate route

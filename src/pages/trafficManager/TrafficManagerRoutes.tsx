@@ -77,6 +77,7 @@ const TrafficManagerRoutes: React.FC = () => {
                     <div className="w-1/3">
                         <RouteCreate
                             checkpoints={checkpoints}
+                            onRouteCreated={fetchRoutes}
                         />
                     </div>
                 </div>
