@@ -26,3 +26,13 @@ export const createLot = async (data: any) => {
 export const createTractor = async (data: any) => {
     return axios.post(`${API_BASE_URL}/tractors`, data);
 };
+
+// DELETE /lots/{lot_id}
+export const deleteLot = async (lotId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/lots/${lotId}`);
+};
+
+// DELETE /tractors/{tractor_id}
+export const deleteTractor = async (tractorId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/tractors/${tractorId}`);
+};

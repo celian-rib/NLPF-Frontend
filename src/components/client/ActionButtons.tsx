@@ -3,6 +3,7 @@ import { faTruck, faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
 import { assignLotToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManager';
+import { deleteLot, deleteTractor } from '../../services/assets';
 
 interface ActionButtonsProps<T> {
     item: T;
@@ -11,6 +12,7 @@ interface ActionButtonsProps<T> {
     setSelectedLot?: (lot: Lot) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
+    onItemDeleted: () => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
@@ -20,6 +22,7 @@ const ActionButtons = <T extends Lot | Tractor>({
     setSelectedLot,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
+    onItemDeleted,
 }: ActionButtonsProps<T>) => {
 
     // Function to add item to stock exchange
@@ -49,6 +52,21 @@ const ActionButtons = <T extends Lot | Tractor>({
         }
     }
 
+    // Function to remove item
+    const handleRemoveClick = async () => {
+        if (itemType === 'lot')
+        {
+            // Remove lot using Assets API
+            await deleteLot(item.id);
+        }
+        else if (itemType === 'tractor')
+        {
+            // Remove tractor using Assets API
+            await deleteTractor(item.id);
+        }
+        onItemDeleted();
+    }
+
     return (
         <td className="border p-2 text-center">
             {item.status === 'available' ? (
@@ -67,7 +85,10 @@ const ActionButtons = <T extends Lot | Tractor>({
                         <FontAwesomeIcon icon={faPlus} className="mr-2" />
                         Stock exchange
                     </button>
-                    <button className="self-center bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md">
+                    <button
+                        className="self-center bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md"
+                        onClick={handleRemoveClick}
+                    >
                         <FontAwesomeIcon icon={faRightFromBracket} className="mr-2" />
                         Remove
                     </button>

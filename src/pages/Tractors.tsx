@@ -149,6 +149,7 @@ const Tractors: React.FC = () => {
                                         trafficManagerId={selectedTrafficManagerId}
                                         setSelectedTractor={setSelectedTractor}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                        onItemDeleted={fetchTractors}
                                     />
 
                                 </tr>
