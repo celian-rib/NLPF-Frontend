@@ -54,6 +54,7 @@ const Navbar: React.FC = () => {
         localStorage.clear();
         navigate('/login');
     };
+
     return (
         <>
             <UserLayout userRole={userRole} username={username} />
@@ -63,12 +64,14 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center">
 
                         <Link to="/" className="flex-shrink-0">
-                            <img src="/assets/logo.png" alt="Logo"
-                                 className="h-12 w-auto transition-transform duration-300 hover:scale-105"/>
+                            <img
+                                src="/assets/logo.png"
+                                alt="Logo"
+                                className="h-12 w-auto transition-transform duration-300 hover:scale-105"
+                            />
                         </Link>
                         <Link to="/">
-                            <span
-                                className="ml-3 text-xl font-bold tracking-widest hover:text-blue-400 transition-colors duration-300">
+                            <span className="ml-3 text-xl font-bold tracking-widest hover:text-blue-400 transition-colors duration-300">
                                 LIGNE<span className="text-blue-400">8</span>
                             </span>
                         </Link>
