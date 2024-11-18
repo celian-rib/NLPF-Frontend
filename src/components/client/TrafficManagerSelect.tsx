@@ -21,9 +21,9 @@ const TrafficManagerSelect: React.FC<TrafficManagerSelectProps> = ({
                     onChange={(e) => setSelectedTrafficManagerId(e.target.value)}
                     defaultValue=""
                 >
-                    {trafficManagers.map((traffic_manager: UserInfo) => (
-                        <option key={traffic_manager.id} value={traffic_manager.id}>
-                            {traffic_manager.username}
+                    {trafficManagers.map((trafficManager: UserInfo) => (
+                        <option key={trafficManager.user_id} value={trafficManager.user_id}>
+                            {trafficManager.username}
                         </option>
                     ))}
                 </select>

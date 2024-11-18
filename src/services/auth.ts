@@ -2,6 +2,7 @@ import axios from 'axios';
 import { UserInfo } from '../types/UserInfo';
 
 const API_BASE_URL = process.env.REACT_APP_AUTH_API_URL;
+const userId = localStorage.getItem('user_id');
 
 interface LoginResponse {
     status: number;
@@ -31,7 +32,13 @@ export const loginUser = async (username: string, password: string) => {
 
 // GET /users/:userId
 export const getUserInfo = async (): Promise<UserInfo> => {
-    const userId = localStorage.getItem('user_id');
     const response = await axios.get<UserInfo>(`${API_BASE_URL}/users/${userId}`);
+    return response.data;
+};
+
+
+// GET /users/roles/traffic-managers
+export const getAllTrafficManagers = async (): Promise<UserInfo[]> => {
+    const response = await axios.get<UserInfo[]>(`${API_BASE_URL}/users/roles/traffic-managers`);
     return response.data;
 };

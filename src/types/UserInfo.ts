@@ -1,5 +1,5 @@
 export interface UserInfo {
-    id: string;
+    user_id: string;
     username: string;
-    role: string;
+    role?: string;
 }

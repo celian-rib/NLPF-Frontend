@@ -1,7 +1,6 @@
 import { Checkpoint } from "./Checkpoint";
 import { Route } from "./Route";
 import { TractorType } from "./TractorType";
-import { UserInfo } from "./UserInfo";
 
 export interface Tractor {
     id: string;
@@ -15,5 +14,4 @@ export interface Tractor {
     current_checkpoint: Checkpoint;
     start_checkpoint: Checkpoint;
     end_checkpoint: Checkpoint;
-    traffic_managers?: UserInfo[];
 }

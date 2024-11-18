@@ -14,6 +14,8 @@ import { Checkpoint } from '../types/Checkpoint';
 import AddItemModal from '../components/client/modal/AddItemModal';
 import { getAllCheckpoints } from '../services/trafficManager';
 import { getTractorsByClientId } from '../services/assets';
+import { getAllTrafficManagers } from '../services/auth';
+import { UserInfo } from '../types/UserInfo';
 
 const Tractors: React.FC = () => {
     const [title] = useState<string>('Tractor management');
@@ -26,6 +28,7 @@ const Tractors: React.FC = () => {
     const [isAddTractorModalOpen, setIsAddTractorModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
+    const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
 
     // Fetch tractors
     const fetchTractors = async () => {
@@ -38,12 +41,25 @@ const Tractors: React.FC = () => {
     // Fetch checkpoints
     const fetchCheckpoints = async () => {
         const data = await getAllCheckpoints();
+        if (!data)
+            return;
         setCheckpoints(data);
+    };
+
+    // Fetch traffic managers
+    const fetchTrafficManagers = async () => {
+        const data = await getAllTrafficManagers();
+        if (!data)
+            return;
+        if (data.length > 0)
+            setSelectedTrafficManagerId(data[0].user_id);
+        setTrafficManagers(data);
     };
 
     useEffect(() => {
         fetchTractors();
         fetchCheckpoints();
+        fetchTrafficManagers();
     }, []);
 
     // Function to close modals
@@ -123,7 +139,7 @@ const Tractors: React.FC = () => {
                                     <td className="border text-center p-2">{tractor.start_checkpoint.checkpoint_name} / {tractor.end_checkpoint.checkpoint_name}</td>
 
                                     <TrafficManagerSelect
-                                        trafficManagers={tractor.traffic_managers ? tractor.traffic_managers : []}
+                                        trafficManagers={trafficManagers}
                                         setSelectedTrafficManagerId={setSelectedTrafficManagerId}
                                     />
 

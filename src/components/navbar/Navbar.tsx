@@ -7,6 +7,7 @@ import { getUserInfo } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import { normalizeUserRole, rolePermissions, UserRole } from '../../configs/permissions';
 import { useWebSocket } from '../../socket/WebSocketContext';
+import { formatDate } from '../../utils/utils';
 
 const Navbar: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -35,7 +36,7 @@ const Navbar: React.FC = () => {
         try {
             const userInfo: UserInfo = await getUserInfo();
             setUsername(userInfo.username);
-            setUserRole(normalizeUserRole(userInfo.role));
+            setUserRole(normalizeUserRole(userInfo.role ? userInfo.role : 'Unknown'));
         } catch (error) {
             console.error("Failed to fetch user info", error);
             logout();
@@ -44,7 +45,7 @@ const Navbar: React.FC = () => {
 
     useEffect(() => {
         fetchUserInfo();
-    }, []);
+    });
 
     // Check access permissions
     const hasAccess = (tab: string) => rolePermissions[userRole]?.includes(tab);
@@ -149,7 +150,7 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center space-x-4">
                         {simulationDate ? (
                             <div className="text-lg text-white">
-                                Simulation date : <span className="font-bold text-blue-400">{simulationDate}</span>
+                                Simulation date : <span className="font-bold text-blue-400">{formatDate(simulationDate)}</span>
                             </div>
                         ) : (
                             <div className="text-lg font-normal text-red-600">

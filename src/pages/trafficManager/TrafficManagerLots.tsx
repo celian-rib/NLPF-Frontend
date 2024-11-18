@@ -61,7 +61,6 @@ const TrafficManagerLots: React.FC = () => {
                 current_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
                 start_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
                 end_checkpoint: { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-                traffic_managers: [],
             },
             {
                 id: '2',
@@ -83,10 +82,6 @@ const TrafficManagerLots: React.FC = () => {
                 current_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
                 start_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
                 end_checkpoint: { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 40.7128, checkpoint_longitude: -74.0060 },
-                traffic_managers: [
-                    { id: '2', username: 'traffic_manager_2', role: 'traffic-manager' },
-                    { id: '3', username: 'traffic_manager_3', role: 'traffic-manager' }
-                ],
             },
             {
                 id: '3',
@@ -108,9 +103,6 @@ const TrafficManagerLots: React.FC = () => {
                 current_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
                 start_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
                 end_checkpoint: { id: '6', checkpoint_name: 'Checkpoint 6', checkpoint_latitude: 35.6895, checkpoint_longitude: 139.6917 },
-                traffic_managers: [
-                    { id: '3', username: 'traffic_manager_3', role: 'traffic-manager' }
-                ],
             },
         ];
         return fakeTractors;   

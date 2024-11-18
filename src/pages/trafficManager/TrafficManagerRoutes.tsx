@@ -28,6 +28,8 @@ const TrafficManagerRoutes: React.FC = () => {
     // Fetch checkpoints
     const fetchCheckpoints = async () => {
         const data = await getAllCheckpoints();
+        if (!data)
+            return;
         setCheckpoints(data);
     };
 
