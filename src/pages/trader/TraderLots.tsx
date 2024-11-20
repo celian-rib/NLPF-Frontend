@@ -6,11 +6,10 @@ import { getStatusInfo } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
-import { LotType } from '../../types/LotType';
-import { Checkpoint } from '../../types/Checkpoint';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import EmptyTable from '../../components/utils/EmptyTable';
+import { getLotsByTraderId } from '../../services/trader';
 
 const TraderLots: React.FC = () => {
     const [title] = useState('Lot offers');
@@ -20,72 +19,16 @@ const TraderLots: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
 
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
-
-    const fakeLots: Lot[] = [
-        {
-            id: '1',
-            lot_name: 'Lot 1',
-            status: 'available',
-            volume: 1500,
-            type: LotType.Bulk,
-            max_price: 2500,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[1],
-        },
-        {
-            id: '2',
-            lot_name: 'Lot 2',
-            status: 'at_trader',
-            volume: 500,
-            type: LotType.Liquid,
-            max_price: 1200,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[2],
-        },
-        {
-            id: '3',
-            lot_name: 'Lot 3',
-            status: 'in_transit',
-            volume: 1000,
-            type: LotType.Solid,
-            max_price: 1800,
-            current_checkpoint: fakeCheckpoints[2],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[0],
-        },
-        {
-            id: '4',
-            lot_name: 'Lot 4',
-            status: 'at_trader',
-            volume: 2000,
-            type: LotType.Bulk,
-            max_price: 3000,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[2],
-        },
-        {
-            id: '5',
-            lot_name: 'Lot 5',
-            status: 'archived',
-            volume: 750,
-            type: LotType.Liquid,
-            max_price: 1500,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[2],
-            end_checkpoint: fakeCheckpoints[0],
-        },
-    ];
+    // Fetch lots
+    const fetchLots = async () => {
+        const data = await getLotsByTraderId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
     useEffect(() => {
-        setTableData(fakeLots);
+        fetchLots();
     }, []);
 
     // Sort and filter data

@@ -5,12 +5,11 @@ import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Checkpoint } from '../../types/Checkpoint';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Tractor } from '../../types/Tractor';
-import { TractorType } from '../../types/TractorType';
 import EmptyTable from '../../components/utils/EmptyTable';
+import { getTractorsByTraderId } from '../../services/trader';
 
 const TraderTractors: React.FC = () => {
     const [title] = useState('Tractor offers');
@@ -20,72 +19,16 @@ const TraderTractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
 
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
-
-    const fakeTractors: Tractor[] = [
-        {
-            id: '1',
-            tractor_name: 'Tractor 1',
-            status: 'available',
-            volume: 1500,
-            type: TractorType.Bulk,
-            min_price: 2500,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[1],
-        },
-        {
-            id: '2',
-            tractor_name: 'Tractor 2',
-            status: 'at_trader',
-            volume: 500,
-            type: TractorType.Liquid,
-            min_price: 1200,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[0],
-            end_checkpoint: fakeCheckpoints[2],
-        },
-        {
-            id: '3',
-            tractor_name: 'Tractor 3',
-            status: 'in_transit',
-            volume: 1000,
-            type: TractorType.Solid,
-            min_price: 1800,
-            current_checkpoint: fakeCheckpoints[2],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[0],
-        },
-        {
-            id: '4',
-            tractor_name: 'Tractor 4',
-            status: 'at_trader',
-            volume: 2000,
-            type: TractorType.Bulk,
-            min_price: 3000,
-            current_checkpoint: fakeCheckpoints[0],
-            start_checkpoint: fakeCheckpoints[1],
-            end_checkpoint: fakeCheckpoints[2],
-        },
-        {
-            id: '5',
-            tractor_name: 'Tractor 5',
-            status: 'archived',
-            volume: 750,
-            type: TractorType.Liquid,
-            min_price: 1500,
-            current_checkpoint: fakeCheckpoints[1],
-            start_checkpoint: fakeCheckpoints[2],
-            end_checkpoint: fakeCheckpoints[0],
-        },
-    ];
+    // Fetch tractors
+    const fetchTractors = async () => {
+        const data = await getTractorsByTraderId();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
     useEffect(() => {
-        setTableData(fakeTractors);
+        fetchTractors();
     }, []);
 
     // Sort and filter data
