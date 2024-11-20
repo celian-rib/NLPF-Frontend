@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createLotOffer, createTractorOffer } from '../../../services/stockExchange';
 
 interface StockExchangeModalProps<T> {
     item: T;
@@ -23,15 +24,13 @@ const AddToStockExchangeModal = <T extends { id: string }>({
         };
         if (itemType === 'lot')
         {
-            // FIXME: Implement the logic to add an offer using Stock Exchange API
-            // POST /offers/lots
-            console.log("Sending Lot data to API:", data);
+            // Create lot offer using Stock Exchange API
+            createLotOffer(data);
         }
         else if (itemType === 'tractor')
         {
-            // FIXME: Implement the logic to add an offer using Stock Exchange API
-            // POST /offers/tractors
-            console.log("Sending Tractor data to API:", data);
+            // Create tractor offer using Stock Exchange API
+            createTractorOffer(data);
         }
         closeModal();
     };
