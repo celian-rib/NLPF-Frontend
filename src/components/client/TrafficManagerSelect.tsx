@@ -1,24 +1,34 @@
-import React from 'react';
 import { UserInfo } from '../../types/UserInfo';
+import { Tractor } from '../../types/Tractor';
+import { Lot } from '../../types/Lot';
 
-interface TrafficManagerSelectProps {
-    trafficManagers: UserInfo[];
-    setSelectedTrafficManagerId: (trafficManagerId: string) => void;
+interface TrafficManagerSelectProps<T> {
+    item: T;
+    trafficManagers: UserInfo[] | null;
 }
 
-const TrafficManagerSelect: React.FC<TrafficManagerSelectProps> = ({
+const TrafficManagerSelect = <T extends Lot | Tractor>({
+    item,
     trafficManagers,
-    setSelectedTrafficManagerId,
-}: TrafficManagerSelectProps) => {
+}: TrafficManagerSelectProps<T>) => {
+
+    // Function to handle traffic manager selection
+    const handleTrafficManagerSelection = (trafficManagerId: string) => {
+        if (item.traffic_manager)
+            item.traffic_manager.user_id = trafficManagerId;
+        else
+            item.traffic_manager = { user_id: trafficManagerId };
+    };
+
     return (
         <td className="border text-center p-2">
-            {trafficManagers.length === 0 ? (
+            {!item.traffic_manager || !trafficManagers ? (
                 <span className="text-gray-400">None</span>
-            ) : trafficManagers.length === 1 ? (
-                <span className="text-black">{trafficManagers[0].username}</span>
+            ) : trafficManagers?.length === 1 ? (
+                <span className="text-black">{item.traffic_manager?.username}</span>
             ) : (
                 <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5"
-                    onChange={(e) => setSelectedTrafficManagerId(e.target.value)}
+                    onChange={(e) => handleTrafficManagerSelection(e.target.value)}
                     defaultValue=""
                 >
                     {trafficManagers.map((trafficManager: UserInfo) => (

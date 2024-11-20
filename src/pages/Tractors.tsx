@@ -24,17 +24,24 @@ const Tractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
-    const [selectedTrafficManagerId, setSelectedTrafficManagerId] = useState<string>('');
     const [isAddTractorModalOpen, setIsAddTractorModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
 
+    // Fetch traffic managers of tractors
+    const fetchTrafficManagersOfTractors = async (tractors: Tractor[]): Promise<Tractor[]> => {
+        for (let i = 0; i < tractors.length; i++)
+            tractors[i].traffic_manager = null;
+        return tractors;
+    };
+
     // Fetch tractors
     const fetchTractors = async () => {
-        const data = await getTractorsByClientId();
+        let data = await getTractorsByClientId();
         if (!data)
             return;
+        data = await fetchTrafficManagersOfTractors(data);
         setTableData(data);
     };
     
@@ -51,8 +58,6 @@ const Tractors: React.FC = () => {
         const data = await getAllTrafficManagers();
         if (!data)
             return;
-        if (data.length > 0)
-            setSelectedTrafficManagerId(data[0].user_id);
         setTrafficManagers(data);
     };
 
@@ -60,7 +65,7 @@ const Tractors: React.FC = () => {
         fetchTractors();
         fetchCheckpoints();
         fetchTrafficManagers();
-    }, []);
+    });
 
     // Function to close modals
     const closeModal = async () => {
@@ -139,14 +144,13 @@ const Tractors: React.FC = () => {
                                     <td className="border text-center p-2">{tractor.start_checkpoint.checkpoint_name} / {tractor.end_checkpoint.checkpoint_name}</td>
 
                                     <TrafficManagerSelect
-                                        trafficManagers={trafficManagers}
-                                        setSelectedTrafficManagerId={setSelectedTrafficManagerId}
+                                        item={tractor}
+                                        trafficManagers={tractor.traffic_manager ? trafficManagers : null}
                                     />
 
                                     <ActionButtons
                                         item={tractor}
                                         itemType="tractor"
-                                        trafficManagerId={selectedTrafficManagerId}
                                         setSelectedTractor={setSelectedTractor}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                         onTableUpdated={fetchTractors}

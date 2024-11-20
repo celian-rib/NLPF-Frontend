@@ -1,6 +1,7 @@
 import { Checkpoint } from "./Checkpoint";
 import { LotType } from "./LotType";
 import { Tractor } from "./Tractor";
+import { UserInfo } from "./UserInfo";
 
 export interface Lot {
     id: string;
@@ -13,4 +14,5 @@ export interface Lot {
     start_checkpoint: Checkpoint;
     end_checkpoint: Checkpoint;
     tractor?: Tractor;
+    traffic_manager?: UserInfo | null;
 }

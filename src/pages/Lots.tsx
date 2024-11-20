@@ -14,8 +14,8 @@ import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStoc
 import AddItemModal from '../components/client/modal/AddItemModal';
 import { getAllCheckpoints } from '../services/trafficManager';
 import { getLotsByClientId } from '../services/assets';
-import { UserInfo } from '../types/UserInfo';
 import { getAllTrafficManagers } from '../services/auth';
+import { UserInfo } from '../types/UserInfo';
 
 const Lots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -24,17 +24,24 @@ const Lots: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
-    const [selectedTrafficManagerId, setSelectedTrafficManagerId] = useState<string>('');
     const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
 
+    // Fetch traffic managers of lots
+    const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
+        for (let i = 0; i < lots.length; i++)
+            lots[i].traffic_manager = null;
+        return lots;
+    };
+
     // Fetch lots
     const fetchLots = async () => {
-        const data = await getLotsByClientId();
+        let data = await getLotsByClientId();
         if (!data)
             return;
+        data = await fetchTrafficManagersOfLots(data);
         setTableData(data);
     };
 
@@ -51,8 +58,6 @@ const Lots: React.FC = () => {
         const data = await getAllTrafficManagers();
         if (!data)
             return;
-        if (data.length > 0)
-            setSelectedTrafficManagerId(data[0].user_id);
         setTrafficManagers(data);
     };
 
@@ -60,7 +65,7 @@ const Lots: React.FC = () => {
         fetchLots();
         fetchCheckpoints();
         fetchTrafficManagers();
-    }, []);
+    });
 
     // Function to close modals
     const closeModal = async () => {
@@ -138,15 +143,14 @@ const Lots: React.FC = () => {
 
                                     <td className="border text-center p-2">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
 
-                                    <TrafficManagerSelect
-                                        trafficManagers={trafficManagers}
-                                        setSelectedTrafficManagerId={setSelectedTrafficManagerId}
+                                    <TrafficManagerSelect 
+                                        item={lot}
+                                        trafficManagers={lot.traffic_manager ? trafficManagers : null}
                                     />
 
                                     <ActionButtons
                                         item={lot}
                                         itemType="lot"
-                                        trafficManagerId={selectedTrafficManagerId}
                                         setSelectedLot={setSelectedLot}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                         onTableUpdated={fetchLots}

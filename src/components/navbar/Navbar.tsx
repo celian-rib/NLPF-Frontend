@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
             const userInfo = await getUserInfo();
             if (!userInfo)
                 return logout();
-            setUsername(userInfo.username);
+            setUsername(userInfo.username ? userInfo.username : 'Unknown');
             setUserRole(normalizeUserRole(userInfo.role ? userInfo.role : 'Unknown'));
         } catch (error) {
             console.error("Failed to fetch user info", error);

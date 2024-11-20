@@ -8,7 +8,6 @@ import { deleteLot, deleteTractor } from '../../services/assets';
 interface ActionButtonsProps<T> {
     item: T;
     itemType: 'tractor' | 'lot';
-    trafficManagerId: string;
     setSelectedLot?: (lot: Lot) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
@@ -18,7 +17,6 @@ interface ActionButtonsProps<T> {
 const ActionButtons = <T extends Lot | Tractor>({
     item,
     itemType,
-    trafficManagerId,
     setSelectedLot,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
@@ -41,15 +39,20 @@ const ActionButtons = <T extends Lot | Tractor>({
 
     // Function to assign item to traffic manager
     const handleAssignClick = async () => {
+        if (!item.traffic_manager)
+        {
+            alert('Please select a traffic manager first.');
+            return;
+        }
         if (itemType === 'lot')
         {
             // Assign lot to traffic manager Traffic Manager API
-            await assignLotToTrafficManager(item.id, trafficManagerId);
+            await assignLotToTrafficManager(item.id, item.traffic_manager.user_id);
         }
         else if (itemType === 'tractor')
         {
             // Assign tractor to traffic manager Traffic Manager API
-            await assignTractorToTrafficManager(item.id, trafficManagerId);
+            await assignTractorToTrafficManager(item.id, item.traffic_manager.user_id);
         }
         onTableUpdated();
     }
