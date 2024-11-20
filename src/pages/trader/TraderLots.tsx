@@ -46,6 +46,8 @@ const TraderLots: React.FC = () => {
                     <h2 className="text-2xl text-gray-600">{subtitle}</h2>
                 </section>
 
+                {Array.isArray(sortedData) && sortedData.length > 0 ? (
+                <>
                 <div className="flex justify-between items-center self-end mb-2">
                     <FilterAndSort 
                         selectedStatus={selectedStatus} 
@@ -57,8 +59,6 @@ const TraderLots: React.FC = () => {
                     />
                 </div>
 
-                {Array.isArray(sortedData) && sortedData.length > 0 ? (
-                <>
                 <div>
                     <table className="table-auto w-full border-collapse border border-gray-300">
                         <thead>
