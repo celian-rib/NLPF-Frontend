@@ -12,7 +12,7 @@ interface ActionButtonsProps<T> {
     setSelectedLot?: (lot: Lot) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
-    onItemDeleted: () => void;
+    onTableUpdated: () => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
@@ -22,7 +22,7 @@ const ActionButtons = <T extends Lot | Tractor>({
     setSelectedLot,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
-    onItemDeleted,
+    onTableUpdated,
 }: ActionButtonsProps<T>) => {
 
     // Function to add item to stock exchange
@@ -36,6 +36,7 @@ const ActionButtons = <T extends Lot | Tractor>({
             setSelectedTractor(item as Tractor);
         }
         setIsStockExchangeModalOpen(true);
+        onTableUpdated();
     };
 
     // Function to assign item to traffic manager
@@ -50,6 +51,7 @@ const ActionButtons = <T extends Lot | Tractor>({
             // Assign tractor to traffic manager Traffic Manager API
             await assignTractorToTrafficManager(item.id, trafficManagerId);
         }
+        onTableUpdated();
     }
 
     // Function to remove item
@@ -64,7 +66,7 @@ const ActionButtons = <T extends Lot | Tractor>({
             // Remove tractor using Assets API
             await deleteTractor(item.id);
         }
-        onItemDeleted();
+        onTableUpdated();
     }
 
     return (

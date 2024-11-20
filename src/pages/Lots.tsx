@@ -149,7 +149,7 @@ const Lots: React.FC = () => {
                                         trafficManagerId={selectedTrafficManagerId}
                                         setSelectedLot={setSelectedLot}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
-                                        onItemDeleted={fetchLots}
+                                        onTableUpdated={fetchLots}
                                     />
 
                                 </tr>
