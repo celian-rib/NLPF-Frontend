@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { bidOnLot, bidOnTractor } from '../../../services/stockExchange';
 
 interface BidModalProps<T> {
     offer:  T;
@@ -28,15 +29,13 @@ const BidModal = <T extends { offer_id: string, current_price: number, max_price
         };
         if (offerType === 'lot')
         {
-            // FIXME: Implement the logic to bid on a lot using Stock Exchange API
-            // POST /offers/lots/{offer_id}/bids
-            console.log("Sending Lot data to API:", data);
+            // Make bid on a lot using Stock Exchange API
+            bidOnLot(offer.offer_id, data);
         }
         else if (offerType === 'tractor')
         {
-            // FIXME: Implement the logic to bid on a tractor using Stock Exchange API
-            // POST /offers/tractors/{offer_id}/bids
-            console.log("Sending Tractor data to API:", data);
+            // Make bid on a tractor using Stock Exchange API
+            bidOnTractor(offer.offer_id, data);
         }
         closeModal();
     };
