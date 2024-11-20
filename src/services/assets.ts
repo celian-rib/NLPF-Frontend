@@ -6,15 +6,27 @@ const API_BASE_URL = process.env.REACT_APP_ASSETS_API_URL;
 const userId = localStorage.getItem('user_id');
 
 // GET /lots/clients/{client_id}
-export const getLotsByClientId = async (): Promise<Lot[]> => {
-    const response = await axios.get<Lot[]>(`${API_BASE_URL}/lots/clients/${userId}`);
-    return response.data;
+export const getLotsByClientId = async (): Promise<Lot[] | null> => {
+    try {
+        const response = await axios.get<Lot[]>(`${API_BASE_URL}/lots/clients/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
 };
 
 // GET /tractors/clients/{client_id}
-export const getTractorsByClientId = async (): Promise<Tractor[]> => {
-    const response = await axios.get<Tractor[]>(`${API_BASE_URL}/tractors/clients/${userId}`);
-    return response.data;
+export const getTractorsByClientId = async (): Promise<Tractor[] | null> => {
+    try {
+        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/tractors/clients/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
 };
 
 // POST /lots

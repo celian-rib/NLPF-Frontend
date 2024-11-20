@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserLayout from './UserLayout';
 import { getUserInfo } from '../../services/auth';
-import { UserInfo } from '../../types/UserInfo';
 import { normalizeUserRole, rolePermissions, UserRole } from '../../configs/permissions';
 import { useWebSocket } from '../../socket/WebSocketContext';
 import { formatDate } from '../../utils/utils';
@@ -34,7 +33,9 @@ const Navbar: React.FC = () => {
     // Load user information
     const fetchUserInfo = async () => {
         try {
-            const userInfo: UserInfo = await getUserInfo();
+            const userInfo = await getUserInfo();
+            if (!userInfo)
+                return logout();
             setUsername(userInfo.username);
             setUserRole(normalizeUserRole(userInfo.role ? userInfo.role : 'Unknown'));
         } catch (error) {

@@ -6,13 +6,25 @@ const API_BASE_URL = process.env.REACT_APP_STOCK_EXCHANGE_API_URL;
 const userId = localStorage.getItem('user_id');
 
 // GET /traders/lots/{trader_id}
-export const getLotsByTraderId = async (): Promise<Lot[]> => {
-    const response = await axios.get<Lot[]>(`${API_BASE_URL}/traders/lots/${userId}`);
-    return response.data;
+export const getLotsByTraderId = async (): Promise<Lot[] | null> => {
+    try {
+        const response = await axios.get<Lot[]>(`${API_BASE_URL}/traders/lots/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
 };
 
 // GET /traders/tractors/{trader_id}
-export const getTractorsByTraderId = async (): Promise<Tractor[]> => {
-    const response = await axios.get<Tractor[]>(`${API_BASE_URL}/offers/tractors/${userId}`);
-    return response.data;
+export const getTractorsByTraderId = async (): Promise<Tractor[] | null> => {
+    try {
+        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/offers/tractors/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
 };
