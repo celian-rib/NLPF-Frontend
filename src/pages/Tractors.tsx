@@ -38,11 +38,11 @@ const Tractors: React.FC = () => {
 
     // Fetch tractors
     const fetchTractors = async () => {
-        let data = await getTractorsByClientId();
+        const data = await getTractorsByClientId();
         if (!data)
             return;
-        data = await fetchTrafficManagersOfTractors(data);
-        setTableData(data);
+        const updatedData = await fetchTrafficManagersOfTractors(data);
+        setTableData(updatedData);
     };
     
     // Fetch checkpoints

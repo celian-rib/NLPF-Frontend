@@ -38,11 +38,11 @@ const Lots: React.FC = () => {
 
     // Fetch lots
     const fetchLots = async () => {
-        let data = await getLotsByClientId();
+        const data = await getLotsByClientId();
         if (!data)
             return;
-        data = await fetchTrafficManagersOfLots(data);
-        setTableData(data);
+        const updatedData = await fetchTrafficManagersOfLots(data);
+        setTableData(updatedData);
     };
 
     // Fetch checkpoints
