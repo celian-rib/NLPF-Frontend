@@ -5,11 +5,11 @@ import Navbar from '../../components/navbar/Navbar';
 import { formatDate } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import { LotOffer } from '../../types/LotOffer';
-import { LotType } from '../../types/LotType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import BidModal from '../../components/stockExchange/modal/BidModal';
+import { getLotOffers } from '../../services/stockExchange';
 
 const StockExchangeLots: React.FC = () => {
     const [title] = useState('Lot market');
@@ -22,102 +22,24 @@ const StockExchangeLots: React.FC = () => {
     const [selectedOffer, setSelectedOffer] = useState<LotOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
-    const fakeLotOffers: LotOffer[] = [
-        {
-            offer_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            status: 'on_market',
-            volume: 100,
-            type: LotType.Solid,
-            current_price: 30.0,
-            max_price: 100.0,
-            current_checkpoint: {
-                id: '1',
-                checkpoint_name: 'Checkpoint 1',
-                checkpoint_latitude: 48.8566,
-                checkpoint_longitude: 2.3522
-            },
-            start_checkpoint: {
-                id: '2',
-                checkpoint_name: 'Checkpoint 2',
-                checkpoint_latitude: 48.8577,
-                checkpoint_longitude: 2.3532
-            },
-            end_checkpoint: {
-                id: '3',
-                checkpoint_name: 'Checkpoint 3',
-                checkpoint_latitude: 48.8588,
-                checkpoint_longitude: 2.3542
-            },
-            limit_date: '2021-03-01T00:00:00.000Z'
-        },
-        {
-            offer_id: '4fa85f64-5717-4562-b3fc-2c963f66afa7',
-            status: 'available',
-            volume: 50,
-            type: LotType.Liquid,
-            current_price: 20.0,
-            max_price: 80.0,
-            current_checkpoint: {
-                id: '4',
-                checkpoint_name: 'Checkpoint 4',
-                checkpoint_latitude: 48.8600,
-                checkpoint_longitude: 2.3600
-            },
-            start_checkpoint: {
-                id: '5',
-                checkpoint_name: 'Checkpoint 5',
-                checkpoint_latitude: 48.8610,
-                checkpoint_longitude: 2.3610
-            },
-            end_checkpoint: {
-                id: '6',
-                checkpoint_name: 'Checkpoint 6',
-                checkpoint_latitude: 48.8620,
-                checkpoint_longitude: 2.3620
-            },
-            limit_date: '2021-06-01T00:00:00.000Z'
-        },
-        {
-            offer_id: '5fa85f64-5717-4562-b3fc-2c963f66afa8',
-            status: 'pending',
-            volume: 200,
-            type: LotType.Bulk,
-            current_price: 50.0,
-            max_price: 150.0,
-            current_checkpoint: {
-                id: '7',
-                checkpoint_name: 'Checkpoint 7',
-                checkpoint_latitude: 48.8650,
-                checkpoint_longitude: 2.3650
-            },
-            start_checkpoint: {
-                id: '8',
-                checkpoint_name: 'Checkpoint 8',
-                checkpoint_latitude: 48.8660,
-                checkpoint_longitude: 2.3660
-            },
-            end_checkpoint: {
-                id: '9',
-                checkpoint_name: 'Checkpoint 9',
-                checkpoint_latitude: 48.8670,
-                checkpoint_longitude: 2.3670
-            },
-            limit_date: '2021-09-01T00:00:00.000Z'
-        }
-    ];
-
+    // Handle bid modal opening
     const openBidModal = (offer: LotOffer) => {
         setSelectedOffer(offer);
         setIsBidModalOpen(true);
     }
 
-    useEffect(() => {
+    // Fetch lot offers
+    const fetchLotOffers = async () => {
+        const data = await getLotOffers();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
-        // Get client role
+    useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
-    
-        setTableData(fakeLotOffers);
+        fetchLotOffers();
     }, []);
 
     // Sort and filter data

@@ -5,11 +5,11 @@ import Navbar from '../../components/navbar/Navbar';
 import { formatDate } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import { TractorOffer } from '../../types/TractorOffer';
-import { TractorType } from '../../types/TractorType';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import BidModal from '../../components/stockExchange/modal/BidModal';
+import { getTractorOffers } from '../../services/stockExchange';
 
 const StockExchangeTractors: React.FC = () => {
     const [title] = useState('Tractor market');
@@ -22,102 +22,23 @@ const StockExchangeTractors: React.FC = () => {
     const [selectedOffer, setSelectedOffer] = useState<TractorOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
-    const fakeTractorOffers: TractorOffer[] = [
-        {
-            offer_id: '3fa85f64-5717-4562-b3fc-2c963f66a',
-            status: 'on_market',
-            volume: 100,
-            type: TractorType.Solid,
-            current_price: 100.0,
-            min_price: 30.0,
-            current_checkpoint: {
-                id: '1',
-                checkpoint_name: 'Checkpoint 1',
-                checkpoint_latitude: 48.8566,
-                checkpoint_longitude: 2.3522
-            },
-            start_checkpoint: {
-                id: '2',
-                checkpoint_name: 'Checkpoint 2',
-                checkpoint_latitude: 48.8577,
-                checkpoint_longitude: 2.3532
-            },
-            end_checkpoint: {
-                id: '3',
-                checkpoint_name: 'Checkpoint 3',
-                checkpoint_latitude: 48.8588,
-                checkpoint_longitude: 2.3542
-            },
-            limit_date: '2021-03-01T00:00:00.000Z'
-        },
-        {
-            offer_id: '4fa85f64-5717-4562-b3fc-2c963f66a',
-            status: 'available',
-            volume: 50,
-            type: TractorType.Liquid,
-            current_price: 80.0,
-            min_price: 20.0,
-            current_checkpoint: {
-                id: '4',
-                checkpoint_name: 'Checkpoint 4',
-                checkpoint_latitude: 48.8600,
-                checkpoint_longitude: 2.3600
-            },
-            start_checkpoint: {
-                id: '5',
-                checkpoint_name: 'Checkpoint 5',
-                checkpoint_latitude: 48.8610,
-                checkpoint_longitude: 2.3610
-            },
-            end_checkpoint: {
-                id: '6',
-                checkpoint_name: 'Checkpoint 6',
-                checkpoint_latitude: 48.8620,
-                checkpoint_longitude: 2.3620
-            },
-            limit_date: '2021-06-01T00:00:00.000Z'
-        },
-        {
-            offer_id: '5fa85f64-5717-4562-b3fc-2c963f66',
-            status: 'pending',
-            volume: 200,
-            type: TractorType.Bulk,
-            current_price: 150.0,
-            min_price: 50.0,
-            current_checkpoint: {
-                id: '7',
-                checkpoint_name: 'Checkpoint 7',
-                checkpoint_latitude: 48.8650,
-                checkpoint_longitude: 2.3650
-            },
-            start_checkpoint: {
-                id: '8',
-                checkpoint_name: 'Checkpoint 8',
-                checkpoint_latitude: 48.8660,
-                checkpoint_longitude: 2.3660
-            },
-            end_checkpoint: {
-                id: '9',
-                checkpoint_name: 'Checkpoint 9',
-                checkpoint_latitude: 48.8670,
-                checkpoint_longitude: 2.3670
-            },
-            limit_date: '2021-09-01T00:00:00.000Z'
-        }
-    ];
-
     const openBidModal = (offer: TractorOffer) => {
         setSelectedOffer(offer);
         setIsBidModalOpen(true);
     }
 
-    useEffect(() => {
+    // Fetch tractor offers
+    const fetchTractorOffers = async () => {
+        const data = await getTractorOffers();
+        if (!data)
+            return;
+        setTableData(data);
+    };
 
-        // Get client role
+    useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
-    
-        setTableData(fakeTractorOffers);
+        fetchTractorOffers();
     }, []);
 
     // Sort and filter data
