@@ -12,7 +12,7 @@ import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import { Checkpoint } from '../types/Checkpoint';
 import AddItemModal from '../components/client/modal/AddItemModal';
-import { getAllCheckpoints } from '../services/trafficManager';
+import { getAllCheckpoints, getTrafficManagerByTractorId } from '../services/trafficManager';
 import { getTractorsByClientId } from '../services/assets';
 import { getAllTrafficManagers } from '../services/auth';
 import { UserInfo } from '../types/UserInfo';
@@ -32,7 +32,7 @@ const Tractors: React.FC = () => {
     // Fetch traffic managers of tractors
     const fetchTrafficManagersOfTractors = async (tractors: Tractor[]): Promise<Tractor[]> => {
         for (let i = 0; i < tractors.length; i++)
-            tractors[i].traffic_manager = null;
+            tractors[i].traffic_manager = await getTrafficManagerByTractorId(tractors[i].id);
         return tractors;
     };
 

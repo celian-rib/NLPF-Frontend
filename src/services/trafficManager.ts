@@ -3,6 +3,7 @@ import { Checkpoint } from '../types/Checkpoint';
 import { Lot } from '../types/Lot';
 import { Tractor } from '../types/Tractor';
 import { Route } from '../types/Route';
+import { UserInfo } from '../types/UserInfo';
 
 const API_BASE_URL = process.env.REACT_APP_TRAFFIC_MANAGER_API_URL;
 const userId = localStorage.getItem('user_id');
@@ -35,6 +36,30 @@ export const getTractorsByTrafficManagerId = async (): Promise<Tractor[] | null>
 export const getRoutesByTrafficManagerId = async (): Promise<Route[] | null> => {
     try {
         const response = await axios.get<Route[]>(`${API_BASE_URL}/routes/traffic-managers/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
+};
+
+// GET /lots/{lot_id}/traffic_manager
+export const getTrafficManagerByLotId = async (lotId: string): Promise<UserInfo | null> => {
+    try {
+        const response = await axios.get<UserInfo>(`${API_BASE_URL}/lots/${lotId}/traffic_manager`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
+};
+
+// GET /tractors/{tractor_id}/traffic_manager
+export const getTrafficManagerByTractorId = async (tractorId: string): Promise<UserInfo | null> => {
+    try {
+        const response = await axios.get<UserInfo>(`${API_BASE_URL}/tractors/${tractorId}/traffic_manager`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)

@@ -12,7 +12,7 @@ import TrafficManagerSelect from '../components/client/TrafficManagerSelect';
 import ActionButtons from '../components/client/ActionButtons';
 import AddToStockExchangeModal from '../components/stockExchange/modal/AddToStockExchangeModal';
 import AddItemModal from '../components/client/modal/AddItemModal';
-import { getAllCheckpoints } from '../services/trafficManager';
+import { getAllCheckpoints, getTrafficManagerByLotId } from '../services/trafficManager';
 import { getLotsByClientId } from '../services/assets';
 import { getAllTrafficManagers } from '../services/auth';
 import { UserInfo } from '../types/UserInfo';
@@ -32,7 +32,7 @@ const Lots: React.FC = () => {
     // Fetch traffic managers of lots
     const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
         for (let i = 0; i < lots.length; i++)
-            lots[i].traffic_manager = null;
+            lots[i].traffic_manager = await getTrafficManagerByLotId(lots[i].id);
         return lots;
     };
 
