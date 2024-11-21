@@ -33,7 +33,7 @@ const TrafficManagerSelect = <T extends Lot | Tractor>({
                     onChange={(e) => handleTrafficManagerSelection(e.target.value)}
                     defaultValue=""
                 >
-                    <option value=""disabled hidden>Select a traffic manager</option>
+                    <option value="" disabled>Select a traffic manager</option>
                     {trafficManagers?.map((trafficManager: UserInfo) => (
                         <option key={trafficManager.user_id} value={trafficManager.user_id}>
                             {trafficManager.username}

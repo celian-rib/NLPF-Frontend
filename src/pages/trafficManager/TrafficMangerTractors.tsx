@@ -67,6 +67,12 @@ const TrafficManagerTractors: React.FC = () => {
         fetchTractors();
     }, []);
 
+    // Function to close modals
+    const closeModal = async () => {
+        await fetchTractors();
+        setIsStockExchangeModalOpen(false);
+    };
+
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -163,7 +169,7 @@ const TrafficManagerTractors: React.FC = () => {
                     item={selectedTractor}
                     itemType="tractor"
                     minDate={new Date().toISOString().split("T")[0]}
-                    closeModal={() => setIsStockExchangeModalOpen(false)}
+                    closeModal={closeModal}
                 />
             )}
         </>

@@ -59,7 +59,7 @@ const ActionButtons = <T extends Lot | Tractor>({
     return (
         <td className="border p-2 text-center">
             {itemType === 'tractor' && item.status === 'in_transit'? (
-                <div className="flex flex-wrap justify-center space-x-2 space-y-2">
+                <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
                     <button
                         onClick={() => handleStopClick()}
                         className="bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md"
@@ -69,7 +69,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                     </button>
                 </div>
             ) : item.status === 'pending' ? (
-                <div className="flex flex-wrap justify-center space-x-2 space-y-2">
+                <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
 
                     {itemType === 'tractor' && (
                         <button
