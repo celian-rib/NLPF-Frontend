@@ -10,6 +10,7 @@ interface ActionButtonsProps<T> {
     setSelectedLot?: (lot: Lot) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
+    onTableUpdated: () => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
@@ -18,18 +19,21 @@ const ActionButtons = <T extends Lot | Tractor>({
     setSelectedLot,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
+    onTableUpdated,
 }: ActionButtonsProps<T>) => {
 
     // Function to start item
-    const handleStartClick = () => {
+    const handleStartClick = async () => {
         // Start tractor using Traffic Manager API
-        startTractor(item.id);
+        await startTractor(item.id);
+        onTableUpdated();
     };
 
     // Function to stop item
-    const handleStopClick = () => {
+    const handleStopClick = async () => {
         // Stop tractor using Traffic Manager API
-        stopTractor(item.id);
+        await stopTractor(item.id);
+        onTableUpdated();
     };
 
     // Function to add item to stock exchange
@@ -46,9 +50,10 @@ const ActionButtons = <T extends Lot | Tractor>({
     };
 
     // Function to unassign route from item
-    const handleUnassignRouteClick = () => {
+    const handleUnassignRouteClick = async () => {
         // Unassign route from tractor using Traffic Manager API
-        unassignRouteFromTractor(item.id);
+        await unassignRouteFromTractor(item.id);
+        onTableUpdated();
     };
 
     return (

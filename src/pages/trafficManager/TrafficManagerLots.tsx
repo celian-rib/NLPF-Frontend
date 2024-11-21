@@ -184,6 +184,7 @@ const TrafficManagerLots: React.FC = () => {
                                         itemType="lot"
                                         setSelectedLot={setSelectedLot}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                        onTableUpdated={fetchLots}
                                     />
 
                                 </tr>

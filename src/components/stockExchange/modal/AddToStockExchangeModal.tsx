@@ -16,7 +16,7 @@ const AddToStockExchangeModal = <T extends { id: string }>({
 }: StockExchangeModalProps<T>) => {
     const [limitDate, setLimitDate] = useState<string>('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
             ...(itemType === 'lot' ? { lot_id: item.id } : { tractor_id: item.id }),
@@ -25,12 +25,12 @@ const AddToStockExchangeModal = <T extends { id: string }>({
         if (itemType === 'lot')
         {
             // Create lot offer using Stock Exchange API
-            createLotOffer(data);
+            await createLotOffer(data);
         }
         else if (itemType === 'tractor')
         {
             // Create tractor offer using Stock Exchange API
-            createTractorOffer(data);
+            await createTractorOffer(data);
         }
         closeModal();
     };

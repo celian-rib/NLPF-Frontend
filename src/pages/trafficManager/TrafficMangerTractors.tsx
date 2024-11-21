@@ -144,6 +144,7 @@ const TrafficManagerTractors: React.FC = () => {
                                         itemType="tractor"
                                         setSelectedTractor={setSelectedTractor}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                        onTableUpdated={fetchTractors}
                                     />
 
                                 </tr>
