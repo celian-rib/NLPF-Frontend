@@ -94,3 +94,18 @@ export const assignTractorToTrafficManager = async (tractorId: string, trafficMa
 export const createRoute = async (data: any) => {
     return axios.post(`${API_BASE_URL}/routes/${userId}`, data);
 };
+
+// POST /tractors/{tractor_id}/actions/start
+export const startTractor = async (tractorId: string) => {
+    return axios.post(`${API_BASE_URL}/tractors/${tractorId}/actions/start`);
+};
+
+// POST /tractors/{tractor_id}/actions/stop
+export const stopTractor = async (tractorId: string) => {
+    return axios.post(`${API_BASE_URL}/tractors/${tractorId}/actions/stop`);
+};
+
+// DELETE /routes/tractors/{tractor_id}
+export const unassignRouteFromTractor = async (tractorId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/routes/tractors/${tractorId}`);
+};
