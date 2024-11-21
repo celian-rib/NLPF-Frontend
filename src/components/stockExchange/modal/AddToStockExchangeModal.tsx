@@ -19,7 +19,7 @@ const AddToStockExchangeModal = <T extends { id: string }>({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
-            id: item.id,
+            ...(itemType === 'lot' ? { lot_id: item.id } : { tractor_id: item.id }),
             limit_date: new Date(limitDate).toISOString(),
         };
         if (itemType === 'lot')
