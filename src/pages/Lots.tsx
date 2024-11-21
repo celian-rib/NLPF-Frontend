@@ -146,7 +146,7 @@ const Lots: React.FC = () => {
 
                                     <TrafficManagerSelect 
                                         item={lot}
-                                        trafficManagers={lot.traffic_manager ? trafficManagers : null}
+                                        trafficManagers={trafficManagers}
                                     />
 
                                     <ActionButtons
