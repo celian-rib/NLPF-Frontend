@@ -12,9 +12,6 @@ const TrafficManagerSelect = <T extends Lot | Tractor>({
     trafficManagers,
 }: TrafficManagerSelectProps<T>) => {
 
-    console.log("item: ", item);
-    console.log("trafficManagers: ", trafficManagers);
-
     // Function to handle traffic manager selection
     const handleTrafficManagerSelection = (trafficManagerId: string) => {
         if (item.traffic_manager)
@@ -31,7 +28,7 @@ const TrafficManagerSelect = <T extends Lot | Tractor>({
                 <span className="text-gray-400">None</span>
             ) : trafficManagers?.length === 1 ? (
                 <span className="text-black">{trafficManagers[0].username}</span>
-            ) : (
+            ) : item.status === 'available' ? (
                 <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5"
                     onChange={(e) => handleTrafficManagerSelection(e.target.value)}
                     defaultValue=""
@@ -42,6 +39,8 @@ const TrafficManagerSelect = <T extends Lot | Tractor>({
                         </option>
                     ))}
                 </select>
+            ) : (
+                <span className="text-gray-400">None</span>
             )}
         </td>
     );

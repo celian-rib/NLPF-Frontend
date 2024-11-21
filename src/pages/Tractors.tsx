@@ -146,7 +146,7 @@ const Tractors: React.FC = () => {
 
                                     <TrafficManagerSelect
                                         item={tractor}
-                                        trafficManagers={tractor.traffic_manager ? trafficManagers : null}
+                                        trafficManagers={trafficManagers}
                                     />
 
                                     <ActionButtons
