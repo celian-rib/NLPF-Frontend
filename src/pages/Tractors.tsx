@@ -65,7 +65,8 @@ const Tractors: React.FC = () => {
         fetchTractors();
         fetchCheckpoints();
         fetchTrafficManagers();
-    });
+        // eslint-disable-next-line
+    }, []);
 
     // Function to close modals
     const closeModal = async () => {
