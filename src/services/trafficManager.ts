@@ -90,6 +90,11 @@ export const assignTractorToTrafficManager = async (tractorId: string, trafficMa
     return axios.put(`${API_BASE_URL}/tractors/${tractorId}/traffic-managers/${trafficManagerId}`);
 };
 
+// PUT /routes/{route_id}/tractors/{tractor_id}
+export const assignRouteToTractor = async (routeId: string, tractorId: string) => {
+    return axios.put(`${API_BASE_URL}/routes/${routeId}/tractors/${tractorId}`);
+};
+
 // POST /routes/{traffic_manager_id}
 export const createRoute = async (data: any) => {
     return axios.post(`${API_BASE_URL}/routes/${userId}`, data);

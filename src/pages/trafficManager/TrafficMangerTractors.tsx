@@ -8,11 +8,10 @@ import { getStatusInfo } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import RouteAssign from '../../components/trafficManager/RouteAssign';
 import { Route } from '../../types/Route';
-import { Checkpoint } from '../../types/Checkpoint';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import EmptyTable from '../../components/utils/EmptyTable';
-import { getTractorsByTrafficManagerId } from '../../services/trafficManager';
+import { getRoutesByTrafficManagerId, getTractorsByTrafficManagerId } from '../../services/trafficManager';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -21,39 +20,31 @@ const TrafficManagerTractors: React.FC = () => {
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Tractor[]>([]);
+    const [routes, setRoutes] = useState<Route[]>([]);
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
-
-    const fakeCheckpoints: Checkpoint[] = [
-        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-    ];
     
     // Function to get compatible routes
-    const getCompatibleRoutes = (Tractor: Tractor): Route[] => {
-        const fakeRoutes: Route[] = [
-            {
-                route_id: '1',
-                route_name: 'Route 1',
-                checkpoint_routes: [fakeCheckpoints[0], fakeCheckpoints[1], fakeCheckpoints[2]],
-                traffic_manager_id: 'tm_01',
-            },
-            {
-                route_id: '2',
-                route_name: 'Route 2',
-                checkpoint_routes: [fakeCheckpoints[2], fakeCheckpoints[1]],
-                traffic_manager_id: 'tm_02',
-            },
-            {
-                route_id: '3',
-                route_name: 'Route 3',
-                checkpoint_routes: [fakeCheckpoints[0], fakeCheckpoints[2], fakeCheckpoints[1], fakeCheckpoints[0]],
-                traffic_manager_id: 'tm_03',
-            },
-        ];
-        return fakeRoutes;
+    const getCompatibleRoutes = (tractor: Tractor): Route[] => {
+        let compatibleRoutes: Route[] = [];
+        for (let i = 0; i < routes.length; i++)
+        {
+            const nbCheckpoints: number = routes[i].checkpoint_routes.length;
+            const startCheckpointId: string = routes[i].checkpoint_routes[0].id;
+            const endCheckpointId: string = routes[i].checkpoint_routes[nbCheckpoints - 1].id;
+            if (startCheckpointId === tractor.start_checkpoint.id && endCheckpointId === tractor.end_checkpoint.id)
+                compatibleRoutes.push(routes[i]);
+        }
+        return compatibleRoutes;
     }
+
+    // Fetch routes
+    const fetchRoutes = async () => {
+        const data = await getRoutesByTrafficManagerId();
+        if (!data)
+            return;
+        setRoutes(data);
+    };
 
     // Fetch tractors
     const fetchTractors = async () => {
@@ -65,6 +56,7 @@ const TrafficManagerTractors: React.FC = () => {
 
     useEffect(() => {
         fetchTractors();
+        fetchRoutes();
     }, []);
 
     // Function to close modals
@@ -143,6 +135,7 @@ const TrafficManagerTractors: React.FC = () => {
                                     <RouteAssign 
                                         tractor={tractor}
                                         compatibleRoutes={getCompatibleRoutes(tractor)}
+                                        onTableUpdated={fetchTractors}
                                     />
 
                                     <ActionButtons

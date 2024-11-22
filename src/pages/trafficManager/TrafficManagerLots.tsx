@@ -49,7 +49,7 @@ const TrafficManagerLots: React.FC = () => {
                 occupied_volume: 50,
                 type: TractorType.Bulk,
                 route: {
-                    route_id: '1',
+                    id: '1',
                     traffic_manager_id: '1',
                     route_name: 'Route 1',
                     checkpoint_routes: [
@@ -70,7 +70,7 @@ const TrafficManagerLots: React.FC = () => {
                 occupied_volume: 80,
                 type: TractorType.Liquid,
                 route: {
-                    route_id: '3',
+                    id: '3',
                     traffic_manager_id: '2',
                     route_name: 'Route 2',
                     checkpoint_routes: [
@@ -91,7 +91,7 @@ const TrafficManagerLots: React.FC = () => {
                 occupied_volume: 100,
                 type: TractorType.Solid,
                 route: {
-                    route_id: '2',
+                    id: '2',
                     traffic_manager_id: '3',
                     route_name: 'Route 3',
                     checkpoint_routes: [
