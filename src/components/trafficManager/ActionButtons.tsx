@@ -89,7 +89,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                         Stock exchange
                     </button>
 
-                    {itemType === 'tractor' && (item as Tractor).route !== null && (
+                    {itemType === 'tractor' && (item as Tractor).route !== null && (item as Tractor).route?.route_name && (
                         <button
                             onClick={() => handleUnassignRouteClick()}
                             className="bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md"
