@@ -52,6 +52,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                 // Assign tractor to trader using Trader API
                 await assignTractorToTrader(item.id);
             }
+            onTableUpdated();
         }
         else
         {
