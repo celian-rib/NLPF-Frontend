@@ -11,6 +11,8 @@ import { Route } from '../../types/Route';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getRoutesByTrafficManagerId, getTractorsByTrafficManagerId } from '../../services/trafficManager';
+import { UserInfo } from '../../types/UserInfo';
+import { getAllTraders } from '../../services/auth';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -20,6 +22,7 @@ const TrafficManagerTractors: React.FC = () => {
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
+    const [traders, setTraders] = useState<UserInfo[]>([]);
     
     // Function to get compatible routes
     const getCompatibleRoutes = (tractor: Tractor): Route[] => {
@@ -51,9 +54,19 @@ const TrafficManagerTractors: React.FC = () => {
         setTableData(data);
     };
 
+    // Fetch traders
+    const fetchTraders = async () => {
+        const data = await getAllTraders();
+        if (!data)
+            return;
+        setTraders(data);
+        return data;
+    };
+
     useEffect(() => {
         fetchTractors();
         fetchRoutes();
+        fetchTraders();
     }, []);
 
     // Sort and filter data
@@ -132,6 +145,7 @@ const TrafficManagerTractors: React.FC = () => {
                                     <ActionButtons
                                         item={tractor}
                                         itemType="tractor"
+                                        traders={traders}
                                         onTableUpdated={fetchTractors}
                                     />
 

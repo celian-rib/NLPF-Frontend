@@ -42,11 +42,22 @@ export const getUserInfo = async (): Promise<UserInfo | null> => {
     }
 };
 
-
 // GET /users/roles/traffic-managers
 export const getAllTrafficManagers = async (): Promise<UserInfo[] | null> => {
     try {
         const response = await axios.get<UserInfo[]>(`${API_BASE_URL}/users/roles/traffic-managers`);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404)
+            return null;
+        throw error;
+    }
+};
+
+// GET /users/roles/traders
+export const getAllTraders = async (): Promise<UserInfo[] | null> => {
+    try {
+        const response = await axios.get<UserInfo[]>(`${API_BASE_URL}/users/roles/traders`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)

@@ -4,16 +4,19 @@ import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
 import { startTractor, stopTractor, unassignRouteFromTractor } from '../../services/trafficManager';
 import { assignLotToTrader, assignTractorToTrader } from '../../services/trader';
+import { UserInfo } from '../../types/UserInfo';
 
 interface ActionButtonsProps<T> {
     item: T;
     itemType: 'tractor' | 'lot';
+    traders: UserInfo[];
     onTableUpdated: () => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
     item,
     itemType,
+    traders,
     onTableUpdated,
 }: ActionButtonsProps<T>) => {
 
@@ -68,13 +71,15 @@ const ActionButtons = <T extends Lot | Tractor>({
             ) : item.status === 'pending' ? (
                 <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
 
-                    <button
-                        onClick={() => handleAssignToTraderClick()}
-                        className="bg-purple-200 text-purple-800 px-4 py-2 flex items-center font-bold hover:bg-purple-300 transition-colors rounded-md"
-                    >
-                        <FontAwesomeIcon icon={faUser} className="mr-2" />
-                        Assign
-                    </button>
+                    {traders && traders.length > 0 && (
+                        <button
+                            onClick={() => handleAssignToTraderClick()}
+                            className="bg-purple-200 text-purple-800 px-4 py-2 flex items-center font-bold hover:bg-purple-300 transition-colors rounded-md"
+                        >
+                            <FontAwesomeIcon icon={faUser} className="mr-2" />
+                            Assign
+                        </button>
+                    )}
 
                     {itemType === 'tractor' && (item as Tractor).route !== null && (item as Tractor).route?.route_name && (
                     <>

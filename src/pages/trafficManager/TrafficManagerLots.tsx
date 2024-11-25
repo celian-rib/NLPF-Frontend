@@ -13,6 +13,8 @@ import { TractorType } from '../../types/TractorType';
 import { Tractor } from '../../types/Tractor';
 import { getLotsByTrafficManagerId } from '../../services/trafficManager';
 import EmptyTable from '../../components/utils/EmptyTable';
+import { getAllTraders } from '../../services/auth';
+import { UserInfo } from '../../types/UserInfo';
 
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -23,6 +25,7 @@ const TrafficManagerLots: React.FC = () => {
     const [tableData, setTableData] = useState<Lot[]>([]);
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
+    const [traders, setTraders] = useState<UserInfo[]>([]);
 
     // Fetch lots
     const fetchLots = async () => {
@@ -32,8 +35,18 @@ const TrafficManagerLots: React.FC = () => {
         setTableData(data);
     };
 
+    // Fetch traders
+    const fetchTraders = async () => {
+        const data = await getAllTraders();
+        if (!data)
+            return;
+        setTraders(data);
+        return data;
+    };
+
     useEffect(() => {
         fetchLots();
+        fetchTraders();
     }, []);
 
     // Function to get compatible tractors
@@ -180,6 +193,7 @@ const TrafficManagerLots: React.FC = () => {
                                     <ActionButtons
                                         item={lot}
                                         itemType="lot"
+                                        traders={traders}
                                         onTableUpdated={fetchLots}
                                     />
 
