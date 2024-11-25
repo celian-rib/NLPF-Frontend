@@ -21,7 +21,7 @@ const BidModal = <T extends { id: string, current_price: number, max_price?: num
     };
 
     // Function to handle form submission
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
             bid: bidAmount,
@@ -30,12 +30,12 @@ const BidModal = <T extends { id: string, current_price: number, max_price?: num
         if (offerType === 'lot')
         {
             // Make bid on a lot using Stock Exchange API
-            bidOnLot(offer.id, data);
+            await bidOnLot(offer.id, data);
         }
         else if (offerType === 'tractor')
         {
             // Make bid on a tractor using Stock Exchange API
-            bidOnTractor(offer.id, data);
+            await bidOnTractor(offer.id, data);
         }
         closeModal();
     };

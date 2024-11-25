@@ -43,6 +43,12 @@ const StockExchangeLots: React.FC = () => {
         fetchLotOffers();
     }, []);
 
+    // Function to close modal
+    const closeModal = async () => {
+        await fetchLotOffers();
+        setIsBidModalOpen(false);
+    };
+
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -125,7 +131,7 @@ const StockExchangeLots: React.FC = () => {
                 <BidModal
                     offer={selectedOffer}
                     offerType="lot"
-                    closeModal={() => setIsBidModalOpen(false)}
+                    closeModal={closeModal}
                 />
             )}
         </>
