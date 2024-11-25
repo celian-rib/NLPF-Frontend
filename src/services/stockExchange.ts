@@ -5,6 +5,7 @@ import { LotBid } from '../types/LotBid';
 import { TractorBid } from '../types/TractorBid';
 
 const API_BASE_URL = process.env.REACT_APP_STOCK_EXCHANGE_API_URL;
+const userId = localStorage.getItem('user_id');
 
 // GET /offers/lots
 export const getLotOffers = async (): Promise<LotOffer[] | null> => {
@@ -32,7 +33,7 @@ export const getTractorOffers = async (): Promise<TractorOffer[] | null> => {
 };
 
 // GET /offers/lots/users/{user_id}/bids
-export const getLotBidsByUserId = async (userId: string): Promise<LotBid[] | null> => {
+export const getLotBidsByUserId = async (): Promise<LotBid[] | null> => {
     try {
         const response = await axios.get<LotBid[]>(`${API_BASE_URL}/offers/lots/users/${userId}/bids`);
         return response.data;
@@ -44,7 +45,7 @@ export const getLotBidsByUserId = async (userId: string): Promise<LotBid[] | nul
 };
 
 // GET /offers/tractors/users/{user_id}/bids
-export const getTractorBidsByUserId = async (userId: string): Promise<TractorBid[] | null> => {
+export const getTractorBidsByUserId = async (): Promise<TractorBid[] | null> => {
     try {
         const response = await axios.get<TractorBid[]>(`${API_BASE_URL}/offers/tractors/users/${userId}/bids`);
         return response.data;

@@ -2,8 +2,10 @@ import { Checkpoint } from "../types/Checkpoint";
 import { Route } from "../types/Route";
 
 // Function to get status color and text
-export const getStatusInfo = (state: string): { color: string; text: string } => {
-    switch (state) {
+export const getStatusInfo = (status: string | undefined): { color: string; text: string } => {
+    if (!status)
+        return { color: 'bg-gray-200 text-gray-800', text: '🛇 Undifined' };
+    switch (status) {
         case 'available':
             return { color: 'bg-green-200 text-green-800', text: '◉ Available' };
         case 'pending':
@@ -23,6 +25,20 @@ export const getStatusInfo = (state: string): { color: string; text: string } =>
     }
 };
 
+// Function to get bid state color and text
+export const getBidStateInfo = (state: string): { color: string; text: string } => {
+    switch (state) {
+        case 'accepted':
+            return { color: 'bg-green-200 text-green-800', text: '◉ Accepted' };
+        case 'rejected':
+            return { color: 'bg-red-200 text-red-800', text: '◉ Rejected' };
+        case 'on_going':
+            return { color: 'bg-orange-200 text-orange-800', text: '◉ On going' };
+        default:
+            return { color: 'bg-gray-200 text-gray-800', text: '🛇 Unknown' };
+    }
+};
+
 // Function to validate input number
 export const validateInputNumber = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
     let value = e.target.value;
@@ -36,6 +52,18 @@ export const validateInputNumber = (e: React.ChangeEvent<HTMLInputElement>, setV
 export const formatDate = (date: string) => {
     const parsedDate = new Date(date);
     return `${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}/${parsedDate.getDate().toString().padStart(2, '0')}/${parsedDate.getFullYear()}`;
+};
+
+// Function to format a date as "MM/DD/YYYY HH:MM:SS"
+export const formatDateTime = (date: string) => {
+    const parsedDate = new Date(date);
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = parsedDate.getDate().toString().padStart(2, '0');
+    const year = parsedDate.getFullYear();
+    const hours = parsedDate.getHours().toString().padStart(2, '0');
+    const minutes = parsedDate.getMinutes().toString().padStart(2, '0');
+    const seconds = parsedDate.getSeconds().toString().padStart(2, '0');
+    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
 // Function to format route as string
