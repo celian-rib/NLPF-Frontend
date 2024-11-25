@@ -20,7 +20,7 @@ export const getLotsByTraderId = async (): Promise<Lot[] | null> => {
 // GET /traders/tractors/{trader_id}
 export const getTractorsByTraderId = async (): Promise<Tractor[] | null> => {
     try {
-        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/offers/tractors/${userId}`);
+        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/traders/tractors/${userId}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
