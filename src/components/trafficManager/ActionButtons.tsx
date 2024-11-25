@@ -77,7 +77,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                             className="bg-purple-200 text-purple-800 px-4 py-2 flex items-center font-bold hover:bg-purple-300 transition-colors rounded-md"
                         >
                             <FontAwesomeIcon icon={faUser} className="mr-2" />
-                            Assign
+                            Assign to trader
                         </button>
                     )}
 

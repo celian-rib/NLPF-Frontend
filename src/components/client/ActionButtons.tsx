@@ -81,7 +81,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                         onClick={handleAssignClick}
                     >
                         <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                        Assign
+                        Assign to traffic manager
                     </button>
                     <button
                         className="self-center bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"

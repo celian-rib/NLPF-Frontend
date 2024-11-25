@@ -35,7 +35,7 @@ const TractorAssign: React.FC<TractorAssignProps> = ({
                             className="bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md"
                         >
                             <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                            Assign
+                            Assign tractor
                         </button>
                     </div>
                 ) : (
