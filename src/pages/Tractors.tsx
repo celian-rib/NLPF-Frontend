@@ -35,7 +35,7 @@ const Tractors: React.FC = () => {
         for (let i = 0; i < tractors.length; i++)
         {
             tractors[i].traffic_manager = await getTrafficManagerByTractorId(tractors[i].id);
-            if (!tractors[i].traffic_manager && data && data.length === 1)
+            if (!tractors[i].traffic_manager && tractors[i].status === "available" && data && data.length === 1)
                 tractors[i].traffic_manager = data[0];
         }
         return tractors;

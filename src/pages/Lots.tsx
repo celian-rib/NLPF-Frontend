@@ -35,7 +35,7 @@ const Lots: React.FC = () => {
         for (let i = 0; i < lots.length; i++)
         {
             lots[i].traffic_manager = await getTrafficManagerByLotId(lots[i].id);
-            if (!lots[i].traffic_manager && data && data.length === 1)
+            if (!lots[i].traffic_manager && lots[i].status === "available" && data && data.length === 1)
                 lots[i].traffic_manager = data[0];
         }
         return lots;
