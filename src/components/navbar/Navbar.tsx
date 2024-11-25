@@ -23,6 +23,7 @@ const Navbar: React.FC = () => {
             '/traffic-manager': 'TrafficManager',
             '/trader': 'Trader',
             '/stock-exchange': 'StockExchange',
+            '/history': 'History',
             '/map': 'Map',
         };
         const currentPath = Object.keys(pathMap).find(path => location.pathname.startsWith(path));
@@ -85,7 +86,7 @@ const Navbar: React.FC = () => {
                                         onClick={() => setCurrentTab('Client')}
                                         className={currentTab === 'Client' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
                                     >
-                                        Client
+                                        Home
                                     </Link>
                                 </li>
                             )}
@@ -96,7 +97,7 @@ const Navbar: React.FC = () => {
                                         onClick={() => setCurrentTab('TrafficManager')}
                                         className={currentTab === 'TrafficManager' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
                                     >
-                                        Traffic Manager
+                                        Home
                                     </Link>
                                 </li>
                             )}
@@ -107,7 +108,7 @@ const Navbar: React.FC = () => {
                                         onClick={() => setCurrentTab('Trader')}
                                         className={currentTab === 'Trader' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
                                     >
-                                        Trader
+                                        Home
                                     </Link>
                                 </li>
                             )}
@@ -119,6 +120,17 @@ const Navbar: React.FC = () => {
                                         className={currentTab === 'StockExchange' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
                                     >
                                         Stock Exchange
+                                    </Link>
+                                </li>
+                            )}
+                            {hasAccess('History') && (
+                                <li>
+                                    <Link
+                                        to="/history"
+                                        onClick={() => setCurrentTab('History')}
+                                        className={currentTab === 'History' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                    >
+                                        History
                                     </Link>
                                 </li>
                             )}

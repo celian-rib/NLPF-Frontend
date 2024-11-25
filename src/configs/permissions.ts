@@ -4,7 +4,7 @@ export type UserRole = 'trafficManager' | 'trader' | 'client';
 export const rolePermissions: Record<UserRole, string[]> = {
     trafficManager: ['TrafficManager', 'Map'],
     trader: ['Trader', 'StockExchange'],
-    client: ['Client', 'StockExchange', 'Map'],
+    client: ['Client', 'StockExchange', 'History', 'Map'],
 };
 
 // Function to map roles

@@ -19,6 +19,8 @@ import ClientTractors from './pages/client/ClientTractors';
 import Map from './pages/Map';
 import './App.css';
 import {WebSocketProvider} from "./socket/WebSocketContext";
+import HistoryLots from './pages/history/HistoryLots';
+import HistorTractors from './pages/history/HistoryTractors';
 
 library.add(fas);
 
@@ -31,26 +33,17 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
 
-                <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/lots" replace />} />
                 <Route path="/client" element={<Navigate to="/client/lots" replace />} />
                 <Route path="/trader" element={<Navigate to="/trader/lots" replace />} />
                 <Route path="/traffic-manager" element={<Navigate to="/traffic-manager/routes" replace />} />
-
-                <Route path="/stock-exchange/*" element={
-                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="StockExchange">
-                        <Routes>
-                            <Route path="lots" element={<StockExchangeLots />} />
-                            <Route path="tractors" element={<StockExchangeTractors />} />
-                        </Routes>
-                    </ProtectedRouteWrapper>
-                } />
+                <Route path="/history" element={<Navigate to="/history/lots" replace />} />
+                <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/lots" replace />} />
 
                 <Route path="/client/*" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Client">
                         <Routes>
                             <Route path="lots" element={<ClientLots />} />
                             <Route path="tractors" element={<ClientTractors />} />
-                            <Route path="history"/>
                         </Routes>
                     </ProtectedRouteWrapper>
                 } />
@@ -70,6 +63,24 @@ function App() {
                         <Routes>
                             <Route path="lots" element={<TraderLots />} />
                             <Route path="tractors" element={<TraderTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
+                <Route path="/stock-exchange/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="StockExchange">
+                        <Routes>
+                            <Route path="lots" element={<StockExchangeLots />} />
+                            <Route path="tractors" element={<StockExchangeTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
+                <Route path="/history/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="History">
+                        <Routes>
+                            <Route path="lots" element={<HistoryLots />} />
+                            <Route path="tractors" element={<HistorTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>
                 } />
