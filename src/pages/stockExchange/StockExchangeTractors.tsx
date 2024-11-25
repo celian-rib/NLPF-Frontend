@@ -84,7 +84,7 @@ const StockExchangeTractors: React.FC = () => {
                         </thead>
                         <tbody>
                             {sortedData.map((offer, index) => (
-                                <tr key={offer.offer_id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                                <tr key={offer.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
 
                                     <td className="border p-2 text-center">{formatDate(offer.limit_date)}</td>
 

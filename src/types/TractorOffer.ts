@@ -2,7 +2,7 @@ import { Checkpoint } from "./Checkpoint";
 import { TractorType } from "./TractorType";
 
 export interface TractorOffer {
-    offer_id: string;
+    id: string;
     status: string;
     volume: number;
     type: TractorType;

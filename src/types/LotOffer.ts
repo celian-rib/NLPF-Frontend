@@ -2,7 +2,7 @@ import { Checkpoint } from "./Checkpoint";
 import { LotType } from "./LotType";
 
 export interface LotOffer {
-    offer_id: string;
+    id: string;
     status: string;
     volume: number;
     type: LotType;

@@ -7,7 +7,7 @@ interface BidModalProps<T> {
     closeModal: () => void;
 }
 
-const BidModal = <T extends { offer_id: string, current_price: number, max_price?: number, min_price?: number }>({
+const BidModal = <T extends { id: string, current_price: number, max_price?: number, min_price?: number }>({
     offer,
     offerType,
     closeModal
@@ -30,12 +30,12 @@ const BidModal = <T extends { offer_id: string, current_price: number, max_price
         if (offerType === 'lot')
         {
             // Make bid on a lot using Stock Exchange API
-            bidOnLot(offer.offer_id, data);
+            bidOnLot(offer.id, data);
         }
         else if (offerType === 'tractor')
         {
             // Make bid on a tractor using Stock Exchange API
-            bidOnTractor(offer.offer_id, data);
+            bidOnTractor(offer.id, data);
         }
         closeModal();
     };
