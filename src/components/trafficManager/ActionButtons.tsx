@@ -71,16 +71,6 @@ const ActionButtons = <T extends Lot | Tractor>({
             ) : item.status === 'pending' ? (
                 <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
 
-                    {itemType === 'tractor' && (
-                        <button
-                            onClick={() => handleStartClick()}
-                            className="bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md"
-                        >
-                            <FontAwesomeIcon icon={faTruck} className="mr-2" />
-                            Start
-                        </button>
-                    )}
-
                     <button
                         onClick={() => handleStockExchangeClick()}
                         className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
@@ -90,6 +80,15 @@ const ActionButtons = <T extends Lot | Tractor>({
                     </button>
 
                     {itemType === 'tractor' && (item as Tractor).route !== null && (item as Tractor).route?.route_name && (
+                    <>
+                        <button
+                            onClick={() => handleStartClick()}
+                            className="bg-green-200 text-green-800 px-4 py-2 flex items-center font-bold hover:bg-green-300 transition-colors rounded-md"
+                        >
+                            <FontAwesomeIcon icon={faTruck} className="mr-2" />
+                            Start
+                        </button>
+                        
                         <button
                             onClick={() => handleUnassignRouteClick()}
                             className="bg-red-200 text-red-600 px-4 py-2 flex items-center font-bold hover:bg-red-300 transition-colors rounded-md"
@@ -97,6 +96,7 @@ const ActionButtons = <T extends Lot | Tractor>({
                             <FontAwesomeIcon icon={faEraser} className="mr-2" />
                             Unassign route
                         </button>
+                    </>
                     )}
                 </div>
 
