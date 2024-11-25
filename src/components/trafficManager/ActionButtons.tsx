@@ -3,6 +3,7 @@ import { faTruck, faPlus, faHand, faEraser } from '@fortawesome/free-solid-svg-i
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
 import { startTractor, stopTractor, unassignRouteFromTractor } from '../../services/trafficManager';
+import { assignLotToTrader, assignTractorToTrader } from '../../services/trader';
 
 interface ActionButtonsProps<T> {
     item: T;
@@ -21,6 +22,7 @@ const ActionButtons = <T extends Lot | Tractor>({
     setIsStockExchangeModalOpen,
     onTableUpdated,
 }: ActionButtonsProps<T>) => {
+    const role: string | null = localStorage.getItem('user_role');
 
     // Function to start item
     const handleStartClick = async () => {
@@ -37,16 +39,32 @@ const ActionButtons = <T extends Lot | Tractor>({
     };
 
     // Function to add item to stock exchange
-    const handleStockExchangeClick = () => {
-        if (itemType === 'lot' && setSelectedLot)
+    const handleStockExchangeClick = async () => {
+        if (role === 'traffic-manager')
         {
-            setSelectedLot(item as Lot);
+            if (itemType === 'lot')
+            {
+                // Assign lot to trader using Trader API
+                await assignLotToTrader(item.id);
+            }
+            else if (itemType === 'tractor')
+            {
+                // Assign tractor to trader using Trader API
+                await assignTractorToTrader(item.id);
+            }
         }
-        else if (itemType === 'tractor' && setSelectedTractor)
+        else
         {
-            setSelectedTractor(item as Tractor);
+            if (itemType === 'lot' && setSelectedLot)
+            {
+                setSelectedLot(item as Lot);
+            }
+            else if (itemType === 'tractor' && setSelectedTractor)
+            {
+                setSelectedTractor(item as Tractor);
+            }
+            setIsStockExchangeModalOpen(true);
         }
-        setIsStockExchangeModalOpen(true);
     };
 
     // Function to unassign route from item
