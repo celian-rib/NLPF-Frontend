@@ -1,8 +1,7 @@
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar/Navbar";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
 import DisplayLayerButtons from "../components/map/DisplayLayerButtons";
 import { Lot } from '../types/Lot';
@@ -10,6 +9,8 @@ import { getLotsByClientId, getTractorsByClientId } from '../services/assets';
 import { getAllCheckpoints, getLotsByTrafficManagerId, getTractorsByTrafficManagerId } from '../services/trafficManager';
 import { Checkpoint } from '../types/Checkpoint';
 import { Tractor } from '../types/Tractor';
+import MarkerWithPopup from '../components/map/MarkerWithPopup';
+import CheckpointMarker from '../components/map/CheckpointMarker';
 
 const Map: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
@@ -26,19 +27,7 @@ const Map: React.FC = () => {
         checkpoints: true,
         tractors: true,
         routes: true,
-    });
-
-    // Generate a custom icon
-    const createCustomIcon = (name: string, color: string, size: number) => {
-        return L.divIcon({
-            html: `<div style="display: flex; justify-content: center; align-items: center;">
-                    <i class="fas fa-${name}" style="font-size: ${size}px; color: ${color};"></i>
-                </div>`,
-            className: '',
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-        });
-    };    
+    });  
 
     // Fetch lots
     const fetchLots = async () => {
@@ -118,59 +107,34 @@ const Map: React.FC = () => {
 
                         {activeButtons.lots &&
                             lots.map((lot) => (
-                                <Marker
-                                    key={lot.id}
-                                    position={[
-                                        lot.current_checkpoint.checkpoint_latitude,
-                                        lot.current_checkpoint.checkpoint_longitude,
-                                    ]}
-                                    icon={createCustomIcon('box', '#d946ef', 40)}
-                                >
-                                    <Popup>
-                                        <div>
-                                            <h1>{lot.lot_name}</h1>
-                                            <p><strong>Status:</strong> {lot.status}</p>
-                                            <p><strong>Location:</strong> {lot.current_checkpoint.checkpoint_name}</p>
-                                            <p><strong>Departure:</strong> {lot.start_checkpoint.checkpoint_name}</p>
-                                            <p><strong>Arrival:</strong> {lot.end_checkpoint.checkpoint_name}</p>
-                                        </div>
-                                    </Popup>
-                                </Marker>
+                                <MarkerWithPopup
+                                    key={`lot-${lot.id}`}
+                                    item={lot}
+                                    itemType={'lot'}
+                                    iconName={'box'}
+                                    iconColor={'#d946ef'}
+                                    iconSize={40}
+                                />
                             ))}
 
                         {activeButtons.tractors &&
                             tractors.map((tractor) => (
-                                <Marker
-                                    key={tractor.id}
-                                    position={[
-                                        tractor.current_checkpoint.checkpoint_latitude,
-                                        tractor.current_checkpoint.checkpoint_longitude,
-                                    ]}
-                                    icon={createCustomIcon('truck', '#6366f1', 35)}
-                                >
-                                    <Popup>
-                                        <div>
-                                            <h3>{tractor.tractor_name}</h3>
-                                            <p><strong>Status:</strong> {tractor.status}</p>
-                                            <p><strong>Volume:</strong> {tractor.volume}</p>
-                                            <p><strong>Max Price:</strong> {tractor.min_price}</p>
-                                            <p><strong>Current Checkpoint:</strong> {tractor.current_checkpoint.checkpoint_name}</p>
-                                        </div>
-                                    </Popup>
-                                </Marker>
+                                <MarkerWithPopup
+                                    key={`tractor-${tractor.id}`}
+                                    item={tractor}
+                                    itemType={'tractor'}
+                                    iconName={'truck'}
+                                    iconColor={'#6366f1'}
+                                    iconSize={35}
+                                />
                             ))}
 
                         {activeButtons.checkpoints &&
                             checkpoints.map((checkpoint) => (
-                                <Marker
-                                    key={checkpoint.id}
-                                    position={[
-                                        checkpoint.checkpoint_latitude,
-                                        checkpoint.checkpoint_longitude,
-                                    ]}
-                                    icon={createCustomIcon('location-pin', '#a855f7', 20)}
-                                >
-                                </Marker>
+                                <CheckpointMarker
+                                    key={`checkpoint-${checkpoint.id}`}
+                                    checkpoint={checkpoint}
+                                />
                             ))}
                     </MapContainer>
                 </div>
