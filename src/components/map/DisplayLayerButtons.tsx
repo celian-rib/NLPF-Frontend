@@ -22,11 +22,11 @@ const DisplayLayerButtons: React.FC<DisplayLayerButtonsProps> = ({activeButtons,
             <button
                 onClick={() => toggleButton("lots")}
                 className={`py-2 px-4 rounded-md shadow transition ${
-                    activeButtons.lots ? "bg-red-500 hover:bg-red-700" : "bg-fuchsia-500 hover:bg-fuchsia-700"
+                    !activeButtons.lots ? "bg-red-500 hover:bg-red-700" : "bg-fuchsia-500 hover:bg-fuchsia-700"
                 } text-white`}
             >
                 <FontAwesomeIcon
-                    icon={activeButtons.lots ? faEyeSlash : faEye}
+                    icon={!activeButtons.lots ? faEyeSlash : faEye}
                     className="mr-2"
                 />
                 Lots
@@ -35,11 +35,11 @@ const DisplayLayerButtons: React.FC<DisplayLayerButtonsProps> = ({activeButtons,
             <button
                 onClick={() => toggleButton("checkpoints")}
                 className={`py-2 px-4 rounded-md shadow transition ${
-                    activeButtons.checkpoints ? "bg-red-500 hover:bg-red-700" : "bg-purple-500 hover:bg-purple-700"
+                    !activeButtons.checkpoints ? "bg-red-500 hover:bg-red-700" : "bg-purple-500 hover:bg-purple-700"
                 } text-white`}
             >
                 <FontAwesomeIcon
-                    icon={activeButtons.checkpoints ? faEyeSlash : faEye}
+                    icon={!activeButtons.checkpoints ? faEyeSlash : faEye}
                     className="mr-2"
                 />
                 Checkpoints
@@ -48,11 +48,11 @@ const DisplayLayerButtons: React.FC<DisplayLayerButtonsProps> = ({activeButtons,
             <button
                 onClick={() => toggleButton("tractors")}
                 className={`py-2 px-4 rounded-md shadow transition ${
-                    activeButtons.tractors ? "bg-red-500 hover:bg-red-700" : "bg-indigo-500 hover:bg-indigo-700"
+                    !activeButtons.tractors ? "bg-red-500 hover:bg-red-700" : "bg-indigo-500 hover:bg-indigo-700"
                 } text-white`}
             >
                 <FontAwesomeIcon
-                    icon={activeButtons.tractors ? faEyeSlash : faEye}
+                    icon={!activeButtons.tractors ? faEyeSlash : faEye}
                     className="mr-2"
                 />
                 Tractors
@@ -61,11 +61,11 @@ const DisplayLayerButtons: React.FC<DisplayLayerButtonsProps> = ({activeButtons,
             <button
                 onClick={() => toggleButton("routes")}
                 className={`py-2 px-4 rounded-md shadow transition ${
-                    activeButtons.routes ? "bg-red-500 hover:bg-red-700" : "bg-sky-500 hover:bg-sky-700"
+                    !activeButtons.routes ? "bg-red-500 hover:bg-red-700" : "bg-sky-500 hover:bg-sky-700"
                 } text-white`}
             >
                 <FontAwesomeIcon
-                    icon={activeButtons.routes ? faEyeSlash : faEye}
+                    icon={!activeButtons.routes ? faEyeSlash : faEye}
                     className="mr-2"
                 />
                 Routes
