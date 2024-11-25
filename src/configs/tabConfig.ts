@@ -3,6 +3,12 @@ export const stockExchangeTabs = [
     { name: 'Tractors', path: '/stock-exchange/tractors' }
 ];
 
+export const clientTabs = [
+    { name: 'Lots', path: '/client/lots' },
+    { name: 'Tractors', path: '/client/tractors' },
+    { name: 'History', path: '/client/history' }
+];
+
 export const traderTabs = [
     { name: 'Lots', path: '/trader/lots' },
     { name: 'Tractors', path: '/trader/tractors' }

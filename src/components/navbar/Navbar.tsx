@@ -19,12 +19,11 @@ const Navbar: React.FC = () => {
     // Set the current tab based on the URL path
     useEffect(() => {
         const pathMap: Record<string, string> = {
+            '/client': 'Client',
             '/traffic-manager': 'TrafficManager',
-            '/lots': 'Lots',
-            '/tractors': 'Tractors',
             '/trader': 'Trader',
             '/stock-exchange': 'StockExchange',
-            '/map': 'Map'
+            '/map': 'Map',
         };
         const currentPath = Object.keys(pathMap).find(path => location.pathname.startsWith(path));
         setCurrentTab(currentPath ? pathMap[currentPath] : '');
@@ -79,25 +78,14 @@ const Navbar: React.FC = () => {
                         </Link>
 
                         <ul className="flex space-x-8 ml-16 text-base">
-                            {hasAccess('Lots') && (
+                            {hasAccess('Client') && (
                                 <li>
                                     <Link
-                                        to="/lots"
-                                        onClick={() => setCurrentTab('Lots')}
-                                        className={currentTab === 'Lots' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
+                                        to="/client"
+                                        onClick={() => setCurrentTab('Client')}
+                                        className={currentTab === 'Client' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
                                     >
-                                        Lots
-                                    </Link>
-                                </li>
-                            )}
-                            {hasAccess('Tractors') && (
-                                <li>
-                                    <Link
-                                        to="/tractors"
-                                        onClick={() => setCurrentTab('Tractors')}
-                                        className={currentTab === 'Tractors' ? 'font-bold text-blue-400' : 'hover:text-blue-400 transition-colors duration-300'}
-                                    >
-                                        Tractors
+                                        Client
                                     </Link>
                                 </li>
                             )}

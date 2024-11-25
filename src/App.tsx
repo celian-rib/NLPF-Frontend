@@ -14,8 +14,8 @@ import TrafficManagerRoutes from './pages/trafficManager/TrafficManagerRoutes';
 import TrafficManagerTractors from './pages/trafficManager/TrafficMangerTractors';
 import { normalizeUserRole, UserRole } from './configs/permissions';
 import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
-import Lots from './pages/Lots';
-import Tractors from './pages/Tractors';
+import ClientLots from './pages/client/ClientLots';
+import ClientTractors from './pages/client/ClientTractors';
 import Map from './pages/Map';
 import './App.css';
 import {WebSocketProvider} from "./socket/WebSocketContext";
@@ -31,18 +31,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
 
-                <Route path="/lots" element={
-                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Lots">
-                        <Lots />
-                    </ProtectedRouteWrapper>
-                } />
-                <Route path="/tractors" element={
-                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Tractors">
-                        <Tractors />
-                    </ProtectedRouteWrapper>
-                } />
-
                 <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/lots" replace />} />
+                <Route path="/client" element={<Navigate to="/client/lots" replace />} />
                 <Route path="/trader" element={<Navigate to="/trader/lots" replace />} />
                 <Route path="/traffic-manager" element={<Navigate to="/traffic-manager/routes" replace />} />
 
@@ -51,6 +41,16 @@ function App() {
                         <Routes>
                             <Route path="lots" element={<StockExchangeLots />} />
                             <Route path="tractors" element={<StockExchangeTractors />} />
+                        </Routes>
+                    </ProtectedRouteWrapper>
+                } />
+
+                <Route path="/client/*" element={
+                    <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Client">
+                        <Routes>
+                            <Route path="lots" element={<ClientLots />} />
+                            <Route path="tractors" element={<ClientTractors />} />
+                            <Route path="history"/>
                         </Routes>
                     </ProtectedRouteWrapper>
                 } />

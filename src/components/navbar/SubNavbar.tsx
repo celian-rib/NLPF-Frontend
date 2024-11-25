@@ -18,11 +18,10 @@ const SubNavbar: React.FC<SubNavbarProps> = ({ tabs, currentTab, setCurrentTab }
     // Set the active tab based on the URL
     useEffect(() => {
         const activeTab = tabs.find((tab) => location.pathname.includes(tab.path));
-        if (activeTab) {
+        if (activeTab)
             setCurrentTab(activeTab.name);
-        } else {
+        else
             setCurrentTab('');
-        }
     }, [location.pathname, tabs, setCurrentTab]);
 
     return (
