@@ -31,13 +31,8 @@ const Lots: React.FC = () => {
 
     // Fetch traffic managers of lots
     const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
-        const data = await fetchTrafficManagers();
         for (let i = 0; i < lots.length; i++)
-        {
             lots[i].traffic_manager = await getTrafficManagerByLotId(lots[i].id);
-            if (!lots[i].traffic_manager && lots[i].status === "available" && data && data.length === 1)
-                lots[i].traffic_manager = data[0];
-        }
         return lots;
     };
 
@@ -70,6 +65,7 @@ const Lots: React.FC = () => {
     useEffect(() => {
         fetchLots();
         fetchCheckpoints();
+        fetchTrafficManagers();
         // eslint-disable-next-line
     }, []);
 

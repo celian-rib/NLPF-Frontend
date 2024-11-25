@@ -31,13 +31,8 @@ const Tractors: React.FC = () => {
 
     // Fetch traffic managers of tractors
     const fetchTrafficManagersOfTractors = async (tractors: Tractor[]): Promise<Tractor[]> => {
-        const data = await fetchTrafficManagers();
         for (let i = 0; i < tractors.length; i++)
-        {
             tractors[i].traffic_manager = await getTrafficManagerByTractorId(tractors[i].id);
-            if (!tractors[i].traffic_manager && tractors[i].status === "available" && data && data.length === 1)
-                tractors[i].traffic_manager = data[0];
-        }
         return tractors;
     };
 
@@ -70,6 +65,7 @@ const Tractors: React.FC = () => {
     useEffect(() => {
         fetchTractors();
         fetchCheckpoints();
+        fetchTrafficManagers();
         // eslint-disable-next-line
     }, []);
 
