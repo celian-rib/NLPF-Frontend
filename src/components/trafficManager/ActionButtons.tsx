@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTruck, faPlus, faHand, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { faTruck, faHand, faEraser, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
 import { Tractor } from '../../types/Tractor';
 import { startTractor, stopTractor, unassignRouteFromTractor } from '../../services/trafficManager';
@@ -8,21 +8,14 @@ import { assignLotToTrader, assignTractorToTrader } from '../../services/trader'
 interface ActionButtonsProps<T> {
     item: T;
     itemType: 'tractor' | 'lot';
-    setSelectedLot?: (lot: Lot) => void;
-    setSelectedTractor?: (tractor: Tractor) => void;
-    setIsStockExchangeModalOpen: (open: boolean) => void;
     onTableUpdated: () => void;
 }
 
 const ActionButtons = <T extends Lot | Tractor>({
     item,
     itemType,
-    setSelectedLot,
-    setSelectedTractor,
-    setIsStockExchangeModalOpen,
     onTableUpdated,
 }: ActionButtonsProps<T>) => {
-    const role: string | null = localStorage.getItem('user_role');
 
     // Function to start item
     const handleStartClick = async () => {
@@ -38,34 +31,19 @@ const ActionButtons = <T extends Lot | Tractor>({
         onTableUpdated();
     };
 
-    // Function to add item to stock exchange
-    const handleStockExchangeClick = async () => {
-        if (role === 'traffic-manager')
+    // Function to send item to trader
+    const handleAssignToTraderClick = async () => {
+        if (itemType === 'lot')
         {
-            if (itemType === 'lot')
-            {
-                // Assign lot to trader using Trader API
-                await assignLotToTrader(item.id);
-            }
-            else if (itemType === 'tractor')
-            {
-                // Assign tractor to trader using Trader API
-                await assignTractorToTrader(item.id);
-            }
-            onTableUpdated();
+            // Assign lot to trader using Trader API
+            await assignLotToTrader(item.id);
         }
-        else
+        else if (itemType === 'tractor')
         {
-            if (itemType === 'lot' && setSelectedLot)
-            {
-                setSelectedLot(item as Lot);
-            }
-            else if (itemType === 'tractor' && setSelectedTractor)
-            {
-                setSelectedTractor(item as Tractor);
-            }
-            setIsStockExchangeModalOpen(true);
+            // Assign tractor to trader using Trader API
+            await assignTractorToTrader(item.id);
         }
+        onTableUpdated();
     };
 
     // Function to unassign route from item
@@ -91,11 +69,11 @@ const ActionButtons = <T extends Lot | Tractor>({
                 <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
 
                     <button
-                        onClick={() => handleStockExchangeClick()}
-                        className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
+                        onClick={() => handleAssignToTraderClick()}
+                        className="bg-purple-200 text-purple-800 px-4 py-2 flex items-center font-bold hover:bg-purple-300 transition-colors rounded-md"
                     >
-                        <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                        Stock exchange
+                        <FontAwesomeIcon icon={faUser} className="mr-2" />
+                        Assign
                     </button>
 
                     {itemType === 'tractor' && (item as Tractor).route !== null && (item as Tractor).route?.route_name && (

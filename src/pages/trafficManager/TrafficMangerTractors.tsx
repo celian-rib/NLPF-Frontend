@@ -9,7 +9,6 @@ import { sortAndFilterData } from '../../utils/sortingUtils';
 import RouteAssign from '../../components/trafficManager/RouteAssign';
 import { Route } from '../../types/Route';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
-import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getRoutesByTrafficManagerId, getTractorsByTrafficManagerId } from '../../services/trafficManager';
 
@@ -21,8 +20,6 @@ const TrafficManagerTractors: React.FC = () => {
     const [sortOption, setSortOption] = useState<string>('none');
     const [tableData, setTableData] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
-    const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
-    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     
     // Function to get compatible routes
     const getCompatibleRoutes = (tractor: Tractor): Route[] => {
@@ -58,12 +55,6 @@ const TrafficManagerTractors: React.FC = () => {
         fetchTractors();
         fetchRoutes();
     }, []);
-
-    // Function to close modals
-    const closeModal = async () => {
-        await fetchTractors();
-        setIsStockExchangeModalOpen(false);
-    };
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
@@ -141,8 +132,6 @@ const TrafficManagerTractors: React.FC = () => {
                                     <ActionButtons
                                         item={tractor}
                                         itemType="tractor"
-                                        setSelectedTractor={setSelectedTractor}
-                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                         onTableUpdated={fetchTractors}
                                     />
 
@@ -156,15 +145,6 @@ const TrafficManagerTractors: React.FC = () => {
                     <EmptyTable />
                 )}
             </main>
-
-            {isStockExchangeModalOpen && selectedTractor && (
-                <AddToStockExchangeModal
-                    item={selectedTractor}
-                    itemType="tractor"
-                    minDate={new Date().toISOString().split("T")[0]}
-                    closeModal={closeModal}
-                />
-            )}
         </>
     );
 };

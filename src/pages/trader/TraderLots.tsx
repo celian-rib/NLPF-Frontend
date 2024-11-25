@@ -100,7 +100,7 @@ const TraderLots: React.FC = () => {
                                                     className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
                                                 >
                                                     <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                                                    Publish
+                                                    Stock exchange
                                                 </button>
                                             ) : (
                                                 <span className="text-gray-500">-</span>

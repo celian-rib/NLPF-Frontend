@@ -8,7 +8,6 @@ import { Lot } from '../../types/Lot';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import TractorAssign from '../../components/trafficManager/TractorAssign';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
-import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import AssignTractorModal from '../../components/trafficManager/modal/AssignTractorModal';
 import { TractorType } from '../../types/TractorType';
 import { Tractor } from '../../types/Tractor';
@@ -24,7 +23,6 @@ const TrafficManagerLots: React.FC = () => {
     const [tableData, setTableData] = useState<Lot[]>([]);
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
-    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     // Fetch lots
     const fetchLots = async () => {
@@ -108,12 +106,6 @@ const TrafficManagerLots: React.FC = () => {
         return fakeTractors;   
     }
 
-    // Function to close modals
-    const closeModal = async () => {
-        await fetchLots();
-        setIsStockExchangeModalOpen(false);
-    };
-
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -188,8 +180,6 @@ const TrafficManagerLots: React.FC = () => {
                                     <ActionButtons
                                         item={lot}
                                         itemType="lot"
-                                        setSelectedLot={setSelectedLot}
-                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
                                         onTableUpdated={fetchLots}
                                     />
 
@@ -209,15 +199,6 @@ const TrafficManagerLots: React.FC = () => {
                     lotId={selectedLot.id}
                     compatibleTractors={getCompatibleTractors(selectedLot)}
                     closeModal={() => setIsAssignTractorModalOpen(false)}
-                />
-            )}
-
-            {isStockExchangeModalOpen && selectedLot && (
-                <AddToStockExchangeModal
-                    item={selectedLot}
-                    itemType="lot"
-                    minDate={new Date().toISOString().split("T")[0]}
-                    closeModal={closeModal}
                 />
             )}
         </>
