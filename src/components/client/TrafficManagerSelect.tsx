@@ -24,11 +24,11 @@ const TrafficManagerSelect = <T extends Lot | Tractor>({
         <td className="border text-center p-2">
             {item.traffic_manager ? (
                 <span className="text-black">{item.traffic_manager.username}</span>
-            ) : !trafficManagers ? (
+            ) : item.status !== 'available' || !trafficManagers ? (
                 <span className="text-gray-400">None</span>
             ) : trafficManagers?.length === 1 ? (
                 <span className="text-black">{trafficManagers[0].username}</span>
-            ) : item.status === 'available' ? (
+            ) : trafficManagers?.length > 1 ? (
                 <select className="border border-gray-300 rounded px-2 py-1 mx-auto w-4/5"
                     onChange={(e) => handleTrafficManagerSelection(e.target.value)}
                     defaultValue=""

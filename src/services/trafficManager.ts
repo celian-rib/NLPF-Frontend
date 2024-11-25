@@ -12,7 +12,10 @@ const userId = localStorage.getItem('user_id');
 export const getLotsByTrafficManagerId = async (): Promise<Lot[] | null> => {
     try {
         const response = await axios.get<Lot[]>(`${API_BASE_URL}/lots/traffic-managers/${userId}`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
@@ -24,7 +27,10 @@ export const getLotsByTrafficManagerId = async (): Promise<Lot[] | null> => {
 export const getTractorsByTrafficManagerId = async (): Promise<Tractor[] | null> => {
     try {
         const response = await axios.get<Tractor[]>(`${API_BASE_URL}/tractors/traffic-managers/${userId}`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
@@ -36,7 +42,10 @@ export const getTractorsByTrafficManagerId = async (): Promise<Tractor[] | null>
 export const getRoutesByTrafficManagerId = async (): Promise<Route[] | null> => {
     try {
         const response = await axios.get<Route[]>(`${API_BASE_URL}/routes/traffic-managers/${userId}`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
@@ -48,7 +57,10 @@ export const getRoutesByTrafficManagerId = async (): Promise<Route[] | null> => 
 export const getTrafficManagerByLotId = async (lotId: string): Promise<UserInfo | null> => {
     try {
         const response = await axios.get<UserInfo>(`${API_BASE_URL}/lots/${lotId}/traffic_manager`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
@@ -60,7 +72,10 @@ export const getTrafficManagerByLotId = async (lotId: string): Promise<UserInfo 
 export const getTrafficManagerByTractorId = async (tractorId: string): Promise<UserInfo | null> => {
     try {
         const response = await axios.get<UserInfo>(`${API_BASE_URL}/tractors/${tractorId}/traffic_manager`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
@@ -72,7 +87,10 @@ export const getTrafficManagerByTractorId = async (tractorId: string): Promise<U
 export const getAllCheckpoints = async (): Promise<Checkpoint[] | null> => {
     try {
         const response = await axios.get<Checkpoint[]>(`${API_BASE_URL}/checkpoints`);
-        return response.data;
+        if (response.status === 204)
+            return null;
+        else
+            return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
             return null;
