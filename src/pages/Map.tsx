@@ -12,13 +12,15 @@ import { Tractor } from '../types/Tractor';
 import MarkerWithPopup from '../components/map/MarkerWithPopup';
 import CheckpointMarker from '../components/map/CheckpointMarker';
 import { Route } from '../types/Route';
+import { getStatusColorHex } from '../utils/utils';
+import { AssignedRoute } from '../types/AssignedRoute';
 
 const Map: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [lots, setLots] = useState<Lot[]>([]);
     const [tractors, setTractors] = useState<Tractor[]>([]);
-    const [routes, setRoutes] = useState<Route[]>([]);
+    const [routes, setRoutes] = useState<AssignedRoute[]>([]);
 
     const center: LatLngExpression = [44.9068, 3.9598];
     const zoom = 5;
@@ -73,11 +75,18 @@ const Map: React.FC = () => {
         const data = await fetchTractors();
         if (!data)
             return
-        let assignedRoutes: Route[] = [];
+        let assignedRoutes: AssignedRoute[] = [];
+        let assignedRoute: AssignedRoute;
         for (let i = 0; i < data.length; i++)
         {
             if (data[i].route && data[i].route?.route_name)
-                assignedRoutes.push(data[i].route as Route);
+            {
+                assignedRoute = {
+                    tractor: data[i],
+                    route: data[i].route as Route
+                };
+                assignedRoutes.push(assignedRoute);
+            }
         }
         setRoutes(assignedRoutes);
     };
@@ -129,7 +138,7 @@ const Map: React.FC = () => {
                                     item={lot}
                                     itemType={'lot'}
                                     iconName={'box'}
-                                    iconColor={'#d946ef'}
+                                    iconColor={getStatusColorHex(lot.status)}
                                     iconSize={40}
                                 />
                             ))}
@@ -141,7 +150,7 @@ const Map: React.FC = () => {
                                     item={tractor}
                                     itemType={'tractor'}
                                     iconName={'truck'}
-                                    iconColor={'#6366f1'}
+                                    iconColor={getStatusColorHex(tractor.status)}
                                     iconSize={35}
                                 />
                             ))}
@@ -157,12 +166,12 @@ const Map: React.FC = () => {
                         {activeButtons.routes &&
                             routes.map((route) => (
                                 <Polyline
-                                    key={`route-${route.id}`}
-                                    positions={route.checkpoint_routes.map((checkpoint) => [
+                                    key={`route-${route.route.id}`}
+                                    positions={route.route.checkpoint_routes.map((checkpoint) => [
                                         checkpoint.checkpoint_latitude,
                                         checkpoint.checkpoint_longitude,
                                     ])}
-                                    color="#0ea5e9"
+                                    color={getStatusColorHex(route.tractor.status)}
                                     weight={2}
                                 />
                             ))}

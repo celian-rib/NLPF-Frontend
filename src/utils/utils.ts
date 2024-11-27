@@ -39,6 +39,30 @@ export const getBidStateInfo = (state: string): { color: string; text: string } 
     }
 };
 
+// Function to get status color as a hex code
+export const getStatusColorHex = (status: string | undefined): string => {
+    if (!status)
+        return '#6b7280';
+    switch (status) {
+        case 'available':
+            return '#22c55e';
+        case 'pending':
+            return '#eab308';
+        case 'in_transit':
+            return '#f97316';
+        case 'on_market':
+            return '#3b82f6';
+        case 'archived':
+            return '#6b7280';
+        case 'at_trader':
+            return '#a855f7';
+        case 'return_from_market':
+            return '#d946ef';
+        default:
+            return '#6b7280';
+    }
+};
+
 // Function to validate input number
 export const validateInputNumber = (e: React.ChangeEvent<HTMLInputElement>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
     let value = e.target.value;

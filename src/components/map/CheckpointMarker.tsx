@@ -17,7 +17,7 @@ const CheckpointMarker = ({
                 checkpoint.checkpoint_latitude,
                 checkpoint.checkpoint_longitude,
             ]}
-            icon={createCustomIcon('location-pin', '#a855f7', 20)}
+            icon={createCustomIcon('location-pin', '#9ca3af', 20)}
         >
             <Popup>
                 <div className="px-4 py-2 bg-white rounded-md text-center">
