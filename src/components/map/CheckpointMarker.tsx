@@ -23,7 +23,7 @@ const CheckpointMarker = ({
             zIndexOffset={zIndex}
         >
             <Popup>
-                <div className="px-4 py-2 bg-white rounded-md text-center">
+                <div className="px-2 py-0 bg-white rounded-md text-center">
                     <h1 className="text-lg font-bold text-gray-800 mb-0">
                         {checkpoint.checkpoint_name}
                     </h1>
