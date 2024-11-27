@@ -140,6 +140,7 @@ const Map: React.FC = () => {
                                     iconName={'box'}
                                     iconColor={getStatusColorHex(lot.status)}
                                     iconSize={40}
+                                    zIndex={500}
                                 />
                             ))}
 
@@ -152,6 +153,7 @@ const Map: React.FC = () => {
                                     iconName={'truck'}
                                     iconColor={getStatusColorHex(tractor.status)}
                                     iconSize={35}
+                                    zIndex={1000}
                                 />
                             ))}
 
@@ -160,6 +162,7 @@ const Map: React.FC = () => {
                                 <CheckpointMarker
                                     key={`checkpoint-${checkpoint.id}`}
                                     checkpoint={checkpoint}
+                                    zIndex={0}
                                 />
                             ))}
 

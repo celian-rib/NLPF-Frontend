@@ -10,6 +10,7 @@ interface MarkerWithPopupProps<T> {
     iconName: string,
     iconColor: string,
     iconSize: number,
+    zIndex: number,
 }
 
 const MarkerWithPopup = <T extends Lot | Tractor>({
@@ -18,6 +19,7 @@ const MarkerWithPopup = <T extends Lot | Tractor>({
     iconName,
     iconColor,
     iconSize,
+    zIndex,
 }: MarkerWithPopupProps<T>) => {
 
     // Check if the item is a lot
@@ -31,6 +33,7 @@ const MarkerWithPopup = <T extends Lot | Tractor>({
                 item.current_checkpoint.checkpoint_longitude,
             ]}
             icon={createCustomIcon(iconName, iconColor, iconSize)}
+            zIndexOffset={zIndex}
         >
             <Popup>
                 <div className="px-4 py-2 bg-white rounded-md text-center">

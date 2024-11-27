@@ -4,10 +4,12 @@ import { createCustomIcon } from '../../utils/mapUtils';
 
 interface CheckpointMarkerProps {
     checkpoint: Checkpoint;
+    zIndex: number;
 }
 
 const CheckpointMarker = ({
     checkpoint,
+    zIndex,
 }: CheckpointMarkerProps) => {
 
     return (
@@ -18,6 +20,7 @@ const CheckpointMarker = ({
                 checkpoint.checkpoint_longitude,
             ]}
             icon={createCustomIcon('location-pin', '#9ca3af', 20)}
+            zIndexOffset={zIndex}
         >
             <Popup>
                 <div className="px-4 py-2 bg-white rounded-md text-center">
