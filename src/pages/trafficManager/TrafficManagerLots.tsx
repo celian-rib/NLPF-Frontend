@@ -9,12 +9,12 @@ import { sortAndFilterData } from '../../utils/sortingUtils';
 import TractorAssign from '../../components/trafficManager/TractorAssign';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import AssignTractorModal from '../../components/trafficManager/modal/AssignTractorModal';
-import { TractorType } from '../../types/TractorType';
 import { Tractor } from '../../types/Tractor';
 import { getLotsByTrafficManagerId } from '../../services/trafficManager';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getAllTraders } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
+import { getTractorsThatCanFitLot } from '../../services/simulation';
 
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -26,6 +26,7 @@ const TrafficManagerLots: React.FC = () => {
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
     const [traders, setTraders] = useState<UserInfo[]>([]);
+    const [compatibleTractors, setCompatibleTractors] = useState<Tractor[]>([]);
 
     // Fetch lots
     const fetchLots = async () => {
@@ -49,75 +50,17 @@ const TrafficManagerLots: React.FC = () => {
         fetchTraders();
     }, []);
 
-    // Function to get compatible tractors
-    const getCompatibleTractors = (lot: Lot): Tractor[] => {    
-        const fakeTractors: Tractor[] = [
+    // Load compatible tractors
+    useEffect(() => {
+        const fetchCompatibleTractors = async () => {
+            if (selectedLot)
             {
-                id: '1',
-                tractor_name: 'Tractor A',
-                status: 'available',
-                volume: 100,
-                occupied_volume: 50,
-                type: TractorType.Bulk,
-                route: {
-                    id: '1',
-                    traffic_manager_id: '1',
-                    route_name: 'Route 1',
-                    checkpoint_routes: [
-                        { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-                        { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 }
-                    ],
-                },
-                min_price: 200,
-                current_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-                start_checkpoint: { id: '1', checkpoint_name: 'Checkpoint 1', checkpoint_latitude: 48.8566, checkpoint_longitude: 2.3522 },
-                end_checkpoint: { id: '2', checkpoint_name: 'Checkpoint 2', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-            },
-            {
-                id: '2',
-                tractor_name: 'Tractor B',
-                status: 'pending',
-                volume: 120,
-                occupied_volume: 80,
-                type: TractorType.Liquid,
-                route: {
-                    id: '3',
-                    traffic_manager_id: '2',
-                    route_name: 'Route 2',
-                    checkpoint_routes: [
-                        { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-                        { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 40.7128, checkpoint_longitude: -74.0060 }
-                    ],
-                },
-                min_price: 250,
-                current_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-                start_checkpoint: { id: '3', checkpoint_name: 'Checkpoint 3', checkpoint_latitude: 51.5074, checkpoint_longitude: -0.1278 },
-                end_checkpoint: { id: '4', checkpoint_name: 'Checkpoint 4', checkpoint_latitude: 40.7128, checkpoint_longitude: -74.0060 },
-            },
-            {
-                id: '3',
-                tractor_name: 'Tractor C',
-                status: 'in_transit',
-                volume: 150,
-                occupied_volume: 100,
-                type: TractorType.Solid,
-                route: {
-                    id: '2',
-                    traffic_manager_id: '3',
-                    route_name: 'Route 3',
-                    checkpoint_routes: [
-                        { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-                        { id: '6', checkpoint_name: 'Checkpoint 6', checkpoint_latitude: 35.6895, checkpoint_longitude: 139.6917 }
-                    ],
-                },
-                min_price: 300,
-                current_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-                start_checkpoint: { id: '5', checkpoint_name: 'Checkpoint 5', checkpoint_latitude: 34.0522, checkpoint_longitude: -118.2437 },
-                end_checkpoint: { id: '6', checkpoint_name: 'Checkpoint 6', checkpoint_latitude: 35.6895, checkpoint_longitude: 139.6917 },
-            },
-        ];
-        return fakeTractors;   
-    }
+                const data = await getTractorsThatCanFitLot(selectedLot.id);
+                setCompatibleTractors(data || []);
+            }
+        };
+        fetchCompatibleTractors();
+    }, [selectedLot]);
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
@@ -211,7 +154,7 @@ const TrafficManagerLots: React.FC = () => {
             {isAssignTractorModalOpen && selectedLot && (
                 <AssignTractorModal
                     lotId={selectedLot.id}
-                    compatibleTractors={getCompatibleTractors(selectedLot)}
+                    compatibleTractors={compatibleTractors}
                     closeModal={() => setIsAssignTractorModalOpen(false)}
                 />
             )}
