@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandPointer, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Tractor } from '../../../types/Tractor';
 import { getStatusInfo } from '../../../utils/utils';
+import EmptyTable from '../../utils/EmptyTable';
+import { assignTractorToLot } from '../../../services/trafficManager';
 
 interface AssignTractorModalProps {
     lotId: string;
@@ -16,6 +18,11 @@ const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
     closeModal,
 }) => {
 
+    const handleTractorSelection = async (tractorId: string) => {
+        // Assign tractor to lot using Traffic Manager API
+        await assignTractorToLot(lotId, tractorId);
+    }
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" onClick={closeModal}>
             <div className="bg-white p-6 rounded-lg shadow-lg w-4/5" onClick={(e) => e.stopPropagation()}>
@@ -26,6 +33,8 @@ const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
 
                 <h2 className="text-2xl font-bold mb-6">Assign tractor</h2>
 
+                {Array.isArray(compatibleTractors) && compatibleTractors.length > 0 ? (
+                <>
                 <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
                         <tr className="bg-gray-100">
@@ -61,7 +70,7 @@ const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
                                 <td className="border p-2 text-center">
                                     <div className="flex justify-center">
                                         <button
-                                            onClick={() => {}}
+                                            onClick={() => handleTractorSelection(tractor.id)}
                                             className="bg-gray-200 text-gray-600 px-4 py-2 flex items-center font-bold hover:bg-green-200 hover:text-green-800 transition-colors rounded-md group"
                                         >
                                             <FontAwesomeIcon icon={faHandPointer} className="mr-2 icon-default group-hover:hidden" />
@@ -75,6 +84,10 @@ const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
                         ))}
                     </tbody>
                 </table>
+                </>
+                ) : (
+                    <EmptyTable />
+                )}
             </div>
         </div>
     );

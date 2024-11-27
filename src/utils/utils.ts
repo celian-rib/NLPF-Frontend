@@ -10,6 +10,8 @@ export const getStatusInfo = (status: string | undefined): { color: string; text
             return { color: 'bg-green-200 text-green-800', text: '◉ Available' };
         case 'pending':
             return { color: 'bg-yellow-200 text-yellow-800', text: '◉ Pending' };
+        case 'in_tractor':
+            return { color: 'bg-amber-200 text-amber-800', text: '◉ In tractor' };
         case 'in_transit':
             return { color: 'bg-orange-200 text-orange-800', text: '◉ In transit' };
         case 'on_market':
@@ -48,6 +50,8 @@ export const getStatusColorHex = (status: string | undefined): string => {
             return '#22c55e';
         case 'pending':
             return '#eab308';
+        case 'in_tractor':
+            return '#f59e0b';
         case 'in_transit':
             return '#f97316';
         case 'on_market':

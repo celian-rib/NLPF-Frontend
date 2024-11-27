@@ -62,6 +62,12 @@ const TrafficManagerLots: React.FC = () => {
         fetchCompatibleTractors();
     }, [selectedLot]);
 
+    // Function to close modal
+    const closeModal = async () => {
+        await fetchLots();
+        setIsAssignTractorModalOpen(false);
+    };
+
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
 
@@ -155,7 +161,7 @@ const TrafficManagerLots: React.FC = () => {
                 <AssignTractorModal
                     lotId={selectedLot.id}
                     compatibleTractors={compatibleTractors}
-                    closeModal={() => setIsAssignTractorModalOpen(false)}
+                    closeModal={closeModal}
                 />
             )}
         </>
