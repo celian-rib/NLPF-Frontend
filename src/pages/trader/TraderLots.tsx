@@ -3,13 +3,13 @@ import SubNavbar from '../../components/navbar/SubNavbar';
 import { traderTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Lot } from '../../types/Lot';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getLotsByTraderId } from '../../services/trader';
+import ActionButtons from '../../components/trader/ActionButtons';
+import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 
 const TraderLots: React.FC = () => {
     const [title] = useState('Lot offers');
@@ -18,6 +18,8 @@ const TraderLots: React.FC = () => {
     const [tableData, setTableData] = useState<Lot[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
+    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
+    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     // Fetch lots
     const fetchLots = async () => {
@@ -30,6 +32,12 @@ const TraderLots: React.FC = () => {
     useEffect(() => {
         fetchLots();
     }, []);
+
+    // Function to close modal
+    const closeModal = async () => {
+        await fetchLots();
+        setIsStockExchangeModalOpen(false);
+    };
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
@@ -92,21 +100,13 @@ const TraderLots: React.FC = () => {
 
                                     <td className="border p-2 text-center">{lot.max_price.toFixed(2)}</td>
 
-                                    <td className="border p-2 text-center">
-                                        <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
-                                            {lot.status === "at_trader" ? (
-                                                <button 
-                                                    onClick={() => {}}
-                                                    className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                                >
-                                                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                                                    Stock exchange
-                                                </button>
-                                            ) : (
-                                                <span className="text-gray-500">-</span>
-                                            )}
-                                        </div>
-                                    </td>
+                                    <ActionButtons
+                                        item={lot}
+                                        itemType="lot"
+                                        setSelectedLot={setSelectedLot}
+                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                        onTableUpdated={fetchLots}
+                                    />
 
                                 </tr>
                             ))}
@@ -118,6 +118,15 @@ const TraderLots: React.FC = () => {
                     <EmptyTable />
                 )}
             </main>
+
+            {isStockExchangeModalOpen && selectedLot && (
+                <AddToStockExchangeModal
+                    item={selectedLot}
+                    itemType="lot"
+                    minDate={new Date().toISOString().split("T")[0]}
+                    closeModal={closeModal}
+                />
+            )}
         </>
     );
 };

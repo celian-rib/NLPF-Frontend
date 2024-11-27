@@ -3,13 +3,13 @@ import SubNavbar from '../../components/navbar/SubNavbar';
 import { traderTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Tractor } from '../../types/Tractor';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getTractorsByTraderId } from '../../services/trader';
+import ActionButtons from '../../components/trader/ActionButtons';
+import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 
 const TraderTractors: React.FC = () => {
     const [title] = useState('Tractor offers');
@@ -18,6 +18,8 @@ const TraderTractors: React.FC = () => {
     const [tableData, setTableData] = useState<Tractor[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
+    const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
+    const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     // Fetch tractors
     const fetchTractors = async () => {
@@ -30,6 +32,12 @@ const TraderTractors: React.FC = () => {
     useEffect(() => {
         fetchTractors();
     }, []);
+
+    // Function to close modals
+    const closeModal = async () => {
+        await fetchTractors();
+        setIsStockExchangeModalOpen(false);
+    };
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
@@ -92,21 +100,13 @@ const TraderTractors: React.FC = () => {
 
                                     <td className="border p-2 text-center">{tractor.min_price.toFixed(2)}</td>
 
-                                    <td className="border p-2 text-center">
-                                        <div className="flex flex-wrap justify-center gap-x-2 gap-y-2">
-                                            {tractor.status === "at_trader" ? (
-                                                <button 
-                                                    onClick={() => {}}
-                                                    className="bg-blue-200 text-blue-800 px-4 py-2 flex items-center font-bold hover:bg-blue-300 transition-colors rounded-md"
-                                                >
-                                                    <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                                                    Stock exchange
-                                                </button>
-                                            ) : (
-                                                <span className="text-gray-500">-</span>
-                                            )}
-                                        </div>
-                                    </td>
+                                    <ActionButtons
+                                        item={tractor}
+                                        itemType="tractor"
+                                        setSelectedTractor={setSelectedTractor}
+                                        setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
+                                        onTableUpdated={fetchTractors}
+                                    />
 
                                 </tr>
                             ))}
@@ -118,6 +118,15 @@ const TraderTractors: React.FC = () => {
                     <EmptyTable />
                 )}
             </main>
+
+            {isStockExchangeModalOpen && selectedTractor && (
+                <AddToStockExchangeModal
+                    item={selectedTractor}
+                    itemType="tractor"
+                    minDate={new Date().toISOString().split("T")[0]}
+                    closeModal={closeModal}
+                />
+            )}
         </>
     );
 };
