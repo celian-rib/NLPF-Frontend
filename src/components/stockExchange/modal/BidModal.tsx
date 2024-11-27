@@ -68,8 +68,8 @@ const BidModal = <T extends { id: string, current_price: number, max_price?: num
                         </p>
                         <input
                             type="range"
-                            min={offerType === 'lot' ? offer.current_price : offer.min_price ?? offer.current_price}
-                            max={offerType === 'lot' ? offer.max_price ?? offer.current_price : offer.current_price}
+                            min={offerType === 'lot' ? 0.1 : offer.current_price}
+                            max={offerType === 'lot' ? offer.current_price : 1000}
                             step="0.1"
                             value={bidAmount}
                             onChange={handlePriceChange}
