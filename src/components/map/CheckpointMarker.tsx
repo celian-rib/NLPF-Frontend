@@ -19,7 +19,7 @@ const CheckpointMarker = ({
                 checkpoint.checkpoint_latitude,
                 checkpoint.checkpoint_longitude,
             ]}
-            icon={createCustomIcon('location-pin', '#9ca3af', 20)}
+            icon={createCustomIcon('location-pin', '#64748b', 20, false)}
             zIndexOffset={zIndex}
         >
             <Popup>

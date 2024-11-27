@@ -32,7 +32,7 @@ const MarkerWithPopup = <T extends Lot | Tractor>({
                 item.current_checkpoint.checkpoint_latitude,
                 item.current_checkpoint.checkpoint_longitude,
             ]}
-            icon={createCustomIcon(iconName, iconColor, iconSize)}
+            icon={createCustomIcon(iconName, iconColor, iconSize, true)}
             zIndexOffset={zIndex}
         >
             <Popup>
