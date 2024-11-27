@@ -4,4 +4,5 @@ export interface Checkpoint {
     checkpoint_latitude: number;
     checkpoint_longitude: number;
     position?: number;
+    country?: string;
 }
