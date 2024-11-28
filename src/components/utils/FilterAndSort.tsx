@@ -42,7 +42,7 @@ const FilterAndSort: React.FC<FilterAndSortProps> = ({
                         <option value="pending">Pending</option>
                         <option value="in_transit">In transit</option>
                         <option value="on_market">On market</option>
-                        <option value="archived">Archived</option>
+                        <option value="archive">Archived</option>
                     </select>
                 )}
 

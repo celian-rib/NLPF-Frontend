@@ -16,7 +16,7 @@ export const getStatusInfo = (status: string | undefined): { color: string; text
             return { color: 'bg-orange-200 text-orange-800', text: '◉ In transit' };
         case 'on_market':
             return { color: 'bg-blue-200 text-blue-800', text: '◉ On market' };
-        case 'archived':
+        case 'archive':
             return { color: 'bg-gray-200 text-gray-800', text: '◉ Archived' };
         case 'at_trader':
             return { color: 'bg-purple-200 text-purple-800', text: '◉ At trader' };
@@ -56,7 +56,7 @@ export const getStatusColorHex = (status: string | undefined): string => {
             return '#f97316';
         case 'on_market':
             return '#3b82f6';
-        case 'archived':
+        case 'archive':
             return '#6b7280';
         case 'at_trader':
             return '#a855f7';
