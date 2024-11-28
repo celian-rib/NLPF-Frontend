@@ -55,7 +55,7 @@ const HistoryTractors: React.FC = () => {
                                 <th className="border p-2 text-center">Date</th>
                                 <th className="border p-2 text-center">Bid state</th>
                                 <th className="border p-2 text-center">Bid amount<span className="font-normal">(in €/km)</span></th>
-                                <th className="border p-2 text-center">Maximum price<span className="font-normal">(in €/km)</span></th>
+                                <th className="border p-2 text-center">Minimum price<span className="font-normal">(in €/km)</span></th>
                             </tr>
                         </thead>
                         <tbody>

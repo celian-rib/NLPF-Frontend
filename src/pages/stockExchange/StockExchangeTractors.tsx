@@ -81,8 +81,8 @@ const StockExchangeTractors: React.FC = () => {
                                 <th className="border p-2 text-center">Expiration date</th>
                                 <th className="border p-2 text-center">Type</th>
                                 <th className="border p-2 text-center">Volume<br /><span className="font-normal">(in m³)</span></th>
-                                <th className="border p-2 text-center">Maximum price<br /><span className="font-normal">(in €/km)</span></th>
-                                <th className="border p-2 text-center">Minimum Bid<br /><span className="font-normal">(in €/km)</span></th>
+                                <th className="border p-2 text-center">Minimum price<br /><span className="font-normal">(in €/km)</span></th>
+                                <th className="border p-2 text-center">Maximum Bid<br /><span className="font-normal">(in €/km)</span></th>
                                 {userRole === 'client' && (
                                     <th className="border p-2 text-center">Actions</th>
                                 )}

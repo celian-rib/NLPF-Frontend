@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createLotOffer, createTractorOffer } from '../../../services/stockExchange';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface StockExchangeModalProps<T> {
     item: T;
@@ -56,7 +58,7 @@ const AddToStockExchangeModal = <T extends { id: string }>({
                     </div>
                     <div className="flex justify-center mt-4">
                         <button type="submit" className="bg-blue-500 text-white px-10 py-2 rounded hover:bg-blue-600">
-                            <i className="fas fa-check"></i>
+                            <FontAwesomeIcon icon={faCheck} className="mr-2" />
                             <span className="font-bold">Add</span>
                         </button>
                     </div>

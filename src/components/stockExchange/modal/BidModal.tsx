@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { bidOnLot, bidOnTractor } from '../../../services/stockExchange';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 interface BidModalProps<T> {
     offer:  T;
@@ -77,12 +79,28 @@ const BidModal = <T extends { id: string, current_price: number, max_price?: num
                         />
                     </div>
 
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-lg font-bold">Price</label>
+                        <p className="text-3xl font-bold text-gray-700">
+                            {bidAmount} <span className="font-normal">€/km</span>
+                        </p>
+                        <input
+                            type="range"
+                            min={offerType === 'lot' ? 0.1 : offer.current_price}
+                            max={offerType === 'lot' ? offer.current_price : 1000}
+                            step="0.1"
+                            value={bidAmount}
+                            onChange={handlePriceChange}
+                            className="range w-full mt-2"
+                        />
+                    </div>
+
                     <div className="flex justify-center mt-8">
                         <button
                             type="submit"
                             className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
                         >
-                            <i className="fas fa-check"></i>
+                            <FontAwesomeIcon icon={faCheck} className="mr-2" />
                             <span className="font-bold">Validate</span>
                         </button>
                     </div>

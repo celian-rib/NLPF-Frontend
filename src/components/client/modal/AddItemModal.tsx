@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Checkpoint } from '../../../types/Checkpoint';
 import { validateInputNumber } from '../../../utils/utils';
 import { createLot, createTractor } from '../../../services/assets';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 interface AddItemModalProps {
     closeModal: () => void;
@@ -161,7 +163,7 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
 
                     <div className="flex justify-center mt-4">
                         <button type="submit" className="bg-blue-500 text-white px-10 py-2 rounded hover:bg-blue-600">
-                            <i className="fas fa-plus"></i>
+                            <FontAwesomeIcon icon={faPlus} className="mr-2" />
                             <span className="font-bold">Add</span>
                         </button>
                     </div>
