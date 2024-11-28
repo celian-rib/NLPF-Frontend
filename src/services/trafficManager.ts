@@ -110,12 +110,24 @@ export const assignTractorToTrafficManager = async (tractorId: string, trafficMa
 
 // PUT /routes/{route_id}/tractors/{tractor_id}
 export const assignRouteToTractor = async (routeId: string, tractorId: string) => {
-    return axios.put(`${API_BASE_URL}/routes/${routeId}/tractors/${tractorId}`);
+    try {
+        return axios.put(`${API_BASE_URL}/routes/${routeId}/tractors/${tractorId}`);
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 400)
+            alert('Route can not be assigned to this tractor.');
+        throw error;
+    }
 };
 
 // PUT /lots/{lot_id}/tractors/{tractor_id}
 export const assignTractorToLot = async (lotId: string, tractorId: string) => {
-    return axios.put(`${API_BASE_URL}/lots/${lotId}/tractors/${tractorId}`);
+    try {
+        return axios.put(`${API_BASE_URL}/lots/${lotId}/tractors/${tractorId}`);
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 400)
+            alert('Tractor can not be assigned to this lot.');
+        throw error;
+    }
 };
 
 // POST /routes/{traffic_manager_id}
