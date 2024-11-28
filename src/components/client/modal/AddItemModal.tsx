@@ -25,6 +25,19 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (parseFloat(volume) <= 0)
+        {
+            alert('Volume must be greater than 0.');
+            return;
+        }
+
+        if (parseFloat(price) <= 0.1)
+        {
+            alert('Price must be greater than 0.1.');
+            return;
+        }
+
         const data = {
             client_id: localStorage.getItem('user_id'),
             ...(itemType === 'lot' ? { lot_name: name } : { tractor_name: name }),
