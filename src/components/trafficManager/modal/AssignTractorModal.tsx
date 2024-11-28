@@ -21,6 +21,7 @@ const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
     const handleTractorSelection = async (tractorId: string) => {
         // Assign tractor to lot using Traffic Manager API
         await assignTractorToLot(lotId, tractorId);
+        closeModal();
     }
 
     return (
