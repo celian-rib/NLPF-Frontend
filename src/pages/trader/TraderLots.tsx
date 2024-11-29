@@ -10,6 +10,7 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getLotsByTraderId } from '../../services/trader';
 import ActionButtons from '../../components/trader/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const TraderLots: React.FC = () => {
     const [title] = useState('Lot offers');
@@ -21,6 +22,8 @@ const TraderLots: React.FC = () => {
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
+    const { simulationDate } = useWebSocket();
+
     // Fetch lots
     const fetchLots = async () => {
         const data = await getLotsByTraderId();
@@ -31,7 +34,7 @@ const TraderLots: React.FC = () => {
 
     useEffect(() => {
         fetchLots();
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modal
     const closeModal = async () => {

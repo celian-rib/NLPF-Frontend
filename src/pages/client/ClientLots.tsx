@@ -18,6 +18,7 @@ import { getAllTrafficManagers } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import SubNavbar from '../../components/navbar/SubNavbar';
 import { clientTabs } from '../../configs/tabConfig';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const ClientLots: React.FC = () => {
     const [title] = useState<string>('Lot management');
@@ -31,6 +32,8 @@ const ClientLots: React.FC = () => {
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch traffic managers of lots
     const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
@@ -70,7 +73,7 @@ const ClientLots: React.FC = () => {
         fetchCheckpoints();
         fetchTrafficManagers();
         // eslint-disable-next-line
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modals
     const closeModal = async () => {

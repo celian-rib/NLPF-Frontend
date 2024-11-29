@@ -14,6 +14,7 @@ import CheckpointMarker from '../components/map/CheckpointMarker';
 import { Route } from '../types/Route';
 import { getStatusColorHex } from '../utils/utils';
 import { AssignedRoute } from '../types/AssignedRoute';
+import { useWebSocket } from '../socket/WebSocketContext';
 
 const Map: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
@@ -21,6 +22,8 @@ const Map: React.FC = () => {
     const [lots, setLots] = useState<Lot[]>([]);
     const [tractors, setTractors] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<AssignedRoute[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     const center: LatLngExpression = [44.9068, 3.9598];
     const zoom = 5;
@@ -95,7 +98,7 @@ const Map: React.FC = () => {
     useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role || '');
-    }, []);
+    }, [simulationDate]);
     
     useEffect(() => {
         if (userRole)

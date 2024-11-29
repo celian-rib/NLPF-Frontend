@@ -10,6 +10,7 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getTractorsByTraderId } from '../../services/trader';
 import ActionButtons from '../../components/trader/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const TraderTractors: React.FC = () => {
     const [title] = useState('Tractor offers');
@@ -21,6 +22,8 @@ const TraderTractors: React.FC = () => {
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
+    const { simulationDate } = useWebSocket();
+
     // Fetch tractors
     const fetchTractors = async () => {
         const data = await getTractorsByTraderId();
@@ -31,7 +34,7 @@ const TraderTractors: React.FC = () => {
 
     useEffect(() => {
         fetchTractors();
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modals
     const closeModal = async () => {

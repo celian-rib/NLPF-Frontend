@@ -15,6 +15,7 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getAllTraders } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import { getTractorsThatCanFitLot } from '../../services/simulation';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const TrafficManagerLots: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -27,6 +28,8 @@ const TrafficManagerLots: React.FC = () => {
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
     const [traders, setTraders] = useState<UserInfo[]>([]);
     const [compatibleTractors, setCompatibleTractors] = useState<Tractor[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch lots
     const fetchLots = async () => {
@@ -48,7 +51,7 @@ const TrafficManagerLots: React.FC = () => {
     useEffect(() => {
         fetchLots();
         fetchTraders();
-    }, []);
+    }, [simulationDate]);
 
     // Load compatible tractors
     useEffect(() => {

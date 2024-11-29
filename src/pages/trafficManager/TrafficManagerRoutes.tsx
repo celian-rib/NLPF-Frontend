@@ -9,6 +9,7 @@ import { faList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RouteCreate from '../../components/trafficManager/RouteCreate';
 import { getAllCheckpoints, getRoutesByTrafficManagerId } from '../../services/trafficManager';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const TrafficManagerRoutes: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -16,6 +17,8 @@ const TrafficManagerRoutes: React.FC = () => {
     const [subtitle] = useState<string>('Manage available routes and itineraries.');
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [tableData, setTableData] = useState<Route[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch routes
     const fetchRoutes = async () => {
@@ -36,7 +39,7 @@ const TrafficManagerRoutes: React.FC = () => {
     useEffect(() => {
         fetchRoutes();
         fetchCheckpoints();
-    }, []);
+    }, [simulationDate]);
 
     return (
         <>

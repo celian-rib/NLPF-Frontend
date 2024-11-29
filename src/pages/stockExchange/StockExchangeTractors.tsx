@@ -11,6 +11,7 @@ import FilterAndSort from '../../components/utils/FilterAndSort';
 import BidModal from '../../components/stockExchange/modal/BidModal';
 import { getTractorOffers } from '../../services/stockExchange';
 import EmptyTable from '../../components/utils/EmptyTable';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const StockExchangeTractors: React.FC = () => {
     const [title] = useState('Tractor market');
@@ -22,6 +23,8 @@ const StockExchangeTractors: React.FC = () => {
     const [sortOption, setSortOption] = useState('none');
     const [selectedOffer, setSelectedOffer] = useState<TractorOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
+
+    const { simulationDate } = useWebSocket();
 
     const openBidModal = (offer: TractorOffer) => {
         setSelectedOffer(offer);
@@ -40,7 +43,7 @@ const StockExchangeTractors: React.FC = () => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
         fetchTractorOffers();
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modal
     const closeModal = async () => {

@@ -11,6 +11,7 @@ import FilterAndSort from '../../components/utils/FilterAndSort';
 import BidModal from '../../components/stockExchange/modal/BidModal';
 import { getLotOffers } from '../../services/stockExchange';
 import EmptyTable from '../../components/utils/EmptyTable';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const StockExchangeLots: React.FC = () => {
     const [title] = useState('Lot market');
@@ -22,6 +23,8 @@ const StockExchangeLots: React.FC = () => {
     const [sortOption, setSortOption] = useState('none');
     const [selectedOffer, setSelectedOffer] = useState<LotOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
+
+    const { simulationDate } = useWebSocket();
 
     // Handle bid modal opening
     const openBidModal = (offer: LotOffer) => {
@@ -41,7 +44,7 @@ const StockExchangeLots: React.FC = () => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
         fetchLotOffers();
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modal
     const closeModal = async () => {

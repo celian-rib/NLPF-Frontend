@@ -13,6 +13,7 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getRoutesByTrafficManagerId, getTractorsByTrafficManagerId } from '../../services/trafficManager';
 import { UserInfo } from '../../types/UserInfo';
 import { getAllTraders } from '../../services/auth';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const TrafficManagerTractors: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
@@ -23,6 +24,8 @@ const TrafficManagerTractors: React.FC = () => {
     const [tableData, setTableData] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<Route[]>([]);
     const [traders, setTraders] = useState<UserInfo[]>([]);
+
+    const { simulationDate } = useWebSocket();
     
     // Function to get compatible routes
     const getCompatibleRoutes = (tractor: Tractor): Route[] => {
@@ -67,7 +70,7 @@ const TrafficManagerTractors: React.FC = () => {
         fetchTractors();
         fetchRoutes();
         fetchTraders();
-    }, []);
+    }, [simulationDate]);
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);

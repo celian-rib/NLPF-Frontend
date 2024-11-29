@@ -18,6 +18,7 @@ import { getAllTrafficManagers } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import { clientTabs } from '../../configs/tabConfig';
 import SubNavbar from '../../components/navbar/SubNavbar';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const ClientTractors: React.FC = () => {
     const [title] = useState<string>('Tractor management');
@@ -31,6 +32,8 @@ const ClientTractors: React.FC = () => {
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch traffic managers of tractors
     const fetchTrafficManagersOfTractors = async (tractors: Tractor[]): Promise<Tractor[]> => {
@@ -70,7 +73,7 @@ const ClientTractors: React.FC = () => {
         fetchCheckpoints();
         fetchTrafficManagers();
         // eslint-disable-next-line
-    }, []);
+    }, [simulationDate]);
 
     // Function to close modals
     const closeModal = async () => {

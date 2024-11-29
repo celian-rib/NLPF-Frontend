@@ -7,12 +7,15 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getLotBidsByUserId } from '../../services/stockExchange';
 import { getLotById } from '../../services/assets';
 import { LotBid } from '../../types/LotBid';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const HistoryLots: React.FC = () => {
     const [title] = useState<string>('Lots history');
     const [currentTab, setCurrentTab] = useState<string>('');
     const [subtitle] = useState<string>('Find the history of your bids in real time.');
     const [tableData, setTableData] = useState<LotBid[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch lot bids
     const fetchLotBids = async () => {
@@ -31,7 +34,7 @@ const HistoryLots: React.FC = () => {
 
     useEffect(() => {
         fetchLotBids();
-    }, []);
+    }, [simulationDate]);
 
     return (
         <>

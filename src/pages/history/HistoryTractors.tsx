@@ -7,12 +7,15 @@ import EmptyTable from '../../components/utils/EmptyTable';
 import { getTractorBidsByUserId } from '../../services/stockExchange';
 import { getTractorById } from '../../services/assets';
 import { TractorBid } from '../../types/TractorBid';
+import { useWebSocket } from '../../socket/WebSocketContext';
 
 const HistoryTractors: React.FC = () => {
     const [title] = useState<string>('Tractors history');
     const [currentTab, setCurrentTab] = useState<string>('');
     const [subtitle] = useState<string>('Find the history of your bids in real time.');
     const [tableData, setTableData] = useState<TractorBid[]>([]);
+
+    const { simulationDate } = useWebSocket();
 
     // Fetch tractor bids
     const fetchTractorBids = async () => {
@@ -31,7 +34,7 @@ const HistoryTractors: React.FC = () => {
 
     useEffect(() => {
         fetchTractorBids();
-    }, []);
+    }, [simulationDate]);
 
     return (
         <>
