@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 interface WebSocketContextProps {
-    simulationDate: string | null;
-    requestNextDate: () => void;
+    simulationDate?: string | null;
+    requestNextDate?: () => void;
 }
 
 const WebSocketContext = createContext<WebSocketContextProps | undefined>(undefined);
@@ -11,58 +11,77 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const [simulationDate, setSimulationDate] = useState<string | null>(null);
     const wsRef = useRef<WebSocket | null>(null);
 
+    // Handle messages based on their type
+    const handleMessage = (message: string) => {
+        if (message.startsWith('Current Date:'))
+        {
+            const date = message.replace('Current Date:', '').trim();
+            setSimulationDate(date);
+        }
+        else if (message.startsWith('Next Date:'))
+        {
+            const date = message.replace('Next Date:', '').trim();
+            setSimulationDate(date);
+        }
+    };
+
     useEffect(() => {
         const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL || 'ws://localhost:8089');
         wsRef.current = ws;
 
-        // Send a message to the server to get the current date
+        // Handle connection opening
         ws.onopen = () => {
             console.log('Connected to WebSocket server');
             ws.send('currentDate');
         };
 
-        // Listen for messages from the server
+        // Handle incoming messages
         ws.onmessage = (event) => {
-            const message = event.data;
-            if (message.startsWith('Current Date:') || message.startsWith('Next Date:'))
-            {
-                const date = message.replace(/^(Current Date|Next Date): /, '').trim();
-                setSimulationDate(date);
-            }
+            console.log('Message received:', event.data);
+            handleMessage(event.data);
         };
 
-        // Log connection status changes
+        // Handle connection closing
         ws.onclose = () => {
             console.log('WebSocket connection closed');
         };
 
-        // Log errors
+        // Handle errors
         ws.onerror = (error) => {
             console.error('WebSocket error:', error);
         };
 
+        // Clean up
         return () => {
             ws.close();
         };
     }, []);
 
-    // Function to request the next date from the server
-    const requestNextDate = () => {
+    // Function to send a command to the server
+    const sendMessage = (message: string) => {
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN)
-            wsRef.current.send('simulate');
+            wsRef.current.send(message);
         else
             console.error('WebSocket is not open');
     };
 
+    // Function to request next date
+    const requestNextDate = () => {
+        sendMessage('simulate');
+    };
+
     return (
-        <WebSocketContext.Provider value={{ simulationDate, requestNextDate }}>
+        <WebSocketContext.Provider value={{
+            simulationDate,
+            requestNextDate,
+        }}>
             {children}
         </WebSocketContext.Provider>
     );
 };
 
-// Custom hook to use WebSocket context
-export const useWebSocket = () => {
+// Custom hook to use the WebSocket context
+export const useWebSocket = (): WebSocketContextProps => {
     const context = useContext(WebSocketContext);
     if (!context)
         throw new Error('useWebSocket must be used within a WebSocketProvider');
