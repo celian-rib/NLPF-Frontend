@@ -98,7 +98,7 @@ const Map: React.FC = () => {
     useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role || '');
-    }, [simulationDate, messageBroadcasted]);
+    }, []);
     
     useEffect(() => {
         if (userRole)
@@ -108,7 +108,7 @@ const Map: React.FC = () => {
         }
         fetchCheckpoints();
         // eslint-disable-next-line
-    }, [userRole]);
+    }, [userRole, simulationDate, messageBroadcasted]);
 
     return (
         <>
@@ -170,9 +170,9 @@ const Map: React.FC = () => {
                             ))}
 
                         {activeButtons.routes &&
-                            routes.map((route) => (
+                            routes.map((route, index) => (
                                 <Polyline
-                                    key={`route-${route.route.id}`}
+                                    key={`route-${index}`}
                                     positions={route.route.checkpoint_routes.map((checkpoint) => [
                                         checkpoint.checkpoint_latitude,
                                         checkpoint.checkpoint_longitude,
