@@ -33,7 +33,7 @@ const ClientLots: React.FC = () => {
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch traffic managers of lots
     const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
@@ -73,7 +73,7 @@ const ClientLots: React.FC = () => {
         fetchCheckpoints();
         fetchTrafficManagers();
         // eslint-disable-next-line
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Function to close modals
     const closeModal = async () => {

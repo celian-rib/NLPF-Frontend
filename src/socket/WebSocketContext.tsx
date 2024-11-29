@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 
 interface WebSocketContextProps {
     simulationDate?: string | null;
+    messageBroadcasted?: boolean | null;
     requestNextDate?: () => void;
 }
 
@@ -9,6 +10,7 @@ const WebSocketContext = createContext<WebSocketContextProps | undefined>(undefi
 
 export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [simulationDate, setSimulationDate] = useState<string | null>(null);
+    const [messageBroadcasted, setMessageBroadcasted] = useState<boolean | null>(false);
     const wsRef = useRef<WebSocket | null>(null);
 
     // Handle messages based on their type
@@ -22,6 +24,12 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         {
             const date = message.replace('Next Date:', '').trim();
             setSimulationDate(date);
+        }
+        else if (message.startsWith('Broadcast:'))
+        {
+            setMessageBroadcasted((prev) => {
+                return !prev;
+            });
         }
     };
 
@@ -55,6 +63,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return () => {
             ws.close();
         };
+        // eslint-disable-next-line
     }, []);
 
     // Function to send a command to the server
@@ -73,6 +82,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return (
         <WebSocketContext.Provider value={{
             simulationDate,
+            messageBroadcasted,
             requestNextDate,
         }}>
             {children}

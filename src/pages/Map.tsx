@@ -23,7 +23,7 @@ const Map: React.FC = () => {
     const [tractors, setTractors] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<AssignedRoute[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     const center: LatLngExpression = [44.9068, 3.9598];
     const zoom = 5;
@@ -98,7 +98,7 @@ const Map: React.FC = () => {
     useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role || '');
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
     
     useEffect(() => {
         if (userRole)

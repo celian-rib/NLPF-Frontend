@@ -15,7 +15,7 @@ const HistoryLots: React.FC = () => {
     const [subtitle] = useState<string>('Find the history of your bids in real time.');
     const [tableData, setTableData] = useState<LotBid[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch lot bids
     const fetchLotBids = async () => {
@@ -34,7 +34,7 @@ const HistoryLots: React.FC = () => {
 
     useEffect(() => {
         fetchLotBids();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     return (
         <>

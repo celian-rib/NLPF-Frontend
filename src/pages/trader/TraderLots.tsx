@@ -22,7 +22,7 @@ const TraderLots: React.FC = () => {
     const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch lots
     const fetchLots = async () => {
@@ -34,7 +34,7 @@ const TraderLots: React.FC = () => {
 
     useEffect(() => {
         fetchLots();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Function to close modal
     const closeModal = async () => {

@@ -24,7 +24,7 @@ const StockExchangeLots: React.FC = () => {
     const [selectedOffer, setSelectedOffer] = useState<LotOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Handle bid modal opening
     const openBidModal = (offer: LotOffer) => {
@@ -44,7 +44,7 @@ const StockExchangeLots: React.FC = () => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
         fetchLotOffers();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Function to close modal
     const closeModal = async () => {

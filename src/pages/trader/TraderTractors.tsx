@@ -22,7 +22,7 @@ const TraderTractors: React.FC = () => {
     const [selectedTractor, setSelectedTractor] = useState<Tractor | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch tractors
     const fetchTractors = async () => {
@@ -34,7 +34,7 @@ const TraderTractors: React.FC = () => {
 
     useEffect(() => {
         fetchTractors();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Function to close modals
     const closeModal = async () => {

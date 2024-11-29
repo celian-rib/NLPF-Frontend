@@ -29,7 +29,7 @@ const TrafficManagerLots: React.FC = () => {
     const [traders, setTraders] = useState<UserInfo[]>([]);
     const [compatibleTractors, setCompatibleTractors] = useState<Tractor[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch lots
     const fetchLots = async () => {
@@ -51,7 +51,7 @@ const TrafficManagerLots: React.FC = () => {
     useEffect(() => {
         fetchLots();
         fetchTraders();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Load compatible tractors
     useEffect(() => {

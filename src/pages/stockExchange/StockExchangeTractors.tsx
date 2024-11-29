@@ -24,7 +24,7 @@ const StockExchangeTractors: React.FC = () => {
     const [selectedOffer, setSelectedOffer] = useState<TractorOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     const openBidModal = (offer: TractorOffer) => {
         setSelectedOffer(offer);
@@ -43,7 +43,7 @@ const StockExchangeTractors: React.FC = () => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
         fetchTractorOffers();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Function to close modal
     const closeModal = async () => {

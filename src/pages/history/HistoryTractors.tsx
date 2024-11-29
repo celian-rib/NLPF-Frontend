@@ -15,7 +15,7 @@ const HistoryTractors: React.FC = () => {
     const [subtitle] = useState<string>('Find the history of your bids in real time.');
     const [tableData, setTableData] = useState<TractorBid[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch tractor bids
     const fetchTractorBids = async () => {
@@ -34,7 +34,7 @@ const HistoryTractors: React.FC = () => {
 
     useEffect(() => {
         fetchTractorBids();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     return (
         <>

@@ -18,7 +18,7 @@ const TrafficManagerRoutes: React.FC = () => {
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [tableData, setTableData] = useState<Route[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Fetch routes
     const fetchRoutes = async () => {
@@ -39,7 +39,7 @@ const TrafficManagerRoutes: React.FC = () => {
     useEffect(() => {
         fetchRoutes();
         fetchCheckpoints();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     return (
         <>

@@ -25,7 +25,7 @@ const TrafficManagerTractors: React.FC = () => {
     const [routes, setRoutes] = useState<Route[]>([]);
     const [traders, setTraders] = useState<UserInfo[]>([]);
 
-    const { simulationDate } = useWebSocket();
+    const { simulationDate, messageBroadcasted } = useWebSocket();
     
     // Function to get compatible routes
     const getCompatibleRoutes = (tractor: Tractor): Route[] => {
@@ -70,7 +70,7 @@ const TrafficManagerTractors: React.FC = () => {
         fetchTractors();
         fetchRoutes();
         fetchTraders();
-    }, [simulationDate]);
+    }, [simulationDate, messageBroadcasted]);
 
     // Sort and filter data
     const sortedData = sortAndFilterData(tableData, selectedStatus, sortOption);
