@@ -15,6 +15,8 @@ import { Route } from '../types/Route';
 import { getStatusColorHex } from '../utils/utils';
 import { AssignedRoute } from '../types/AssignedRoute';
 import { useWebSocket } from '../socket/WebSocketContext';
+import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
+import { createCustomClusterIcon } from '../utils/mapUtils';
 
 const Map: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
@@ -134,31 +136,33 @@ const Map: React.FC = () => {
                             detectRetina={true}
                         />
 
-                        {activeButtons.lots &&
-                            lots.map((lot) => (
-                                <MarkerWithPopup
-                                    key={`lot-${lot.id}`}
-                                    item={lot}
-                                    itemType={'lot'}
-                                    iconName={'box'}
-                                    iconColor={getStatusColorHex(lot.status)}
-                                    iconSize={40}
-                                    zIndex={500}
-                                />
-                            ))}
-
-                        {activeButtons.tractors &&
-                            tractors.map((tractor) => (
-                                <MarkerWithPopup
-                                    key={`tractor-${tractor.id}`}
-                                    item={tractor}
-                                    itemType={'tractor'}
-                                    iconName={'truck'}
-                                    iconColor={getStatusColorHex(tractor.status)}
-                                    iconSize={35}
-                                    zIndex={1000}
-                                />
-                            ))}
+                        <MarkerClusterGroup iconCreateFunction={createCustomClusterIcon}>
+                            {activeButtons.lots &&
+                                lots.map((lot) => (
+                                    <MarkerWithPopup
+                                        key={`lot-${lot.id}`}
+                                        item={lot}
+                                        itemType={'lot'}
+                                        iconName={'box'}
+                                        iconColor={getStatusColorHex(lot.status)}
+                                        iconSize={40}
+                                        zIndex={500}
+                                    />
+                                ))}
+                            
+                            {activeButtons.tractors &&
+                                tractors.map((tractor) => (
+                                    <MarkerWithPopup
+                                        key={`tractor-${tractor.id}`}
+                                        item={tractor}
+                                        itemType={'tractor'}
+                                        iconName={'truck'}
+                                        iconColor={getStatusColorHex(tractor.status)}
+                                        iconSize={35}
+                                        zIndex={1000}
+                                    />
+                                ))}
+                        </MarkerClusterGroup>
 
                         {activeButtons.checkpoints &&
                             checkpoints.map((checkpoint) => (
