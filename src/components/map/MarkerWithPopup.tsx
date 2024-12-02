@@ -1,19 +1,19 @@
 import { Tractor } from '../../types/Tractor';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { Marker, Popup } from 'react-leaflet';
 import { createCustomIcon } from '../../utils/mapUtils';
 import { getStatusInfo } from '../../utils/utils';
 
 interface MarkerWithPopupProps<T> {
     item: T;
-    itemType: 'lot' | 'tractor';
+    itemType: 'package' | 'tractor';
     iconName: string,
     iconColor: string,
     iconSize: number,
     zIndex: number,
 }
 
-const MarkerWithPopup = <T extends Lot | Tractor>({
+const MarkerWithPopup = <T extends Package | Tractor>({
     item,
     itemType,
     iconName,
@@ -22,8 +22,8 @@ const MarkerWithPopup = <T extends Lot | Tractor>({
     zIndex,
 }: MarkerWithPopupProps<T>) => {
 
-    // Check if the item is a lot
-    const isLot = (item: Lot | Tractor): item is Lot => itemType === 'lot';
+    // Check if the item is a package
+    const isPackage = (item: Package | Tractor): item is Package => itemType === 'package';
 
     return (
         <Marker
@@ -38,7 +38,7 @@ const MarkerWithPopup = <T extends Lot | Tractor>({
             <Popup>
                 <div className="px-4 py-2 bg-white rounded-md text-center">
                     <h1 className="text-lg font-bold text-gray-800 mb-2">
-                        {isLot(item) ? item.lot_name : item.tractor_name}
+                        {isPackage(item) ? item.package_name : item.tractor_name}
                     </h1>
                     <span className={`px-2 py-1 rounded ${getStatusInfo(item.status).color}`}>
                         {getStatusInfo(item.status).text}

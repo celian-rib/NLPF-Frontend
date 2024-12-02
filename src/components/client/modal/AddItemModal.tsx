@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Checkpoint } from '../../../types/Checkpoint';
 import { validateInputNumber } from '../../../utils/utils';
-import { createLot, createTractor } from '../../../services/assets';
+import { createPackage, createTractor } from '../../../services/assets';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,7 +9,7 @@ interface AddItemModalProps {
     closeModal: () => void;
     types: string[];
     checkpoints: Checkpoint[];
-    itemType: 'lot' | 'tractor';
+    itemType: 'package' | 'tractor';
 }
 
 const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoints, itemType }) => {
@@ -42,17 +42,17 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
 
         const data = {
             client_id: localStorage.getItem('user_id'),
-            ...(itemType === 'lot' ? { lot_name: name } : { tractor_name: name }),
+            ...(itemType === 'package' ? { package_name: name } : { tractor_name: name }),
             volume: parseFloat(volume),
             type: selectedType.toLowerCase(),
-            ...(itemType === 'lot' ? { max_price: parseFloat(price) } : { min_price: parseFloat(price) }),
+            ...(itemType === 'package' ? { max_price: parseFloat(price) } : { min_price: parseFloat(price) }),
             start_checkpoint_id: selectedDeparture,
             end_checkpoint_id: selectedArrival,
         };
-        if (itemType === 'lot')
+        if (itemType === 'package')
         {
-            // Create a lot using assets API
-            await createLot(data);
+            // Create a package using assets API
+            await createPackage(data);
         }
         else if (itemType === 'tractor')
         {
@@ -115,12 +115,12 @@ const AddItemModal: React.FC<AddItemModalProps> = ({ closeModal, types, checkpoi
 
                     <div className="mb-2">
                         <label className="block text-gray-700 text-sm font-bold mb-2">
-                            {itemType === 'lot' ? 'Maximum price :' : 'Minimum price :'}
+                            {itemType === 'package' ? 'Maximum price :' : 'Minimum price :'}
                         </label>
                         <input
                             type="text"
                             className="w-full border border-gray-300 p-2 rounded"
-                            placeholder={`Enter ${itemType === 'lot' ? 'maximum' : 'minimum'} price (per km)`}
+                            placeholder={`Enter ${itemType === 'package' ? 'maximum' : 'minimum'} price (per km)`}
                             onChange={handlePriceChange}
                             value={price}
                             required

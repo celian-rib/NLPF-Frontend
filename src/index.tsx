@@ -10,7 +10,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <p>
+      Don't fuck with the fucking 10ers
+    </p>
   </React.StrictMode>
 );
 

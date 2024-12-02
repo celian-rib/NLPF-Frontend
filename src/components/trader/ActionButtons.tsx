@@ -1,21 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { Tractor } from '../../types/Tractor';
 
 interface ActionButtonsProps<T> {
     item: T;
-    itemType: 'tractor' | 'lot';
-    setSelectedLot?: (lot: Lot) => void;
+    itemType: 'tractor' | 'package';
+    setSelectedPackage?: (package: Package) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
     onTableUpdated: () => void;
 }
 
-const ActionButtons = <T extends Lot | Tractor>({
+const ActionButtons = <T extends Package | Tractor>({
     item,
     itemType,
-    setSelectedLot,
+    setSelectedPackage,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
     onTableUpdated,
@@ -23,9 +23,9 @@ const ActionButtons = <T extends Lot | Tractor>({
 
     // Function to add item to stock exchange
     const handleStockExchangeClick = () => {
-        if (itemType === 'lot' && setSelectedLot)
+        if (itemType === 'package' && setSelectedPackage)
         {
-            setSelectedLot(item as Lot);
+            setSelectedPackage(item as Package);
         }
         else if (itemType === 'tractor' && setSelectedTractor)
         {

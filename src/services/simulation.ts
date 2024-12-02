@@ -14,10 +14,10 @@ export const getCurrentDate = async (): Promise<string> => {
     }
 };
 
-// GET /traffic-managers/{traffic_manager_id}/lots/{lot_id}/tractors
-export const getTractorsThatCanFitLot = async (lotId: string): Promise<Tractor[] | null> => {
+// GET /traffic-managers/{traffic_manager_id}/packages/{package_id}/tractors
+export const getTractorsThatCanFitPackage = async (packageId: string): Promise<Tractor[] | null> => {
     try {
-        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/traffic-managers/${userId}/lots/${lotId}/tractors`);
+        const response = await axios.get<Tractor[]>(`${API_BASE_URL}/traffic-managers/${userId}/packages/${packageId}/tractors`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)

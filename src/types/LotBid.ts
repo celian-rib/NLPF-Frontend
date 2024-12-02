@@ -1,14 +1,14 @@
-import { Lot } from "./Lot";
-import { LotOffer } from "./LotOffer";
+import { Package } from "./Package";
+import { PackageOffer } from "./PackageOffer";
 
-export interface LotBid {
+export interface PackageBid {
     id: string;
     bid: number;
     user_id: string;
     accepted: string;
     created_at: string;
     offer_id: string;
-    lot_id: string;
-    lot?: Lot;
-    lotOffer?: LotOffer;
+    package_id: string;
+    package?: Package;
+    packageOffer?: PackageOffer;
 }

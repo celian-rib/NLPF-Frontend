@@ -1,25 +1,25 @@
 export const clientTabs = [
-    { name: 'Lots', path: '/client/lots' },
+    { name: 'Packages', path: '/client/packages' },
     { name: 'Tractors', path: '/client/tractors' }
 ];
 
 export const traderTabs = [
-    { name: 'Lots', path: '/trader/lots' },
+    { name: 'Packages', path: '/trader/packages' },
     { name: 'Tractors', path: '/trader/tractors' }
 ];
 
 export const trafficManagerTabs = [
     { name: 'Routes', path: '/traffic-manager/routes' },
-    { name: 'Lots', path: '/traffic-manager/lots' },
+    { name: 'Packages', path: '/traffic-manager/packages' },
     { name: 'Tractors', path: '/traffic-manager/tractors' }
 ];
 
 export const stockExchangeTabs = [
-    { name: 'Lots', path: '/stock-exchange/lots' },
+    { name: 'Packages', path: '/stock-exchange/packages' },
     { name: 'Tractors', path: '/stock-exchange/tractors' }
 ];
 
 export const historyTabs = [
-    { name: 'Lots', path: '/history/lots' },
+    { name: 'Packages', path: '/history/packages' },
     { name: 'Tractors', path: '/history/tractors' }
 ];

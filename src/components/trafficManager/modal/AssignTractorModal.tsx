@@ -4,23 +4,23 @@ import { faHandPointer, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Tractor } from '../../../types/Tractor';
 import { getStatusInfo } from '../../../utils/utils';
 import EmptyTable from '../../utils/EmptyTable';
-import { assignTractorToLot } from '../../../services/trafficManager';
+import { assignTractorToPackage } from '../../../services/trafficManager';
 
 interface AssignTractorModalProps {
-    lotId: string;
+    packageId: string;
     compatibleTractors: Tractor[];
     closeModal: () => void;
 }
 
 const AssignTractorModal: React.FC<AssignTractorModalProps> = ({
-    lotId,
+    packageId,
     compatibleTractors,
     closeModal,
 }) => {
 
     const handleTractorSelection = async (tractorId: string) => {
-        // Assign tractor to lot using Traffic Manager API
-        await assignTractorToLot(lotId, tractorId);
+        // Assign tractor to package using Traffic Manager API
+        await assignTractorToPackage(packageId, tractorId);
         closeModal();
     }
 

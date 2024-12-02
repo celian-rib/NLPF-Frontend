@@ -1,34 +1,34 @@
 import React from 'react';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck } from '@fortawesome/free-solid-svg-icons';
 
 interface TractorAssignProps {
-    lot: Lot;
-    setSelectedLot: (lot: Lot) => void;
+    package: Package;
+    setSelectedPackage: (package: Package) => void;
     setIsAssignTractorModalOpen: (open: boolean) => void;
 }
 
 const TractorAssign: React.FC<TractorAssignProps> = ({
-    lot,
-    setSelectedLot,
+    package,
+    setSelectedPackage,
     setIsAssignTractorModalOpen,
 }) => {
 
     // Function to open assign tractor modal event
     const handleAssignClick = () => {
-        setSelectedLot(lot);
+        setSelectedPackage(package);
         setIsAssignTractorModalOpen(true);
     };
 
     return (
         <td className="border p-2 text-center">
-            {lot.tractor ? (
+            {package.tractor ? (
                 <span className="px-2 py-1 mx-auto w-4/5 block">
-                    {lot.tractor.tractor_name}
+                    {package.tractor.tractor_name}
                 </span>
             ) : (
-                lot.status === 'pending' ? (
+                package.status === 'pending' ? (
                     <div className="flex flex-wrap justify-center space-x-2">
                         <button
                             onClick={() => handleAssignClick()}

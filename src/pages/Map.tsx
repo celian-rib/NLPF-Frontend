@@ -4,9 +4,9 @@ import Navbar from "../components/navbar/Navbar";
 import { MapContainer, Polyline, TileLayer } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
 import DisplayLayerButtons from "../components/map/DisplayLayerButtons";
-import { Lot } from '../types/Lot';
-import { getLotsByClientId, getTractorsByClientId } from '../services/assets';
-import { getAllCheckpoints, getLotsByTrafficManagerId, getTractorsByTrafficManagerId } from '../services/trafficManager';
+import { Package } from '../types/Package';
+import { getPackagesByClientId, getTractorsByClientId } from '../services/assets';
+import { getAllCheckpoints, getPackagesByTrafficManagerId, getTractorsByTrafficManagerId } from '../services/trafficManager';
 import { Checkpoint } from '../types/Checkpoint';
 import { Tractor } from '../types/Tractor';
 import MarkerWithPopup from '../components/map/MarkerWithPopup';
@@ -21,7 +21,7 @@ import { createCustomClusterIcon } from '../utils/mapUtils';
 const Map: React.FC = () => {
     const [userRole, setUserRole] = useState<string>('');
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
-    const [lots, setLots] = useState<Lot[]>([]);
+    const [packages, setPackages] = useState<Package[]>([]);
     const [tractors, setTractors] = useState<Tractor[]>([]);
     const [routes, setRoutes] = useState<AssignedRoute[]>([]);
 
@@ -32,24 +32,24 @@ const Map: React.FC = () => {
 
     // State for the active buttons
     const [activeButtons, setActiveButtons] = useState<{ [key: string]: boolean }>({
-        lots: true,
+        packages: true,
         checkpoints: true,
         tractors: true,
         routes: true,
     });  
 
-    // Fetch lots
-    const fetchLots = async () => {
+    // Fetch packages
+    const fetchPackages = async () => {
         let data;
         if (userRole === 'client')
-            data = await getLotsByClientId();
+            data = await getPackagesByClientId();
         else if (userRole === 'traffic-manager')
-            data = await getLotsByTrafficManagerId();
+            data = await getPackagesByTrafficManagerId();
         else
             return;
         if (!data)
             return;
-        setLots(data);
+        setPackages(data);
     };
 
     // Fetch tractors
@@ -105,7 +105,7 @@ const Map: React.FC = () => {
     useEffect(() => {
         if (userRole)
         {
-            fetchLots();
+            fetchPackages();
             fetchRoutesAndTractors();
         }
         fetchCheckpoints();
@@ -137,14 +137,14 @@ const Map: React.FC = () => {
                         />
 
                         <MarkerClusterGroup iconCreateFunction={createCustomClusterIcon}>
-                            {activeButtons.lots &&
-                                lots.map((lot) => (
+                            {activeButtons.packages &&
+                                packages.map((package) => (
                                     <MarkerWithPopup
-                                        key={`lot-${lot.id}`}
-                                        item={lot}
-                                        itemType={'lot'}
+                                        key={`package-${package.id}`}
+                                        item={package}
+                                        itemType={'package'}
                                         iconName={'box'}
-                                        iconColor={getStatusColorHex(lot.status)}
+                                        iconColor={getStatusColorHex(package.status)}
                                         iconSize={40}
                                         zIndex={500}
                                     />

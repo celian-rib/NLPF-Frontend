@@ -1,11 +1,11 @@
 import { Checkpoint } from "./Checkpoint";
-import { LotType } from "./LotType";
+import { PackageType } from "./PackageType";
 
-export interface LotOffer {
+export interface PackageOffer {
     id: string;
     status: string;
     volume: number;
-    type: LotType;
+    type: PackageType;
     current_price: number;
     max_price: number;
     current_checkpoint: Checkpoint;

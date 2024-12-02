@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { bidOnLot, bidOnTractor } from '../../../services/stockExchange';
+import { bidOnPackage, bidOnTractor } from '../../../services/stockExchange';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { TractorOffer } from '../../../types/TractorOffer';
-import { LotOffer } from '../../../types/LotOffer';
+import { PackageOffer } from '../../../types/PackageOffer';
 
 interface BidModalProps<T> {
     offer:  T;
-    offerType: 'lot' | 'tractor';
+    offerType: 'package' | 'tractor';
     closeModal: () => void;
 }
 
-const BidModal = <T extends LotOffer | TractorOffer>({
+const BidModal = <T extends PackageOffer | TractorOffer>({
     offer,
     offerType,
     closeModal
@@ -39,10 +39,10 @@ const BidModal = <T extends LotOffer | TractorOffer>({
             user_id: localStorage.getItem('user_id'),
             ...(offerType === 'tractor' ? { volume: volumeAmount } : {}),
         };
-        if (offerType === 'lot')
+        if (offerType === 'package')
         {
-            // Make bid on a lot using Stock Exchange API
-            await bidOnLot(offer.id, data);
+            // Make bid on a package using Stock Exchange API
+            await bidOnPackage(offer.id, data);
         }
         else if (offerType === 'tractor')
         {
@@ -80,8 +80,8 @@ const BidModal = <T extends LotOffer | TractorOffer>({
                         </p>
                         <input
                             type="range"
-                            min={offerType === 'lot' ? 0.1 : offer.current_price}
-                            max={offerType === 'lot' ? offer.current_price : 1000}
+                            min={offerType === 'package' ? 0.1 : offer.current_price}
+                            max={offerType === 'package' ? offer.current_price : 1000}
                             step="0.1"
                             value={bidAmount}
                             onChange={handlePriceChange}

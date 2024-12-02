@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { Lot } from '../types/Lot';
+import { Package } from '../types/Package';
 import { Tractor } from '../types/Tractor';
 
 const API_BASE_URL = process.env.REACT_APP_ASSETS_API_URL;
 const userId = localStorage.getItem('user_id');
 
-// GET /lots/clients/{client_id}
-export const getLotsByClientId = async (): Promise<Lot[] | null> => {
+// GET /packages/clients/{client_id}
+export const getPackagesByClientId = async (): Promise<Package[] | null> => {
     try {
-        const response = await axios.get<Lot[]>(`${API_BASE_URL}/lots/clients/${userId}`);
+        const response = await axios.get<Package[]>(`${API_BASE_URL}/packages/clients/${userId}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
@@ -29,10 +29,10 @@ export const getTractorsByClientId = async (): Promise<Tractor[] | null> => {
     }
 };
 
-// GET /lots/{lot_id}
-export const getLotById = async (lotId: string): Promise<Lot | null> => {
+// GET /packages/{package_id}
+export const getPackageById = async (packageId: string): Promise<Package | null> => {
     try {
-        const response = await axios.get<Lot>(`${API_BASE_URL}/lots/${lotId}`);
+        const response = await axios.get<Package>(`${API_BASE_URL}/packages/${packageId}`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
@@ -53,9 +53,9 @@ export const getTractorById = async (tractorId: string): Promise<Tractor | null>
     }
 };
 
-// POST /lots
-export const createLot = async (data: any) => {
-    return axios.post(`${API_BASE_URL}/lots`, data);
+// POST /packages
+export const createPackage = async (data: any) => {
+    return axios.post(`${API_BASE_URL}/packages`, data);
 };
 
 // POST /tractors
@@ -63,9 +63,9 @@ export const createTractor = async (data: any) => {
     return axios.post(`${API_BASE_URL}/tractors`, data);
 };
 
-// DELETE /lots/{lot_id}
-export const deleteLot = async (lotId: string): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/lots/${lotId}`);
+// DELETE /packages/{package_id}
+export const deletePackage = async (packageId: string): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/packages/${packageId}`);
 };
 
 // DELETE /tractors/{tractor_id}

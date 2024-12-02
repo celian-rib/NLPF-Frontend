@@ -4,36 +4,36 @@ import { formatDateTime, getBidStateInfo, getStatusInfo } from '../../utils/util
 import SubNavbar from '../../components/navbar/SubNavbar';
 import { historyTabs } from '../../configs/tabConfig';
 import EmptyTable from '../../components/utils/EmptyTable';
-import { getLotBidsByUserId } from '../../services/stockExchange';
-import { getLotById } from '../../services/assets';
-import { LotBid } from '../../types/LotBid';
+import { getPackageBidsByUserId } from '../../services/stockExchange';
+import { getPackageById } from '../../services/assets';
+import { PackageBid } from '../../types/PackageBid';
 import { useWebSocket } from '../../socket/WebSocketContext';
 
-const HistoryLots: React.FC = () => {
-    const [title] = useState<string>('Lots history');
+const HistoryPackages: React.FC = () => {
+    const [title] = useState<string>('Packages history');
     const [currentTab, setCurrentTab] = useState<string>('');
     const [subtitle] = useState<string>('Find the history of your bids in real time.');
-    const [tableData, setTableData] = useState<LotBid[]>([]);
+    const [tableData, setTableData] = useState<PackageBid[]>([]);
 
     const { simulationDate, messageBroadcasted } = useWebSocket();
 
-    // Fetch lot bids
-    const fetchLotBids = async () => {
-        let data = await getLotBidsByUserId();
+    // Fetch package bids
+    const fetchPackageBids = async () => {
+        let data = await getPackageBidsByUserId();
         if (!data)
             return;
         for (let i = 0; i < data.length; i++)
         {
-            const lot = await getLotById(data[i].lot_id);
-            if (!lot)
+            const package = await getPackageById(data[i].package_id);
+            if (!package)
                 return;
-            data[i].lot = lot;
+            data[i].package = package;
         }
         setTableData(data);
     };
 
     useEffect(() => {
-        fetchLotBids();
+        fetchPackageBids();
     }, [simulationDate, messageBroadcasted]);
 
     return (
@@ -65,11 +65,11 @@ const HistoryLots: React.FC = () => {
                             {tableData.map(bid => (
                                 <tr key={bid.id} className="hover:bg-gray-100">
 
-                                    <td className="border text-center p-2">{bid.lot?.lot_name}</td>
+                                    <td className="border text-center p-2">{bid.package?.package_name}</td>
 
                                     <td className={`border text-center p-2`}>
-                                        <span className={`px-2 py-1 rounded ${getStatusInfo(bid.lot?.status).color}`}>
-                                            {getStatusInfo(bid.lot?.status).text}
+                                        <span className={`px-2 py-1 rounded ${getStatusInfo(bid.package?.status).color}`}>
+                                            {getStatusInfo(bid.package?.status).text}
                                         </span>
                                     </td>
 
@@ -83,7 +83,7 @@ const HistoryLots: React.FC = () => {
 
                                     <td className="border text-center p-2">{bid.bid}</td>
 
-                                    <td className="border text-center p-2">{bid.lot?.max_price}</td>
+                                    <td className="border text-center p-2">{bid.package?.max_price}</td>
 
                                 </tr>
                             ))}
@@ -99,4 +99,4 @@ const HistoryLots: React.FC = () => {
     );
 };
 
-export default HistoryLots;
+export default HistoryPackages;

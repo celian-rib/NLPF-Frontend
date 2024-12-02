@@ -4,36 +4,36 @@ import { trafficManagerTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import TractorAssign from '../../components/trafficManager/TractorAssign';
 import ActionButtons from '../../components/trafficManager/ActionButtons';
 import AssignTractorModal from '../../components/trafficManager/modal/AssignTractorModal';
 import { Tractor } from '../../types/Tractor';
-import { getLotsByTrafficManagerId } from '../../services/trafficManager';
+import { getPackagesByTrafficManagerId } from '../../services/trafficManager';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { getAllTraders } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
-import { getTractorsThatCanFitLot } from '../../services/simulation';
+import { getTractorsThatCanFitPackage } from '../../services/simulation';
 import { useWebSocket } from '../../socket/WebSocketContext';
 
-const TrafficManagerLots: React.FC = () => {
+const TrafficManagerPackages: React.FC = () => {
     const [currentTab, setCurrentTab] = useState<string>('');
-    const [title] = useState('Lot Management');
-    const [subtitle] = useState('Manage lots and assign tractors.');
+    const [title] = useState('Package Management');
+    const [subtitle] = useState('Manage packages and assign tractors.');
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
-    const [tableData, setTableData] = useState<Lot[]>([]);
-    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
+    const [tableData, setTableData] = useState<Package[]>([]);
+    const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
     const [isAssignTractorModalOpen, setIsAssignTractorModalOpen] = useState<boolean>(false);
     const [traders, setTraders] = useState<UserInfo[]>([]);
     const [compatibleTractors, setCompatibleTractors] = useState<Tractor[]>([]);
 
     const { simulationDate, messageBroadcasted } = useWebSocket();
 
-    // Fetch lots
-    const fetchLots = async () => {
-        const data = await getLotsByTrafficManagerId();
+    // Fetch packages
+    const fetchPackages = async () => {
+        const data = await getPackagesByTrafficManagerId();
         if (!data)
             return;
         setTableData(data);
@@ -49,25 +49,25 @@ const TrafficManagerLots: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchLots();
+        fetchPackages();
         fetchTraders();
     }, [simulationDate, messageBroadcasted]);
 
     // Load compatible tractors
     useEffect(() => {
         const fetchCompatibleTractors = async () => {
-            if (selectedLot)
+            if (selectedPackage)
             {
-                const data = await getTractorsThatCanFitLot(selectedLot.id);
+                const data = await getTractorsThatCanFitPackage(selectedPackage.id);
                 setCompatibleTractors(data || []);
             }
         };
         fetchCompatibleTractors();
-    }, [selectedLot]);
+    }, [selectedPackage]);
 
     // Function to close modal
     const closeModal = async () => {
-        await fetchLots();
+        await fetchPackages();
         setIsAssignTractorModalOpen(false);
     };
 
@@ -115,38 +115,38 @@ const TrafficManagerLots: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedData.map((lot, index) => (
-                                <tr key={lot.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                            {sortedData.map((package, index) => (
+                                <tr key={package.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
 
-                                    <td className="border p-2 text-center">{lot.lot_name}</td>
+                                    <td className="border p-2 text-center">{package.package_name}</td>
 
                                     <td className="border p-2 text-center">
-                                        <span className={`px-2 py-1 rounded ${getStatusInfo(lot.status).color}`}>
-                                            {getStatusInfo(lot.status).text}
+                                        <span className={`px-2 py-1 rounded ${getStatusInfo(package.status).color}`}>
+                                            {getStatusInfo(package.status).text}
                                         </span>
                                     </td>
 
-                                    <td className="border p-2 text-center">{lot.volume}</td>
+                                    <td className="border p-2 text-center">{package.volume}</td>
 
-                                    <td className="border p-2 text-center">{lot.type}</td>
+                                    <td className="border p-2 text-center">{package.type}</td>
 
-                                    <td className="border p-2 text-center">{lot.current_checkpoint.checkpoint_name}</td>
+                                    <td className="border p-2 text-center">{package.current_checkpoint.checkpoint_name}</td>
 
                                     <td className="border p-2 text-center">
-                                        {lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}
+                                        {package.start_checkpoint.checkpoint_name} / {package.end_checkpoint.checkpoint_name}
                                     </td>
 
                                     <TractorAssign
-                                        lot={lot}
-                                        setSelectedLot={setSelectedLot}
+                                        package={package}
+                                        setSelectedPackage={setSelectedPackage}
                                         setIsAssignTractorModalOpen={setIsAssignTractorModalOpen}
                                     />
 
                                     <ActionButtons
-                                        item={lot}
-                                        itemType="lot"
+                                        item={package}
+                                        itemType="package"
                                         traders={traders}
-                                        onTableUpdated={fetchLots}
+                                        onTableUpdated={fetchPackages}
                                     />
 
                                 </tr>
@@ -160,9 +160,9 @@ const TrafficManagerLots: React.FC = () => {
                 )}
             </main>
 
-            {isAssignTractorModalOpen && selectedLot && (
+            {isAssignTractorModalOpen && selectedPackage && (
                 <AssignTractorModal
-                    lotId={selectedLot.id}
+                    packageId={selectedPackage.id}
                     compatibleTractors={compatibleTractors}
                     closeModal={closeModal}
                 />
@@ -171,4 +171,4 @@ const TrafficManagerLots: React.FC = () => {
     );
 };
 
-export default TrafficManagerLots;
+export default TrafficManagerPackages;

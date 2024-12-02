@@ -1,23 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faPlus, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { Tractor } from '../../types/Tractor';
-import { assignLotToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManager';
-import { deleteLot, deleteTractor } from '../../services/assets';
+import { assignPackageToTrafficManager, assignTractorToTrafficManager } from '../../services/trafficManager';
+import { deletePackage, deleteTractor } from '../../services/assets';
 
 interface ActionButtonsProps<T> {
     item: T;
-    itemType: 'tractor' | 'lot';
-    setSelectedLot?: (lot: Lot) => void;
+    itemType: 'tractor' | 'package';
+    setSelectedPackage?: (package: Package) => void;
     setSelectedTractor?: (tractor: Tractor) => void;
     setIsStockExchangeModalOpen: (open: boolean) => void;
     onTableUpdated: () => void;
 }
 
-const ActionButtons = <T extends Lot | Tractor>({
+const ActionButtons = <T extends Package | Tractor>({
     item,
     itemType,
-    setSelectedLot,
+    setSelectedPackage,
     setSelectedTractor,
     setIsStockExchangeModalOpen,
     onTableUpdated,
@@ -25,9 +25,9 @@ const ActionButtons = <T extends Lot | Tractor>({
 
     // Function to add item to stock exchange
     const handleStockExchangeClick = () => {
-        if (itemType === 'lot' && setSelectedLot)
+        if (itemType === 'package' && setSelectedPackage)
         {
-            setSelectedLot(item as Lot);
+            setSelectedPackage(item as Package);
         }
         else if (itemType === 'tractor' && setSelectedTractor)
         {
@@ -44,10 +44,10 @@ const ActionButtons = <T extends Lot | Tractor>({
             alert('Please select a traffic manager first.');
             return;
         }
-        if (itemType === 'lot')
+        if (itemType === 'package')
         {
-            // Assign lot to traffic manager Traffic Manager API
-            await assignLotToTrafficManager(item.id, item.traffic_manager.user_id);
+            // Assign package to traffic manager Traffic Manager API
+            await assignPackageToTrafficManager(item.id, item.traffic_manager.user_id);
         }
         else if (itemType === 'tractor')
         {
@@ -59,10 +59,10 @@ const ActionButtons = <T extends Lot | Tractor>({
 
     // Function to remove item
     const handleRemoveClick = async () => {
-        if (itemType === 'lot')
+        if (itemType === 'package')
         {
-            // Remove lot using Assets API
-            await deleteLot(item.id);
+            // Remove package using Assets API
+            await deletePackage(item.id);
         }
         else if (itemType === 'tractor')
         {

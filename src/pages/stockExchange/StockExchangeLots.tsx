@@ -4,37 +4,37 @@ import { stockExchangeTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { formatDate } from '../../utils/utils';
 import { sortAndFilterData } from '../../utils/sortingUtils';
-import { LotOffer } from '../../types/LotOffer';
+import { PackageOffer } from '../../types/PackageOffer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import BidModal from '../../components/stockExchange/modal/BidModal';
-import { getLotOffers } from '../../services/stockExchange';
+import { getPackageOffers } from '../../services/stockExchange';
 import EmptyTable from '../../components/utils/EmptyTable';
 import { useWebSocket } from '../../socket/WebSocketContext';
 
-const StockExchangeLots: React.FC = () => {
-    const [title] = useState('Lot market');
-    const [subtitle] = useState('Explore a wide selection of lots with dynamic volumes and prices.');
+const StockExchangePackages: React.FC = () => {
+    const [title] = useState('Package market');
+    const [subtitle] = useState('Explore a wide selection of packages with dynamic volumes and prices.');
     const [userRole, setUserRole] = useState<string>('');
     const [currentTab, setCurrentTab] = useState<string>('');
-    const [tableData, setTableData] = useState<LotOffer[]>([]);
+    const [tableData, setTableData] = useState<PackageOffer[]>([]);
     const [selectedStatus] = useState('all');
     const [sortOption, setSortOption] = useState('none');
-    const [selectedOffer, setSelectedOffer] = useState<LotOffer>();
+    const [selectedOffer, setSelectedOffer] = useState<PackageOffer>();
     const [isBidModalOpen, setIsBidModalOpen] = useState<boolean>(false);
 
     const { simulationDate, messageBroadcasted } = useWebSocket();
 
     // Handle bid modal opening
-    const openBidModal = (offer: LotOffer) => {
+    const openBidModal = (offer: PackageOffer) => {
         setSelectedOffer(offer);
         setIsBidModalOpen(true);
     }
 
-    // Fetch lot offers
-    const fetchLotOffers = async () => {
-        const data = await getLotOffers();
+    // Fetch package offers
+    const fetchPackageOffers = async () => {
+        const data = await getPackageOffers();
         if (!data)
             return;
         setTableData(data);
@@ -43,12 +43,12 @@ const StockExchangeLots: React.FC = () => {
     useEffect(() => {
         const role: string = localStorage.getItem('user_role') || '';
         setUserRole(role);
-        fetchLotOffers();
+        fetchPackageOffers();
     }, [simulationDate, messageBroadcasted]);
 
     // Function to close modal
     const closeModal = async () => {
-        await fetchLotOffers();
+        await fetchPackageOffers();
         setIsBidModalOpen(false);
     };
 
@@ -133,7 +133,7 @@ const StockExchangeLots: React.FC = () => {
             {isBidModalOpen && selectedOffer && (
                 <BidModal
                     offer={selectedOffer}
-                    offerType="lot"
+                    offerType="package"
                     closeModal={closeModal}
                 />
             )}
@@ -141,4 +141,4 @@ const StockExchangeLots: React.FC = () => {
     );
 };
 
-export default StockExchangeLots;
+export default StockExchangePackages;

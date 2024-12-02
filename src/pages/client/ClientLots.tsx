@@ -3,8 +3,8 @@ import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import { Checkpoint } from '../../types/Checkpoint';
-import { Lot } from '../../types/Lot';
-import { LotType } from '../../types/LotType';
+import { Package } from '../../types/Package';
+import { PackageType } from '../../types/PackageType';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { sortAndFilterData } from '../../utils/sortingUtils';
@@ -12,42 +12,42 @@ import TrafficManagerSelect from '../../components/client/TrafficManagerSelect';
 import ActionButtons from '../../components/client/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import AddItemModal from '../../components/client/modal/AddItemModal';
-import { getAllCheckpoints, getTrafficManagerByLotId } from '../../services/trafficManager';
-import { getLotsByClientId } from '../../services/assets';
+import { getAllCheckpoints, getTrafficManagerByPackageId } from '../../services/trafficManager';
+import { getPackagesByClientId } from '../../services/assets';
 import { getAllTrafficManagers } from '../../services/auth';
 import { UserInfo } from '../../types/UserInfo';
 import SubNavbar from '../../components/navbar/SubNavbar';
 import { clientTabs } from '../../configs/tabConfig';
 import { useWebSocket } from '../../socket/WebSocketContext';
 
-const ClientLots: React.FC = () => {
-    const [title] = useState<string>('Lot management');
+const ClientPackages: React.FC = () => {
+    const [title] = useState<string>('Package management');
     const [currentTab, setCurrentTab] = useState<string>('');
-    const [subtitle] = useState<string>('Track the status of your lots in real time.');
-    const [tableData, setTableData] = useState<Lot[]>([]);
+    const [subtitle] = useState<string>('Track the status of your packages in real time.');
+    const [tableData, setTableData] = useState<Package[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
-    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
-    const [isAddLotModalOpen, setIsAddLotModalOpen] = useState<boolean>(false);
+    const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+    const [isAddPackageModalOpen, setIsAddPackageModalOpen] = useState<boolean>(false);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
     const [checkpoints, setCheckpoints] = useState<Checkpoint[]>([]);
     const [trafficManagers, setTrafficManagers] = useState<UserInfo[]>([]);
 
     const { simulationDate, messageBroadcasted } = useWebSocket();
 
-    // Fetch traffic managers of lots
-    const fetchTrafficManagersOfLots = async (lots: Lot[]): Promise<Lot[]> => {
-        for (let i = 0; i < lots.length; i++)
-            lots[i].traffic_manager = await getTrafficManagerByLotId(lots[i].id);
-        return lots;
+    // Fetch traffic managers of packages
+    const fetchTrafficManagersOfPackages = async (packages: Package[]): Promise<Package[]> => {
+        for (let i = 0; i < packages.length; i++)
+            packages[i].traffic_manager = await getTrafficManagerByPackageId(packages[i].id);
+        return packages;
     };
 
-    // Fetch lots
-    const fetchLots = async () => {
-        const data = await getLotsByClientId();
+    // Fetch packages
+    const fetchPackages = async () => {
+        const data = await getPackagesByClientId();
         if (!data)
             return;
-        const updatedData = await fetchTrafficManagersOfLots(data);
+        const updatedData = await fetchTrafficManagersOfPackages(data);
         setTableData(updatedData);
     };
 
@@ -69,7 +69,7 @@ const ClientLots: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchLots();
+        fetchPackages();
         fetchCheckpoints();
         fetchTrafficManagers();
         // eslint-disable-next-line
@@ -77,8 +77,8 @@ const ClientLots: React.FC = () => {
 
     // Function to close modals
     const closeModal = async () => {
-        await fetchLots();
-        setIsAddLotModalOpen(false);
+        await fetchPackages();
+        setIsAddPackageModalOpen(false);
         setIsStockExchangeModalOpen(false);
     };
 
@@ -110,11 +110,11 @@ const ClientLots: React.FC = () => {
                     )}
                     <div className="flex justify-between items-center self-end">
                         <button
-                            onClick={() => setIsAddLotModalOpen(true)}
+                            onClick={() => setIsAddPackageModalOpen(true)}
                             className="bg-blue-500 text-white font-bold px-4 py-2 rounded flex items-center hover:bg-blue-600 transition-colors self-end"
                         >
                             <FontAwesomeIcon icon={faPlus} className="mr-2" />
-                            Add a lot
+                            Add a package
                         </button>
                     </div>
                 </div>
@@ -135,34 +135,34 @@ const ClientLots: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedData.map(lot => (
-                                <tr key={lot.id} className="hover:bg-gray-100">
+                            {sortedData.map(package => (
+                                <tr key={package.id} className="hover:bg-gray-100">
 
-                                    <td className="border text-center p-2">{lot.lot_name}</td>
+                                    <td className="border text-center p-2">{package.package_name}</td>
 
                                     <td className={`border text-center p-2`}>
-                                        <span className={`px-2 py-1 rounded ${getStatusInfo(lot.status).color}`}>
-                                            {getStatusInfo(lot.status).text}
+                                        <span className={`px-2 py-1 rounded ${getStatusInfo(package.status).color}`}>
+                                            {getStatusInfo(package.status).text}
                                         </span>
                                     </td>
 
-                                    <td className="border text-center p-2">{lot.volume}</td>
+                                    <td className="border text-center p-2">{package.volume}</td>
 
-                                    <td className="border text-center p-2">{lot.current_checkpoint.checkpoint_name}</td>
+                                    <td className="border text-center p-2">{package.current_checkpoint.checkpoint_name}</td>
 
-                                    <td className="border text-center p-2">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
+                                    <td className="border text-center p-2">{package.start_checkpoint.checkpoint_name} / {package.end_checkpoint.checkpoint_name}</td>
 
                                     <TrafficManagerSelect 
-                                        item={lot}
+                                        item={package}
                                         trafficManagers={trafficManagers}
                                     />
 
                                     <ActionButtons
-                                        item={lot}
-                                        itemType="lot"
-                                        setSelectedLot={setSelectedLot}
+                                        item={package}
+                                        itemType="package"
+                                        setSelectedPackage={setSelectedPackage}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
-                                        onTableUpdated={fetchLots}
+                                        onTableUpdated={fetchPackages}
                                     />
 
                                 </tr>
@@ -174,19 +174,19 @@ const ClientLots: React.FC = () => {
                 )}
             </main>
 
-            {isAddLotModalOpen && (
+            {isAddPackageModalOpen && (
                 <AddItemModal
                     closeModal={closeModal}
-                    types={Object.values(LotType)}
+                    types={Object.values(PackageType)}
                     checkpoints={checkpoints}
-                    itemType="lot"
+                    itemType="package"
                 />
             )}
 
-            {isStockExchangeModalOpen && selectedLot && (
+            {isStockExchangeModalOpen && selectedPackage && (
                 <AddToStockExchangeModal
-                    item={selectedLot}
-                    itemType="lot"
+                    item={selectedPackage}
+                    itemType="package"
                     closeModal={closeModal}
                 />
             )}
@@ -194,4 +194,4 @@ const ClientLots: React.FC = () => {
     );
 };
 
-export default ClientLots;
+export default ClientPackages;

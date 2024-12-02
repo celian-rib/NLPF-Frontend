@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { createLotOffer, createTractorOffer } from '../../../services/stockExchange';
+import { createPackageOffer, createTractorOffer } from '../../../services/stockExchange';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getCurrentDate } from '../../../services/simulation';
 
 interface StockExchangeModalProps<T> {
     item: T;
-    itemType: 'lot' | 'tractor';
+    itemType: 'package' | 'tractor';
     closeModal: () => void;
 }
 
@@ -34,13 +34,13 @@ const AddToStockExchangeModal = <T extends { id: string }>({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const data = {
-            ...(itemType === 'lot' ? { lot_id: item.id } : { tractor_id: item.id }),
+            ...(itemType === 'package' ? { package_id: item.id } : { tractor_id: item.id }),
             limit_date: new Date(limitDate).toISOString(),
         };
-        if (itemType === 'lot')
+        if (itemType === 'package')
         {
-            // Create lot offer using Stock Exchange API
-            await createLotOffer(data);
+            // Create package offer using Stock Exchange API
+            await createPackageOffer(data);
         }
         else if (itemType === 'tractor')
         {

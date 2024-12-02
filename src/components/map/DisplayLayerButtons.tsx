@@ -20,16 +20,16 @@ const DisplayLayerButtons: React.FC<DisplayLayerButtonsProps> = ({activeButtons,
     return (
         <div className="fixed bottom-4 right-4 flex flex-col space-y-2 z-50 w-40">
             <button
-                onClick={() => toggleButton("lots")}
+                onClick={() => toggleButton("packages")}
                 className={`py-2 px-4 rounded-md shadow transition ${
-                    !activeButtons.lots ? "bg-red-500 hover:bg-red-700" : "bg-gray-800 hover:bg-black"
+                    !activeButtons.packages ? "bg-red-500 hover:bg-red-700" : "bg-gray-800 hover:bg-black"
                 } text-white`}
             >
                 <FontAwesomeIcon
-                    icon={!activeButtons.lots ? faEyeSlash : faEye}
+                    icon={!activeButtons.packages ? faEyeSlash : faEye}
                     className="mr-2"
                 />
-                Lots
+                Packages
             </button>
 
             <button

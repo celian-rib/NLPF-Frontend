@@ -1,19 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTruck, faHand, faEraser, faUser } from '@fortawesome/free-solid-svg-icons';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { Tractor } from '../../types/Tractor';
 import { startTractor, stopTractor, unassignRouteFromTractor } from '../../services/trafficManager';
-import { assignLotToTrader, assignTractorToTrader } from '../../services/trader';
+import { assignPackageToTrader, assignTractorToTrader } from '../../services/trader';
 import { UserInfo } from '../../types/UserInfo';
 
 interface ActionButtonsProps<T> {
     item: T;
-    itemType: 'tractor' | 'lot';
+    itemType: 'tractor' | 'package';
     traders: UserInfo[];
     onTableUpdated: () => void;
 }
 
-const ActionButtons = <T extends Lot | Tractor>({
+const ActionButtons = <T extends Package | Tractor>({
     item,
     itemType,
     traders,
@@ -36,10 +36,10 @@ const ActionButtons = <T extends Lot | Tractor>({
 
     // Function to send item to trader
     const handleAssignToTraderClick = async () => {
-        if (itemType === 'lot')
+        if (itemType === 'package')
         {
-            // Assign lot to trader using Trader API
-            await assignLotToTrader(item.id);
+            // Assign package to trader using Trader API
+            await assignPackageToTrader(item.id);
         }
         else if (itemType === 'tractor')
         {

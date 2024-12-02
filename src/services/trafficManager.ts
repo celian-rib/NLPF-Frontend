@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Checkpoint } from '../types/Checkpoint';
-import { Lot } from '../types/Lot';
+import { Package } from '../types/Package';
 import { Tractor } from '../types/Tractor';
 import { Route } from '../types/Route';
 import { UserInfo } from '../types/UserInfo';
@@ -8,10 +8,10 @@ import { UserInfo } from '../types/UserInfo';
 const API_BASE_URL = process.env.REACT_APP_TRAFFIC_MANAGER_API_URL;
 const userId = localStorage.getItem('user_id');
 
-// GET /lots/traffic-managers/{traffic_manager_id}
-export const getLotsByTrafficManagerId = async (): Promise<Lot[] | null> => {
+// GET /packages/traffic-managers/{traffic_manager_id}
+export const getPackagesByTrafficManagerId = async (): Promise<Package[] | null> => {
     try {
-        const response = await axios.get<Lot[]>(`${API_BASE_URL}/lots/traffic-managers/${userId}`);
+        const response = await axios.get<Package[]>(`${API_BASE_URL}/packages/traffic-managers/${userId}`);
         if (response.status === 204)
             return null;
         else
@@ -53,10 +53,10 @@ export const getRoutesByTrafficManagerId = async (): Promise<Route[] | null> => 
     }
 };
 
-// GET /lots/{lot_id}/traffic_manager
-export const getTrafficManagerByLotId = async (lotId: string): Promise<UserInfo | null> => {
+// GET /packages/{package_id}/traffic_manager
+export const getTrafficManagerByPackageId = async (packageId: string): Promise<UserInfo | null> => {
     try {
-        const response = await axios.get<UserInfo>(`${API_BASE_URL}/lots/${lotId}/traffic_manager`);
+        const response = await axios.get<UserInfo>(`${API_BASE_URL}/packages/${packageId}/traffic_manager`);
         if (response.status === 204)
             return null;
         else
@@ -98,9 +98,9 @@ export const getAllCheckpoints = async (): Promise<Checkpoint[] | null> => {
     }
 };
 
-// PUT /lots/{lot_id}/trafic-managers/{traffic_manager_id}
-export const assignLotToTrafficManager = async (lotId: string, trafficManagerId: string) => {
-    return axios.put(`${API_BASE_URL}/lots/${lotId}/traffic-managers/${trafficManagerId}`);
+// PUT /packages/{package_id}/trafic-managers/{traffic_manager_id}
+export const assignPackageToTrafficManager = async (packageId: string, trafficManagerId: string) => {
+    return axios.put(`${API_BASE_URL}/packages/${packageId}/traffic-managers/${trafficManagerId}`);
 };
 
 // PUT /tractors/{tractor_id}/trafic-managers/{traffic_manager_id}
@@ -122,14 +122,14 @@ export const assignRouteToTractor = async (routeId: string, tractorId: string) =
     }
 };
 
-// PUT /lots/{lot_id}/tractors/{tractor_id}
-export const assignTractorToLot = async (lotId: string, tractorId: string) => {
+// PUT /packages/{package_id}/tractors/{tractor_id}
+export const assignTractorToPackage = async (packageId: string, tractorId: string) => {
     try {
-        return axios.put(`${API_BASE_URL}/lots/${lotId}/tractors/${tractorId}`);
+        return axios.put(`${API_BASE_URL}/packages/${packageId}/tractors/${tractorId}`);
     } catch (error) {  
         if (axios.isAxiosError(error) && error.response?.status === 400)
         {
-            alert('Tractor can not be assigned to this lot.');
+            alert('Tractor can not be assigned to this package.');
             return;
         }
         throw error;

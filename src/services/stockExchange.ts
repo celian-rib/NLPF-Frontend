@@ -1,17 +1,17 @@
 import axios from 'axios';
-import { LotOffer } from '../types/LotOffer';
+import { PackageOffer } from '../types/PackageOffer';
 import { TractorOffer } from '../types/TractorOffer';
-import { LotBid } from '../types/LotBid';
+import { PackageBid } from '../types/PackageBid';
 import { TractorBid } from '../types/TractorBid';
 
 const API_BASE_URL = process.env.REACT_APP_STOCK_EXCHANGE_API_URL;
 const userId = localStorage.getItem('user_id');
 
-// GET /offers/lots
-export const getLotOffers = async (): Promise<LotOffer[] | null> => {
+// GET /offers/packages
+export const getPackageOffers = async (): Promise<PackageOffer[] | null> => {
 
     try {
-        const response = await axios.get<LotOffer[]>(`${API_BASE_URL}/offers/lots`);
+        const response = await axios.get<PackageOffer[]>(`${API_BASE_URL}/offers/packages`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
@@ -32,10 +32,10 @@ export const getTractorOffers = async (): Promise<TractorOffer[] | null> => {
     }
 };
 
-// GET /offers/lots/users/{user_id}/bids
-export const getLotBidsByUserId = async (): Promise<LotBid[] | null> => {
+// GET /offers/packages/users/{user_id}/bids
+export const getPackageBidsByUserId = async (): Promise<PackageBid[] | null> => {
     try {
-        const response = await axios.get<LotBid[]>(`${API_BASE_URL}/offers/lots/users/${userId}/bids`);
+        const response = await axios.get<PackageBid[]>(`${API_BASE_URL}/offers/packages/users/${userId}/bids`);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)
@@ -56,9 +56,9 @@ export const getTractorBidsByUserId = async (): Promise<TractorBid[] | null> => 
     }
 };
 
-// POST /offers/lots
-export const createLotOffer = async (data: any) => {
-    return axios.post(`${API_BASE_URL}/offers/lots`, data);
+// POST /offers/packages
+export const createPackageOffer = async (data: any) => {
+    return axios.post(`${API_BASE_URL}/offers/packages`, data);
 };
 
 // POST /offers/tractors
@@ -66,9 +66,9 @@ export const createTractorOffer = async (data: any) => {
     return axios.post(`${API_BASE_URL}/offers/tractors`, data);
 };
 
-// POST /offers/lots/{offer_id}/bids
-export const bidOnLot = async (offerId: string, data: any) => {
-    return axios.post(`${API_BASE_URL}/offers/lots/${offerId}/bids`, data);
+// POST /offers/packages/{offer_id}/bids
+export const bidOnPackage = async (offerId: string, data: any) => {
+    return axios.post(`${API_BASE_URL}/offers/packages/${offerId}/bids`, data);
 };
 
 // POST /offers/tractors/{offer_id}/bids

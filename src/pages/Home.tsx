@@ -12,7 +12,7 @@ const Home: React.FC = () => {
                     <p className="text-5xl md:text-3xl font-normal mb-2">to our</p>
                     <h2 className="text-7xl md:text-5xl font-bold mb-4">Traffic Manager System</h2>
                     <p className="text-lg md:text-xl mb-8 max-w-xl mx-auto">
-                        Manage your lots and tractors with an intuitive interface and powerful tools to maximize your profits.
+                        Manage your packages and tractors with an intuitive interface and powerful tools to maximize your profits.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                         <button className="bg-white text-blue-600 font-bold py-3 px-12 rounded-full hover:bg-gray-100 transition transform hover:scale-105">
@@ -28,9 +28,9 @@ const Home: React.FC = () => {
                     <div className="flex flex-wrap justify-center">
                         <div className="max-w-sm p-6 bg-white shadow-lg rounded-lg m-4">
                             <i className="fas fa-boxes text-4xl text-blue-500 mb-4"></i>
-                            <h3 className="text-xl font-bold mb-2">Lot Management</h3>
+                            <h3 className="text-xl font-bold mb-2">Package Management</h3>
                             <p className="text-gray-600">
-                                Efficiently track and manage your lots with advanced tools that help you keep control of your inventory and transactions.
+                                Efficiently track and manage your packages with advanced tools that help you keep control of your inventory and transactions.
                             </p>
                         </div>
                         <div className="max-w-sm p-6 bg-white shadow-lg rounded-lg m-4">

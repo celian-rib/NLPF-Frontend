@@ -5,21 +5,21 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import Login from './pages/authentication/Login';
 import Signup from './pages/authentication/Signup';
 import Home from './pages/Home';
-import StockExchangeLots from './pages/stockExchange/StockExchangeLots';
+import StockExchangePackages from './pages/stockExchange/StockExchangePackages';
 import StockExchangeTractors from './pages/stockExchange/StockExchangeTractors';
-import TraderLots from './pages/trader/TraderLots';
+import TraderPackages from './pages/trader/TraderPackages';
 import TraderTractors from './pages/trader/TraderTractors';
-import TrafficManagerLots from './pages/trafficManager/TrafficManagerLots';
+import TrafficManagerPackages from './pages/trafficManager/TrafficManagerPackages';
 import TrafficManagerRoutes from './pages/trafficManager/TrafficManagerRoutes';
 import TrafficManagerTractors from './pages/trafficManager/TrafficMangerTractors';
 import { normalizeUserRole, UserRole } from './configs/permissions';
 import ProtectedRouteWrapper from './components/navbar/ProtectedRouteWrapper';
-import ClientLots from './pages/client/ClientLots';
+import ClientPackages from './pages/client/ClientPackages';
 import ClientTractors from './pages/client/ClientTractors';
 import Map from './pages/Map';
 import './App.css';
 import {WebSocketProvider} from "./socket/WebSocketContext";
-import HistoryLots from './pages/history/HistoryLots';
+import HistoryPackages from './pages/history/HistoryPackages';
 import HistorTractors from './pages/history/HistoryTractors';
 
 library.add(fas);
@@ -33,16 +33,16 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
 
-                <Route path="/client" element={<Navigate to="/client/lots" replace />} />
-                <Route path="/trader" element={<Navigate to="/trader/lots" replace />} />
+                <Route path="/client" element={<Navigate to="/client/packages" replace />} />
+                <Route path="/trader" element={<Navigate to="/trader/packages" replace />} />
                 <Route path="/traffic-manager" element={<Navigate to="/traffic-manager/routes" replace />} />
-                <Route path="/history" element={<Navigate to="/history/lots" replace />} />
-                <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/lots" replace />} />
+                <Route path="/history" element={<Navigate to="/history/packages" replace />} />
+                <Route path="/stock-exchange" element={<Navigate to="/stock-exchange/packages" replace />} />
 
                 <Route path="/client/*" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Client">
                         <Routes>
-                            <Route path="lots" element={<ClientLots />} />
+                            <Route path="packages" element={<ClientPackages />} />
                             <Route path="tractors" element={<ClientTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>
@@ -52,7 +52,7 @@ function App() {
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="TrafficManager">
                         <Routes>
                             <Route path="routes" element={<TrafficManagerRoutes />} />
-                            <Route path="lots" element={<TrafficManagerLots />} />
+                            <Route path="packages" element={<TrafficManagerPackages />} />
                             <Route path="tractors" element={<TrafficManagerTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>
@@ -61,7 +61,7 @@ function App() {
                 <Route path="/trader/*" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="Trader">
                         <Routes>
-                            <Route path="lots" element={<TraderLots />} />
+                            <Route path="packages" element={<TraderPackages />} />
                             <Route path="tractors" element={<TraderTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>
@@ -70,7 +70,7 @@ function App() {
                 <Route path="/stock-exchange/*" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="StockExchange">
                         <Routes>
-                            <Route path="lots" element={<StockExchangeLots />} />
+                            <Route path="packages" element={<StockExchangePackages />} />
                             <Route path="tractors" element={<StockExchangeTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>
@@ -79,7 +79,7 @@ function App() {
                 <Route path="/history/*" element={
                     <ProtectedRouteWrapper userRole={getUserRole()} requiredTab="History">
                         <Routes>
-                            <Route path="lots" element={<HistoryLots />} />
+                            <Route path="packages" element={<HistoryPackages />} />
                             <Route path="tractors" element={<HistorTractors />} />
                         </Routes>
                     </ProtectedRouteWrapper>

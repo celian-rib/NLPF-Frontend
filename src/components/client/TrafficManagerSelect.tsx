@@ -1,13 +1,13 @@
 import { UserInfo } from '../../types/UserInfo';
 import { Tractor } from '../../types/Tractor';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 
 interface TrafficManagerSelectProps<T> {
     item: T;
     trafficManagers: UserInfo[] | null;
 }
 
-const TrafficManagerSelect = <T extends Lot | Tractor>({
+const TrafficManagerSelect = <T extends Package | Tractor>({
     item,
     trafficManagers,
 }: TrafficManagerSelectProps<T>) => {

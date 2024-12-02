@@ -3,42 +3,42 @@ import SubNavbar from '../../components/navbar/SubNavbar';
 import { traderTabs } from '../../configs/tabConfig';
 import Navbar from '../../components/navbar/Navbar';
 import { getStatusInfo } from '../../utils/utils';
-import { Lot } from '../../types/Lot';
+import { Package } from '../../types/Package';
 import { sortAndFilterData } from '../../utils/sortingUtils';
 import FilterAndSort from '../../components/utils/FilterAndSort';
 import EmptyTable from '../../components/utils/EmptyTable';
-import { getLotsByTraderId } from '../../services/trader';
+import { getPackagesByTraderId } from '../../services/trader';
 import ActionButtons from '../../components/trader/ActionButtons';
 import AddToStockExchangeModal from '../../components/stockExchange/modal/AddToStockExchangeModal';
 import { useWebSocket } from '../../socket/WebSocketContext';
 
-const TraderLots: React.FC = () => {
-    const [title] = useState('Lot offers');
-    const [subtitle] = useState('Create lot offers in real time.');
+const TraderPackages: React.FC = () => {
+    const [title] = useState('Package offers');
+    const [subtitle] = useState('Create package offers in real time.');
     const [currentTab, setCurrentTab] = useState<string>('');
-    const [tableData, setTableData] = useState<Lot[]>([]);
+    const [tableData, setTableData] = useState<Package[]>([]);
     const [selectedStatus, setSelectedStatus] = useState<string>('all');
     const [sortOption, setSortOption] = useState<string>('none');
-    const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
     const [isStockExchangeModalOpen, setIsStockExchangeModalOpen] = useState<boolean>(false);
 
     const { simulationDate, messageBroadcasted } = useWebSocket();
 
-    // Fetch lots
-    const fetchLots = async () => {
-        const data = await getLotsByTraderId();
+    // Fetch packages
+    const fetchPackages = async () => {
+        const data = await getPackagesByTraderId();
         if (!data)
             return;
         setTableData(data);
     };
 
     useEffect(() => {
-        fetchLots();
+        fetchPackages();
     }, [simulationDate, messageBroadcasted]);
 
     // Function to close modal
     const closeModal = async () => {
-        await fetchLots();
+        await fetchPackages();
         setIsStockExchangeModalOpen(false);
     };
 
@@ -84,31 +84,31 @@ const TraderLots: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedData.map((lot, index) => (
-                                <tr key={lot.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                            {sortedData.map((package, index) => (
+                                <tr key={package.id} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
 
-                                    <td className="border p-2 text-center">{lot.lot_name}</td>
+                                    <td className="border p-2 text-center">{package.package_name}</td>
 
                                     <td className="border p-2 text-center">
-                                        <span className={`px-2 py-1 rounded ${getStatusInfo(lot.status).color}`}>
-                                            {getStatusInfo(lot.status).text}
+                                        <span className={`px-2 py-1 rounded ${getStatusInfo(package.status).color}`}>
+                                            {getStatusInfo(package.status).text}
                                         </span>
                                     </td>
 
-                                    <td className="border p-2 text-center">{lot.type}</td>
+                                    <td className="border p-2 text-center">{package.type}</td>
 
-                                    <td className="border p-2 text-center">{lot.volume}</td>
+                                    <td className="border p-2 text-center">{package.volume}</td>
 
-                                    <td className="border p-2 text-center">{lot.start_checkpoint.checkpoint_name} / {lot.end_checkpoint.checkpoint_name}</td>
+                                    <td className="border p-2 text-center">{package.start_checkpoint.checkpoint_name} / {package.end_checkpoint.checkpoint_name}</td>
 
-                                    <td className="border p-2 text-center">{lot.max_price.toFixed(2)}</td>
+                                    <td className="border p-2 text-center">{package.max_price.toFixed(2)}</td>
 
                                     <ActionButtons
-                                        item={lot}
-                                        itemType="lot"
-                                        setSelectedLot={setSelectedLot}
+                                        item={package}
+                                        itemType="package"
+                                        setSelectedPackage={setSelectedPackage}
                                         setIsStockExchangeModalOpen={setIsStockExchangeModalOpen}
-                                        onTableUpdated={fetchLots}
+                                        onTableUpdated={fetchPackages}
                                     />
 
                                 </tr>
@@ -122,10 +122,10 @@ const TraderLots: React.FC = () => {
                 )}
             </main>
 
-            {isStockExchangeModalOpen && selectedLot && (
+            {isStockExchangeModalOpen && selectedPackage && (
                 <AddToStockExchangeModal
-                    item={selectedLot}
-                    itemType="lot"
+                    item={selectedPackage}
+                    itemType="package"
                     closeModal={closeModal}
                 />
             )}
@@ -133,4 +133,4 @@ const TraderLots: React.FC = () => {
     );
 };
 
-export default TraderLots;
+export default TraderPackages;
