@@ -126,7 +126,6 @@ const TraderLots: React.FC = () => {
                 <AddToStockExchangeModal
                     item={selectedLot}
                     itemType="lot"
-                    minDate={new Date().toISOString().split("T")[0]}
                     closeModal={closeModal}
                 />
             )}

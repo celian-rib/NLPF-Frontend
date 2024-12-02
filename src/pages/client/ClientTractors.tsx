@@ -187,7 +187,6 @@ const ClientTractors: React.FC = () => {
                 <AddToStockExchangeModal
                     item={selectedTractor}
                     itemType="tractor"
-                    minDate={new Date().toISOString().split("T")[0]}
                     closeModal={closeModal}
                 />
             )}

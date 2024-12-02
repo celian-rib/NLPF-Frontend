@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createLotOffer, createTractorOffer } from '../../../services/stockExchange';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { getCurrentDate } from '../../../services/simulation';
 
 interface StockExchangeModalProps<T> {
     item: T;
     itemType: 'lot' | 'tractor';
-    minDate: string;
     closeModal: () => void;
 }
 
 const AddToStockExchangeModal = <T extends { id: string }>({
     item,
     itemType,
-    minDate,
     closeModal,
 }: StockExchangeModalProps<T>) => {
     const [limitDate, setLimitDate] = useState<string>('');
+    const [minDate, setMinDate] = useState<string>('');
+
+    // Fetch current date
+    const fetchDate = async () => {
+        const data = await getCurrentDate();
+        if (!data)
+            return;
+        const formattedDate = new Date(data).toISOString().split('T')[0];
+        setMinDate(formattedDate);
+    };
+
+    useEffect(() => {
+        fetchDate();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
