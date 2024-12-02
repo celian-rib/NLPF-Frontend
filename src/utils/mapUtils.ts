@@ -20,7 +20,7 @@ export const createCustomClusterIcon = (cluster: any) => {
         size = 'large';
     else if (count >= 20)
         size = 'medium';
-    return L.divIcon({
+    const icon = L.divIcon({
         html: `<div
                  style="
                     display: flex;
@@ -45,4 +45,6 @@ export const createCustomClusterIcon = (cluster: any) => {
         className: `marker-cluster marker-cluster-${size}`,
         iconSize: L.point(40, 40, true),
     });
+    cluster.setZIndexOffset(3000);
+    return icon;
 };
