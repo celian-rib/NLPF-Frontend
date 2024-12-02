@@ -35,7 +35,7 @@ export const getBidStateInfo = (state: string): { color: string; text: string } 
         case 'rejected':
             return { color: 'bg-red-200 text-red-800', text: '◉ Rejected' };
         case 'on_going':
-            return { color: 'bg-orange-200 text-orange-800', text: '◉ On going' };
+            return { color: 'bg-orange-200 text-orange-800', text: '◉ Ongoing' };
         default:
             return { color: 'bg-gray-200 text-gray-800', text: '🛇 Unknown' };
     }
